@@ -1,0 +1,87 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Nov 16, 2014, 2:08:32 PM
+    Author     : 7-64
+*/
+
+.boxshadowStyle{
+-webkit-box-shadow:   0px 0px 5px 0 #005fa3;
+-moz-box-shadow:  0px 0px 5px 0 #005fa3;
+box-shadow:  0px 0px 5px 0 #005fa3;
+}
+
+.overlayBack{
+    position: absolute;
+    left:0;
+    top:0;
+    right:0;
+    bottom: 0;
+    
+    background-color: white;
+    opacity: .35;
+    z-index: 9999;
+}
+.resetPassCntr{
+    position: absolute;
+    width: 40%;
+    height: 48%;
+    padding: 1%;
+    
+    left:29%;
+    top:20%;
+    
+    background: whitesmoke;
+    z-index: 99999;
+
+}
+.resetPassTable{
+    width: 340px;
+}
+
+.clear{
+    clear: both;
+}
+.files_cntr{
+    width: 50%;
+    border-right: 1px solid #cfcfcf;
+    
+}
+.acc_cntr{
+    width: 50%;
+    
+}
+.tbl_cell{
+    display: inline-block;
+}
+.row_cntr{
+    margin: 2%;
+}
+.file_list td{
+    padding: 5px;
+    border-bottom: 1px solid #cfcfcf;
+}
+#change_pass_from_cntr{
+    display: none;
+    margin: 5%;
+    padding: 5%;
+    border: 1px solid #cfcfcf;
+    border-radius: 3px;
+    /*width: 80%;*/
+}
+
+.book_talent{
+    background: #008ccd;
+    color: white;
+    padding: 5px 10px;
+    margin-bottom: 5px;
+    border-radius: 3px;
+}
+.hr_noshade{
+    height: 1px;
+    border-bottom: 1px solid #676767;
+    margin: 10px auto;
+}
