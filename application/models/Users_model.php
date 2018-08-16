@@ -18,31 +18,34 @@ class Users_model extends CI_Model {
      * @params          :	user_name, password
      * @return          :   data as []
      */
-	public function login(){	
-		$this->db->select('*');
-		$data = $this->db->get("nrf_users")->result_array();
-		echo "<pre>"; print_r($data);
-		die('kmodel');
-		/*$this->db->where("email",$email);
-		$this->db->where("password",$password);
-		$query = $this->db->get("users");
+	public function login($data){	
+		$sql= "SELECT
+                    USR.*,
+                    GRP.group_name
+
+                FROM
+                    nrf_users AS USR
+
+                INNER JOIN
+
+                    nrf_groups AS GRP
+
+                ON
+                    (USR.group_id = GRP.group_id AND USR.is_active='Y' AND GRP.is_active='Y')
+                WHERE USR.user_name='".$data['username']."' AND USR.user_pass = '".$data['pass']."'" ;
+		$query = $this->db->query($sql);
 		if($query->num_rows()>0)
 			{
-			foreach($query->result() as $rows)
-			{
-			//add all data to session
-			$newdata = array(
-				'user_id' 	=> $rows->user_id,
-				'usertype'	=> $rows->usertype,
-				'username'	=> $rows->username,
-				'email'		=> $rows->email,	
-				'logged_in' => TRUE,
-			);		
-			}
-		$this->session->set_userdata($newdata);
+			$newdata =$query->result();
+			$userData =  (array) $newdata[0];
+			$userData =array_merge($userData,array("loginTime" => time()));			
+			$this->session->set_userdata($userData);            
+            //session_write_close();
+            
+		
 		return true;
 		}		
-		return false;*/
+		return false;
 	}
 }
 

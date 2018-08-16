@@ -17,7 +17,20 @@
 		}
 		</script>
 </head>
-
+<?php 
+$username = '';
+$remember = '';
+if(isset($_COOKIE['nrf_user']))
+{
+$saveduser=$_COOKIE['nrf_user'];
+	if(isset($saveduser))
+	{
+		$tmp = explode(',',$saveduser) ;
+		$username = $tmp[0];
+		$remember = $tmp[1];
+	}
+}
+ ?>
 <body style=" background: url(<?php echo base_url();?>assets/images/main_bg_1px.gif); background-repeat: repeat-x;">
 <table width="100%" height="585" border="0" cellspacing="0" cellpadding="0">
   <tr>
@@ -44,12 +57,15 @@
               </tr>
               <tr>
                 <td>
-                <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                  <form name="login" action="loginprocess.php" method="post">
+                <table width="100%" border="0" cellspacing="0" cellpadding="0">                 
+				  <?php echo form_open('users/doLogin'); ?>
+					<?php
+						echo $this->session->flashdata('error');
+					?>
                   <tr>
                     <td width="27%" height="30" align="right" class="report">Username:</td>
                     <td width="4%">&nbsp;</td>
-                    <td align="left" width="69%"><input type="text" name="username" id="username" value="dinesh"  class="report" size="30" style="width:150px;" /></td>
+                    <td align="left" width="69%"><input type="text" name="username" id="username" value="<?php echo $username; ?>"  class="report" size="30" style="width:150px;" /></td>
                   </tr>
                   <tr>
                     <td width="27%" height="30" align="right" class="report">Password:</td>
@@ -63,7 +79,7 @@
                     <td>&nbsp;</td>
                     <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
                       <tr>
-                        <td width="12%" align="left"><input type="checkbox" name="remember" id="remember" value="YES" checked="checked" /></td>
+                        <td width="12%" align="left"><input type="checkbox" name="remember" id="remember" value="YES" <?php if('YES'==$remember) echo 'checked="checked"'; ?> /></td>
                         <td width="88%" align="left" class="report"><span style="cursor:pointer" onclick="document.getElementById('remember').checked='checked'">Remember my details</span></td>
                       </tr>
                     </table></td>
@@ -87,7 +103,7 @@
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
                   </tr>
-                </form>
+                <?php echo form_close(); ?>
                 </table>
                 </td>
               </tr>

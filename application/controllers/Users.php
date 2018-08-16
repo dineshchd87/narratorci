@@ -14,6 +14,8 @@ class Users extends CI_Controller {
 	    parent::__construct();
 	    $this->load->helper('url');
 	    $this->load->model('users_model');
+		$this->load->helper('cookie');
+		
 	}
 
 	/**
@@ -35,7 +37,26 @@ class Users extends CI_Controller {
      * @return          :   data as []
      */
 	public function doLogin(){
-		$this->users_model->login();
-		$this->load->view('loginView.php');
+		 
+		if ($this->input->method() == 'post') {		
+			$isAuthenticUser=$this->users_model->login($this->input->post());
+			//echo $isAuthenticUser;die;
+			if($isAuthenticUser){
+				if($this->input->post('remember')!= '')
+            { 
+				setcookie('nrf_user', $this->input->post('username').','.'YES', time() + (86400 * 30), "/");
+            }
+            else
+            {
+				setcookie("nrf_user", "", time() - 3600);
+            }
+				redirect('orders');
+			}else{
+				
+				$this->session->set_flashdata('error', '<div class="error">Invalid Username or Password.</div>');
+				redirect('/');
+			}
+        }
+		
 	}
 }
