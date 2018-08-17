@@ -93,7 +93,7 @@ $saveduser=$_COOKIE['nrf_user'];
                         <input type="image" src="<?php echo base_url();?>assets/images/login_but.gif"  />
                         </td>
                         <td width="63%" align="left" class="next" style="padding-left:10px;">
-                        <a href="password.recovery.php" onclick="add_password(); return false;"><span class="next">Forgot your password?</span></a>
+                        <a href="users/resetpassword" ><span class="next">Forgot your password?</span></a>
                         </td>
                       </tr>
                     </table></td>

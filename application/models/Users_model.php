@@ -34,16 +34,12 @@ class Users_model extends CI_Model {
                     (USR.group_id = GRP.group_id AND USR.is_active='Y' AND GRP.is_active='Y')
                 WHERE USR.user_name='".$data['username']."' AND USR.user_pass = '".$data['pass']."'" ;
 		$query = $this->db->query($sql);
-		if($query->num_rows()>0)
-			{
+		if($query->num_rows()>0){
 			$newdata =$query->result();
 			$userData =  (array) $newdata[0];
-			$userData =array_merge($userData,array("loginTime" => time()));			
+			$userData =array_merge($userData,array("loginTime" => time()));		
 			$this->session->set_userdata($userData);            
-            //session_write_close();
-            
-		
-		return true;
+			return true; 
 		}		
 		return false;
 	}

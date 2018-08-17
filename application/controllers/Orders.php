@@ -12,19 +12,23 @@ class Orders extends CI_Controller {
      */
 	public function __construct() {
 	    parent::__construct();
-	    $this->load->helper('url');   
+	    $this->load->helper('url'); 
 		
+		if(!$this->session->userdata('user_name')){
+			redirect('/', 'refresh');
+		}
 	}
 
 	/**
      * @developer       :   Dinesh
      * @created date    :   09-08-2018 (dd-mm-yyyy)
-     * @purpose         :   load user login page
+	 * @updated date    :   16-08-2018 (dd-mm-yyyy)
+     * @purpose         :   load admin orders
      * @params          :
-     * @return          :   
+     * @return          :   data as []
      */
 	public function index(){
-		$this->load->view('dashboardView.php');
+		die('get order');
 	}
 
 
