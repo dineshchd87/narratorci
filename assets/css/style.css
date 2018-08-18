@@ -384,6 +384,7 @@ select.form-select {
     height: 21px;
 }
 .error{
+<<<<<<< HEAD
 	color: red;
 	font-size: 11px;
 	padding-left: 25%;
@@ -392,4 +393,10 @@ select.form-select {
 a.link {
     display: block;
     text-align: center;
+	color:#BC371A;
+	text-align:center;
+}
+.success{
+	color:#2CBF0B;
+	text-align:center;
 }
