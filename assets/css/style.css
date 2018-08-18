@@ -67,6 +67,7 @@ body{
 	border: 1px solid #ccc;
 	color: #005fa3;
 	display: inline-block;
+	cursor: pointer;
 }
 .login-info{
 	color: #7cacde;
@@ -235,6 +236,10 @@ select.form-select {
 	padding: 10px;
 	height: 170px;
 }
+.width25{
+	width: 25%;
+	float: left;
+}
 .width40 {
     width: 40%;
     float: left;
@@ -364,7 +369,27 @@ select.form-select {
 }
 .what-next{padding: 10px 0px; font-weight: bold; display: block;}
 
+/** Edit Account**/
+.form-row{
+	width: 100%;
+	float:left;
+	margin-bottom: 15px;
+}
+.editAccount {
+    width: 500px;
+    margin: 0px auto;
+}
+.form-input {
+    width: 100%;
+    height: 21px;
+}
 .error{
-	color:#BC371A;
-	text-align:center;
+	color: red;
+	font-size: 11px;
+	padding-left: 25%;
+	float: left;
+}
+a.link {
+    display: block;
+    text-align: center;
 }

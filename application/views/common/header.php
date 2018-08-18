@@ -26,7 +26,8 @@
 			</div>
 			<div class="right-header">
 				<div class="top-right-header">
-					<a href="#" class="button button-right button-aqua">My Account</a>
+					<a href="<?php echo base_url();?>users" class="button button-right button-aqua">Dashboard</a>
+					<a href="<?php echo base_url();?>users/profile" class="button button-right button-aqua">My Account</a>
 				</div>
 				<div class="bottom-right-header">
 					<div class="login-info">

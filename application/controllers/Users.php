@@ -14,10 +14,11 @@ class Users extends CI_Controller {
 	
 	public function __construct() {
 	    parent::__construct();
-	    $this->load->helper('url');
-	    $this->load->model('users_model');
+		$this->load->helper('url');
+		$this->load->library('form_validation');
+		$this->load->model('users_model');
+		$this->load->model('common_model');
 		$this->load->helper('cookie');
-		
 	}
 
 	/**
@@ -29,7 +30,7 @@ class Users extends CI_Controller {
      */
 	public function index(){
 		if($this->session->userdata('user_name')){
-			redirect('/orders', 'refresh');
+			redirect('/users/dashboard', 'refresh');
 		}else{
 			$this->load->view('loginView.php');
 		}
@@ -59,6 +60,49 @@ class Users extends CI_Controller {
 				redirect('/');
 			}
         }
+	}
+
+	/**
+     * @developer       :   Dinesh
+     * @created date    :   17-08-2018 (dd-mm-yyyy)
+     * @purpose         :   get user details
+     * @params          :
+     * @return          :   data as []
+     */
+	public function profile(){
+		if($this->session->userdata('user_name')){
+			if($this->input->post()){
+				$this->form_validation->set_rules('user_name', 'user name', 'required',
+						array('required' => 'Please enter %s.')
+				);
+                $this->form_validation->set_rules('user_fname', 'first name', 'required',
+                        array('required' => 'Please enter %s.')
+				);
+				$this->form_validation->set_rules('user_lname', 'last name', 'required',
+						array('required' => 'Please enter %s.')
+				);
+				$this->form_validation->set_rules('user_email', 'email address', 'required|email',
+						array('required' => 'Please enter %s.','email' => 'Please enter valid %s.')
+				);
+				$this->form_validation->set_rules('user_phone', ' phone number', 'required|max_length[10]',
+						array('required' => 'Please enter %s.','max_length' => 'Phone number lenght should be 10.')
+				);
+//Please Enter Numeric Character
+                if ($this->form_validation->run() == TRUE) {
+                        echo "<pre>"; print_r($this->input->post()); die('ddddddddddddddd');
+                } 
+			}
+
+
+			$data['countries'] = $this->common_model->getCountries();
+			$data['userDetail'] = $this->users_model->getUserById($this->session->userdata('user_id'));
+			
+			$this->load->view('common/header.php',$data);
+			$this->load->view('profileView.php',$data);
+			$this->load->view('common/footer.php',$data);
+		}else{
+			$this->load->view('loginView.php');
+		}
 	}
 	
 	/**

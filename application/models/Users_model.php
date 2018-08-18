@@ -42,6 +42,28 @@ class Users_model extends CI_Model {
 			return true; 
 		}		
 		return false;
+    }
+    
+    /**
+     * @developer       :   Dinesh
+     * @created date    :   09-08-2018 (dd-mm-yyyy)
+     * @purpose         :   get user data
+     * @params          :	user_id
+     * @return          :   data as []
+     */
+	public function getUserById($user_id){	
+        $this->db->select('u.*,crm.*');
+        $this->db->from('nrf_users u');
+        $this->db->join('nrf_csrm crm', 'u.user_id = crm.user_id', 'left');
+        $this->db->where('u.is_active','Y');
+        $this->db->where('u.user_id',$user_id);
+        $userInfo = $this->db->get()->result_array(); 
+        //echo $this->db->last_query();
+        if(!empty($userInfo)){
+            return $userInfo;
+        }else{
+            return array();
+        }
 	}
 }
 
