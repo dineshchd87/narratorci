@@ -51,20 +51,20 @@ class Users_model extends CI_Model {
      * @params          :	user_id
      * @return          :   data as []
      */
-	public function getUserById($user_id){	
-        $this->db->select('u.*,crm.*');
-        $this->db->from('nrf_users u');
-        $this->db->join('nrf_csrm crm', 'u.user_id = crm.user_id', 'left');
-        $this->db->where('u.is_active','Y');
-        $this->db->where('u.user_id',$user_id);
-        $userInfo = $this->db->get()->result_array(); 
-        //echo $this->db->last_query();
-        if(!empty($userInfo)){
-            return $userInfo;
-        }else{
-            return array();
-        }
-	}
+  	public function getUserById($user_id){	
+          $this->db->select('u.*,crm.*');
+          $this->db->from('nrf_users u');
+          $this->db->join('nrf_csrm crm', 'u.user_id = crm.user_id', 'left');
+          $this->db->where('u.is_active','Y');
+          $this->db->where('u.user_id',$user_id);
+          $userInfo = $this->db->get()->result_array(); 
+          //echo $this->db->last_query();
+          if(!empty($userInfo)){
+              return $userInfo;
+          }else{
+              return array();
+          }
+  	}
 	
 		/**
      * @developer       :   Dinesh
@@ -74,29 +74,70 @@ class Users_model extends CI_Model {
      * @return          :   data as []
      */
       public function getUserbyEmail($email){  
-
            $this->db->select('user_name, user_email,user_pass, user_fname, user_lname, user_phone');
-
            $this->db->from('nrf_users');
-
            $this->db->where('user_email',$email);
-
            $query = $this->db->get();
-           
            if($query->num_rows() == 1)
            {
-
                return $query->result_array();
-
            }
            else
            {
-
              return 0;
-
           }
-
       }
+
+          /**
+     * @developer       :   Dinesh
+     * @created date    :   18-08-2018 (dd-mm-yyyy)
+     * @purpose         :   update user details
+     * @params          : user_id,array
+     * @return          :   data as []
+     */
+    public function updateUserDetails($user_id,$post){  
+     // echo $user_id;
+      //echo "<pre>"; print_r($post); die('kk');
+          $userData=array(
+                  'user_fname'=>$post['user_fname'],
+                  'user_lname'=>$post['user_lname'],
+                  'user_email'=>$post['user_email'],
+                  'user_phone'=>$post['user_phone']
+                );
+          $address=array(
+                  'csrm_address1'=>$post['csrm_address1'],
+                  'csrm_address2'=>$post['csrm_address2'],
+                  'csrm_city'=>$post['csrm_city'],
+                  'csrm_state'=>$post['csrm_state'],
+                  'csrm_zip'=>$post['csrm_zip'],
+                  'csrm_country'=>$post['csrm_country']
+                );
+          $this->db->where('user_id',$user_id);
+          if($this->db->update('nrf_users',$userData)){
+             $this->db->where('user_id',$user_id);
+             $this->db->update('nrf_csrm',$address);
+             return true;
+          }
+          return false;
+    }
+
+     /**
+     * @developer       :   Dinesh
+     * @created date    :   18-08-2018 (dd-mm-yyyy)
+     * @purpose         :   update user password
+     * @params          :   user_id,array
+     * @return          :   data as []
+     */
+    public function updatePassword($user_id,$post){  
+          $userData=array(
+                  'user_pass'=>$post['new_password']
+                );
+          $this->db->where('user_id',$user_id);
+          if($this->db->update('nrf_users',$userData)){
+             return true;
+          }
+          return false;
+    }
 }
 
 ?>

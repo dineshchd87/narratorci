@@ -1,8 +1,16 @@
 <section id="content">
 				<div class="editAccount">
+					
 					<h3>Edit Account Info</h3>
 					<form action="<?php echo base_url();?>users/profile" method="post" class="editform">
 						<div class="form-row">
+							<div class="width100">
+								<?php if($this->session->flashdata('errorMsg')){ ?>
+								<h1 style="text-align: center;color:#BC371A"><?php echo $this->session->flashdata('errorMsg'); } ?></h1>
+
+								<?php if($this->session->flashdata('successMsg')){ ?>
+								<h1 style="text-align: center;color:green"><?php echo $this->session->flashdata('successMsg'); } ?></h1>
+							</div>
 							<div class="width25">
 								User Name:
 							</div>
@@ -10,7 +18,7 @@
 								<input type="text" value="<?php echo set_value('user_name', $userDetail[0]['user_name']); ?>" name="user_name" readonly class="form-input" />
 							</div>
 							<div class="width25">
-								<a href="#" class="link">Change Password</a>
+								<a href="<?php echo base_url();?>users/changepassword" class="link">Change Password</a>
 							</div>
 							<div class="width100">
               <?php echo form_error('user_name', '<span class="error">', '</span>'); ?>
@@ -78,7 +86,7 @@
 							<div class="width25">
 							</div>
 							<div class="width100">
-							<span class="error">error</span>
+							<span class="error"></span>
 							</div>
 						</div>
 						<div class="form-row">
@@ -91,7 +99,7 @@
 							<div class="width25">
 							</div>
 							<div class="width100">
-							<span class="error">error</span>
+							<span class="error"></span>
 							</div>
 						</div>
 						<div class="form-row">
@@ -104,7 +112,7 @@
 							<div class="width25">
 							</div>
 							<div class="width100">
-							<span class="error">error</span>
+							<span class="error"></span>
 							</div>
 						</div>
 						<div class="form-row">
@@ -117,7 +125,7 @@
 							<div class="width25">
 							</div>
 							<div class="width100">
-							<span class="error">error</span>
+							<span class="error"></span>
 							</div>
 						</div>
 						<div class="form-row">
@@ -130,7 +138,7 @@
 							<div class="width25">
 							</div>
 							<div class="width100">
-							<span class="error">error</span>
+							<span class="error"></span>
 							</div>
 						</div>
 						
@@ -140,24 +148,22 @@
 							</div>
 							<div class="width50">
 								<select name="csrm_country"  id="country" class="form-input">
-                <option value="" id="select-any">Select country</option>
-                <?php 
-                 if(!empty($countries)){
-                   foreach($countries as $opt){
-                  ?>
-                  <option <?php if($userDetail[0]['csrm_country'] == $opt['iso']){ echo 'selected'; }?> id="<?php echo $opt['iso'];?>" value="<?php echo $opt['iso'];?>"><?php echo $opt['printable_name'];?></option>
-                 <?php
-                    }
-                  }
-                  ?>     
-								
-									
+					                <option value="" id="select-any">Select country</option>
+					                <?php 
+					                 if(!empty($countries)){
+					                   foreach($countries as $opt){
+					                  ?>
+					                  <option <?php if($userDetail[0]['csrm_country'] == $opt['iso']){ echo 'selected'; }?> id="<?php echo $opt['iso'];?>" value="<?php echo $opt['iso'];?>"><?php echo $opt['printable_name'];?></option>
+					                 <?php
+					                    }
+					                  }
+					                  ?>     
 								</select>
 							</div>
 							<div class="width25">
 							</div>
 							<div class="width100">
-							<span class="error">error</span>
+							<?php echo form_error('csrm_country', '<span class="error">', '</span>'); ?>
 							</div>
 						</div>
 						<div class="form-row">
@@ -176,7 +182,7 @@
 							<div class="width25">
 							</div>
 							<div class="width100">
-							<span class="error">Invalid</span>
+							<?php echo form_error('password', '<span class="error">', '</span>'); ?>
 							</div>
 						</div>
 						<div class="form-row">

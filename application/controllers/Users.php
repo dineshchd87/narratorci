@@ -76,27 +76,42 @@ class Users extends CI_Controller {
 	public function profile(){
 		if($this->session->userdata('user_name')){
 			if($this->input->post()){
-				$this->form_validation->set_rules('user_name', 'user name', 'required',
+				$this->form_validation->set_rules('user_name', 'user name', 'trim|required',
 						array('required' => 'Please enter %s.')
 				);
-                $this->form_validation->set_rules('user_fname', 'first name', 'required',
+                $this->form_validation->set_rules('user_fname', 'first name', 'trim|required',
                         array('required' => 'Please enter %s.')
 				);
-				$this->form_validation->set_rules('user_lname', 'last name', 'required',
+				$this->form_validation->set_rules('user_lname', 'last name', 'trim|required',
 						array('required' => 'Please enter %s.')
 				);
-				$this->form_validation->set_rules('user_email', 'email address', 'required|email',
-						array('required' => 'Please enter %s.','email' => 'Please enter valid %s.')
+				$this->form_validation->set_rules('user_email', 'email address', 'trim|required|valid_email',
+						array('required' => 'Please enter %s.','valid_email' => 'Please enter valid email address.')
 				);
-				$this->form_validation->set_rules('user_phone', ' phone number', 'required|max_length[10]',
-						array('required' => 'Please enter %s.','max_length' => 'Phone number lenght should be 10.')
+				$this->form_validation->set_rules('user_phone', ' phone number', 'required|max_length[12]',
+						array('required' => 'Please enter %s.','max_length' => 'The lenght of phone number should be 12.')
 				);
-//Please Enter Numeric Character
+				$this->form_validation->set_rules('csrm_country', 'country name', 'trim|required',
+						array('required' => 'Please select %s.')
+				);
+				$this->form_validation->set_rules('password', 'current password', 'trim|required',
+						array('required' => 'Please enter %s for validation.')
+				);
+
                 if ($this->form_validation->run() == TRUE) {
-                        echo "<pre>"; print_r($this->input->post()); die('ddddddddddddddd');
+                		$currentUserPassword = $this->session->userdata('user_pass');
+                		$password = $this->input->post('password');
+
+                		if($currentUserPassword == $password){
+                			 $this->users_model->updateUserDetails($this->session->userdata('user_id'),$this->input->post());
+                			$this->session->set_flashdata('successMsg', 'User details updated successfully.');
+                			redirect('users/profile');
+                		}else{
+                			$this->session->set_flashdata('errorMsg', 'You have entered wrong password.');
+                			redirect('users/profile');
+                		} 
                 } 
 			}
-
 
 			$data['countries'] = $this->common_model->getCountries();
 			$data['userDetail'] = $this->users_model->getUserById($this->session->userdata('user_id'));
@@ -104,6 +119,41 @@ class Users extends CI_Controller {
 			$this->load->view('common/header.php',$data);
 			$this->load->view('profileView.php',$data);
 			$this->load->view('common/footer.php',$data);
+		}else{
+			$this->load->view('loginView.php');
+		}
+	}
+
+	/**
+     * @developer       :   Dinesh
+     * @created date    :   18-08-2018 (dd-mm-yyyy)
+     * @purpose         :   reset user password
+     * @params          :
+     * @return          :   data as []
+     */
+	public function changepassword(){
+		if($this->session->userdata('user_name')){
+			if($this->input->post()){
+				$this->form_validation->set_rules('current_password', 'current password', 'trim|required',
+						array('required' => 'Please enter %s.')
+				);
+                $this->form_validation->set_rules('new_password', 'new password', 'trim|required',
+                        array('required' => 'Please enter %s.')
+				);
+				$this->form_validation->set_rules('confirm_password', 'confirm password', 'trim|required|matches[new_password]',
+						array('required' => 'Please enter %s.','matches'=>'Confirm password not matched.')
+				);
+
+                if ($this->form_validation->run() == TRUE) {
+                	$this->users_model->updatePassword($this->session->userdata('user_id'),$this->input->post());
+                	$this->session->set_flashdata('successMsg', 'Password updated successfully.');
+                			redirect('users/changepassword');
+                } 
+			}
+		
+			$this->load->view('common/header.php');
+			$this->load->view('changepasswordView.php');
+			$this->load->view('common/footer.php');
 		}else{
 			$this->load->view('loginView.php');
 		}

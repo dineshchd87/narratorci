@@ -384,8 +384,7 @@ select.form-select {
     height: 21px;
 }
 .error{
-<<<<<<< HEAD
-	color: red;
+	color: #BC371A;
 	font-size: 11px;
 	padding-left: 25%;
 	float: left;
