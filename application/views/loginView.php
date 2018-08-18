@@ -13,7 +13,7 @@
 		<script type="text/javascript">
 		function add_password()
 		{
-			window.open ("password.recovery.php","_blank","location=1,status=1,scrollbars=1,width=500,height=600");	
+			window.open ("<?php echo base_url();?>users/resetpassword","_blank","location=1,status=1,scrollbars=1,width=500,height=600");	
 		}
 		</script>
 </head>
@@ -61,6 +61,7 @@ $saveduser=$_COOKIE['nrf_user'];
 				  <?php echo form_open('users/doLogin'); ?>
 					<?php
 						echo $this->session->flashdata('error');
+						echo $this->session->flashdata('success');
 					?>
                   <tr>
                     <td width="27%" height="30" align="right" class="report">Username:</td>
@@ -93,7 +94,7 @@ $saveduser=$_COOKIE['nrf_user'];
                         <input type="image" src="<?php echo base_url();?>assets/images/login_but.gif"  />
                         </td>
                         <td width="63%" align="left" class="next" style="padding-left:10px;">
-                        <a href="users/resetpassword" ><span class="next">Forgot your password?</span></a>
+                        <a href="<?php echo base_url();?>users/resetpassword"><span class="next">Forgot your password?</span></a>
                         </td>
                       </tr>
                     </table></td>

@@ -9,9 +9,9 @@
 <link rel="shortcut icon" href="<?php echo base_url();?>assets/images/nrf_icon.ico" type="image/x-icon" />
 <title>Order Entry Tool : Password Recovery </title><meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link href="<?php echo base_url();?>assets/css/style.css" rel="stylesheet" type="text/css" />
-<script language="JavaScript" src="include/validation.js"></script>
+<!--<script language="JavaScript" src="<?php //echo base_url();?>assets/js/validation.js"></script>-->
 <script Language="JavaScript" type="text/javascript">
-
+/*
 function frmadd_Validate(frm)
 {
 	with (frm)
@@ -26,6 +26,7 @@ function frmadd_Validate(frm)
 	
 	return true;
 }
+*/
 </script>
 </head>
 
@@ -54,25 +55,33 @@ function frmadd_Validate(frm)
               </tr>
               <tr>
                 <td>
-                <form action="process/process.password.recovery.php" name="passrecovery" method="post"  enctype="multipart/form-data" onsubmit="return frmadd_Validate(this);">
+				<?php echo form_open('users/resetpassword',array('name'=>'passrecovery','enctype'=>'multipart/form-data')); ?>
+				<?php
+						echo $this->session->flashdata('error');
+						
+					?>
+               <!-- <form action="<?php // echo base_url();?>users/post_resetpassword" name="passrecovery" method="post"  enctype="multipart/form-data" onsubmit="return frmadd_Validate(this);">-->
                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
                   <tr>
                     <td width="21%" height="30" align="left" class="report" style="padding-left:20px;">Email:*</td>
                     <td width="4%">&nbsp;</td>
                     <td align="left" width="75%">
                     <input type="text" name="email" id="email" value="" class="report"  style="width:222px;"/>
+					<?= form_error('email', '<label class="error">', '</label>'); ?>
                     </td>
                   </tr>
                   <tr>
                     <td width="21%" height="55" align="left" class="report" style="padding-left:20px;">Captcha:*:</td>
                     <td>&nbsp;</td>
                     <td align="left">
-                    <input type="hidden" name="valuecheck" id="valuecheck" value="run61vk97sj5vspkeqfl0rjsk7"><img id="CaptchaSecurity" src="include/ssca_captcha/CaptchaSecurityImages.php?width=225&height=45" width="225" height="45" />
+					
+                    <input type="hidden" name="valuecheck" id="valuecheck" value="run61vk97sj5vspkeqfl0rjsk7"><?php echo $image; ?>
                     </td>
                   </tr>
                   <tr>
                     <td align="center" height="30" colspan="3">
                     <input type="text" id="security_code" name="security_code"  class="report" value="" style="width:282px;"/>
+					<?= form_error('security_code', '<label class="error">', '</label>'); ?>
                     </td>
                   </tr>
                   <!--<tr>
@@ -85,8 +94,8 @@ function frmadd_Validate(frm)
                         <td>&nbsp;</td>
                         <td width="45">
                         <input type="image" src="<?php echo base_url();?>images/go_but.gif"  />
-						<a href="<?php echo base_url();?>"><img  src="<?php echo base_url();?>images/login_but.gif"  /></a>
-						                        </td>
+						
+						  </td>
                       </tr>
                     </table></td>
                     <td>&nbsp;</td>
@@ -98,7 +107,7 @@ function frmadd_Validate(frm)
                     <td>&nbsp;</td>
                   </tr>
                 </table>
-                </form>
+                <?php echo form_close(); ?>
                 </td>
               </tr>
             </table></td>

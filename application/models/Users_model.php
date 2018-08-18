@@ -43,6 +43,38 @@ class Users_model extends CI_Model {
 		}		
 		return false;
 	}
+	
+		/**
+     * @developer       :   Dinesh
+     * @created date    :   09-08-2018 (dd-mm-yyyy)
+     * @purpose         :   get user data by email
+     * @params          :	email
+     * @return          :   data as []
+     */
+      public function getUserbyEmail($email){  
+
+           $this->db->select('user_name, user_email,user_pass, user_fname, user_lname, user_phone');
+
+           $this->db->from('nrf_users');
+
+           $this->db->where('user_email',$email);
+
+           $query = $this->db->get();
+           
+           if($query->num_rows() == 1)
+           {
+
+               return $query->result_array();
+
+           }
+           else
+           {
+
+             return 0;
+
+          }
+
+      }
 }
 
 ?>
