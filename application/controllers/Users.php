@@ -119,7 +119,7 @@ class Users extends CI_Controller {
      */
 	public function dashboard(){
 		if($this->session->userdata('user_name')){
-			$data['userData'] = $this->session->userdata();
+			$data['userData'] = $this->session->userdata();			
 			$this->load->view('common/header.php',$data);
 			$this->load->view('dashboardView.php',$data);
 			$this->load->view('common/footer.php',$data);

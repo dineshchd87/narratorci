@@ -1,60 +1,64 @@
-		<section id="content" class="dashboard">
+		<section id="content">
 			<div class="section1">
-				<h3>Administrative Dashboard</h3>
+				<div class="view-order">
+					<label>View:</label> 
+					<select class="form-select">
+						<option>All Orders</option>
+						<option>All Active</option>
+					</select>
+				</div>
 			</div>
 			<div class="section2">
-				<div class="width50 box1">
-					<div class="left-box">
-						<div class="left-box-1">
-							<label class="what-next">What's Next</label>
-						</div>
-						<div class="left-box-1">
-							<a href="<?php echo base_url();?>orders" class="button button-aqua button-big"> <img src="<?php echo base_url();?>assets/images/manage_order.gif" width="39" height="25" alt="logo" border="0"> Manage Orders</a>	
-							<a href="#" class="button button-aqua button-big"><img src="<?php echo base_url();?>assets/images/add_order.gif" width="30" height="25" alt="logo" border="0"> Add an Order</a>	
-						
-						</div>
-						<div class="left-box-1">
-						<p>Your Store at a Glance....</p>
-						<div class="label">
-						<span class="fill-btn">8952	</span>
-						Orders		
-						<span class="fill-btn">	756	</span>
-						Customers		
-							<span class="fill-btn">15	</span>
-							Voice Talents
-							</div>
-						</div>
-					</div>
-					<div class="right-box">
-						<a href="#" class="button button-aqua button-eq">Customers</a>	
-						<a href="#" class="button button-aqua button-eq">Talent	</a>
-						<a href="#" class="button button-aqua button-eq">Personnel	</a>
-						<a href="#" class="button button-aqua button-eq">Invoicing	</a>
-						<a href="#" class="button button-aqua button-eq">Payments	</a>
-
-					</div>
-				</div>
-				<div class="width50 box2">
-					Sales Snapshot	
- 	
-	
-View:	Day		Week		Month		Year
-
- 
- 	
- 	
-	Reports	
- 
-Net Revenue:
-Orders:
-Last Week	This Week	Change
-$1902	$1380	- $522
-19	22	+ 3
- 
- 	 	 	 
-				</div>
+				<p>Your orders are shown below. Click the plus icon next to an order to see its complete details.</p>
 			</div>
 			<div class="section3">
+				<div class="sec3-1">
+					<a href="#" class="button button-aqua">Add an Order</a>
+				</div>
+				<div class="sec3-2">
+					<form id="searchForm" action="#" method="get">
+						<label>Search</label> 	 	
+						<select name="searchField" id="searchField">
+							<option value="cust">Customer/ Client</option>
+							<option value="comp">Company</option>
+							<option value="tlnt">Talent</option>
+							<option value="csr">CSR</option>
+						</select>
+					
+						<input type="text" name="searchWord" class="text-input"/>
+						<input type="submit" value="Search" class="search-btn">
+					</form>
+				</div>
+				
+			</div>
+			<div class="section4">
+				<div class="rightalign">
+				<?php echo $links; ?>
+					<div class="pagination">
+						<a href="#" class="next" title="first page">[1]</a>
+						<a href="#" class="next" title="Prev">Prev</a>
+						<a href="#" class="next" title="Go to page 4">4</a>|
+						<a href="#" class="next" title="Go to page 5">5</a>|
+						<a href="#"><b><span class="report">6</span></b></a>|
+						<a href="#" class="next" title="Go to page 7">7</a>|
+						<a href="#" class="next" title="Go to page 8">8</a>
+						<a href="#" class="next" title="Next">Next</a>
+						<a href="#" class="next" title="last page">[895]</a>
+					</div>
+					<div class="dropdown">
+						<label>Per Page : </label>
+						<select name="setPerPage">
+							<option value="10" selected="selected">10</option>
+							<option value="25">25</option>
+							<option value="50">50</option>
+							<option value="100">100</option>
+							<option value="250">250</option>
+							<option value="500">500</option>
+						</select>
+					</div>
+				</div>
+			</div>
+			<div class="section5">
 				<div class="tbl">
 					<div class="tbl-row headings">
 						<div class="cl cl-1">
@@ -87,13 +91,13 @@ $1902	$1380	- $522
 						Status
 						</div>
 					</div>
-					
+					<?php foreach($orders as $order){ ?>
 					<div class="tbl-row rowdata">
 						<div class="cl-1">
 							<input type="checkbox" name="chkLoop[]" id="chkLoop">
 						</div>
 						<div class="cl-2">
-							<img class="collapse" id="collapse_1" src="<?php echo base_url();?>assets/images/plus.gif" width="9" height="9" onclick="showDesc('1');">
+							<img class="collapse" id="collapse_1" src="images/plus.gif" width="9" height="9" onclick="showDesc('1');">
 						</div>
 						<div class="cl-3">
 						1
@@ -105,7 +109,7 @@ $1902	$1380	- $522
 						20th Apr 2010
 						</div>
 						<div class="cl-6">
-							<img src="<?php echo base_url();?>assets/images/paid.gif" width="30" height="31"> 1 Pages
+							<img src="images/paid.gif" width="30" height="31"> 1 Pages
 						</div>
 						<div class="cl-7">
 						Derek
@@ -143,13 +147,13 @@ $1902	$1380	- $522
 									<label>Order Discount</label>
 									<div class="width100">
 									$0.00/page
-									<img src="<?php echo base_url();?>assets/images/page_white_edit.png" id="discedit_1" class="editimg"></div>
+									<img src="images/page_white_edit.png" id="discedit_1" class="editimg"></div>
 								</div>
 								<div class="width60">
 								Dominique Valdez<br>
 								Director of Operations - eSystem Training Solutions<br><br>
 
-								<img src="<?php echo base_url();?>assets/images/flags/US.gif" class="countryFlagImg">United States<br><br>
+								<img src="images/flags/US.gif" class="countryFlagImg">United States<br><br>
 								dv@esystemtraining.com<br>
 								832-632-2805<br>
 								</div>
@@ -175,8 +179,7 @@ Project Name: Intermediate Rigging	<br>
 							</div>
 						</div>
 					</div>
-					
+					<?php  } ?>
 				</div>
 			</div>
 		</section>
-		
