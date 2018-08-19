@@ -33,18 +33,7 @@
 			</div>
 			<div class="section4">
 				<div class="rightalign">
-				<?php echo $links; ?>
-					<div class="pagination">
-						<a href="#" class="next" title="first page">[1]</a>
-						<a href="#" class="next" title="Prev">Prev</a>
-						<a href="#" class="next" title="Go to page 4">4</a>|
-						<a href="#" class="next" title="Go to page 5">5</a>|
-						<a href="#"><b><span class="report">6</span></b></a>|
-						<a href="#" class="next" title="Go to page 7">7</a>|
-						<a href="#" class="next" title="Go to page 8">8</a>
-						<a href="#" class="next" title="Next">Next</a>
-						<a href="#" class="next" title="last page">[895]</a>
-					</div>
+				<?php echo $links; ?>					
 					<div class="dropdown">
 						<label>Per Page : </label>
 						<select name="setPerPage">
@@ -91,7 +80,7 @@
 						Status
 						</div>
 					</div>
-					<?php foreach($orders as $order){ ?>
+					<?php foreach($orders as $order){  $i=1;?>
 					<div class="tbl-row rowdata">
 						<div class="cl-1">
 							<input type="checkbox" name="chkLoop[]" id="chkLoop">
@@ -100,13 +89,14 @@
 							<img class="collapse" id="collapse_1" src="images/plus.gif" width="9" height="9" onclick="showDesc('1');">
 						</div>
 						<div class="cl-3">
-						1
+						<?php echo $order['order_id']; ?>
 						</div>
 						<div class="cl-4">
-							Steve Jones
+							
+							<?php echo $order['cust_name']; ?>
 						</div>
 						<div class="cl-5">
-						20th Apr 2010
+						<?php echo date("Y/m/d",$order['order_date']); ?>
 						</div>
 						<div class="cl-6">
 							<img src="images/paid.gif" width="30" height="31"> 1 Pages
@@ -139,7 +129,7 @@
 								<option value="6" selected="selected">Completed</option>
 							</select>
 						</div>
-						<div class="row-details rd_1">
+						<div class="row-details rd_1" style="display:none;">
 							<div class="cl-d1">
 								<div class="width40">
 									<label>Customer Details:</label>
@@ -179,7 +169,7 @@ Project Name: Intermediate Rigging	<br>
 							</div>
 						</div>
 					</div>
-					<?php  } ?>
+					<?php $i+1; } ?>
 				</div>
 			</div>
 		</section>

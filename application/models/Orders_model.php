@@ -54,9 +54,9 @@ class Orders_model extends CI_Model {
      */
     public function getAllOrdres($limit, $start){ 
 
-		$this->db->select('ordr.*,u.*');
+		$this->db->select('ordr.*,c.*');
         $this->db->from('nrf_orders ordr');
-        $this->db->join('nrf_users u', 'ordr.order_csr = u.user_id', 'left'); 
+        $this->db->join('nrf_customers c', 'ordr.order_customer = c.cust_id', 'left'); 
 		$this->db->limit($limit, $start);		
         $orderInfo = $this->db->get()->result_array(); 
         //echo $this->db->last_query();
