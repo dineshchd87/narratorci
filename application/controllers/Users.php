@@ -145,9 +145,19 @@ class Users extends CI_Controller {
 				);
 
                 if ($this->form_validation->run() == TRUE) {
-                	$this->users_model->updatePassword($this->session->userdata('user_id'),$this->input->post());
-                	$this->session->set_flashdata('successMsg', 'Password updated successfully.');
+                		$currentUserPassword = $this->session->userdata('user_pass');
+                		$password = $this->input->post('current_password');
+
+                		if($currentUserPassword == $password){
+                			$this->users_model->updatePassword($this->session->userdata('user_id'),$this->input->post());
+                			$this->session->set_flashdata('successMsg', 'Password updated successfully.');
                 			redirect('users/changepassword');
+                		}else{
+                			$this->session->set_flashdata('errorMsg', 'You have entered wrong current password.');
+                			redirect('users/changepassword');
+                		} 
+                	
+                	
                 } 
 			}
 		

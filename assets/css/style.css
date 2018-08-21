@@ -19,10 +19,6 @@ body{
     border: 1px solid #ddd;
 }
 /*==== Start admin.order Page =====*/
-.container{
-	width: 960px;
-	margin: 0px auto;
-}
 .full{
 	width:100%;
 	float:left;
@@ -69,9 +65,7 @@ body{
 	display: inline-block;
 	cursor: pointer;
 }
-.login-info{
-	color: #7cacde;
-}
+
 .logout{
 	color: #005fa3;
 }
@@ -272,36 +266,6 @@ select.form-select {
 
 
 
-
-#footer{
-	width: 100%;
-	float:left;
-	margin-bottom: 20px;
-}
-.left-footer {
-    float: left;
-    width: 50%;
-}
-.footer-nav ul {
-    padding: 0;
-}
-.footer-nav li {
-    display: inline;
-    padding: 0px 6px;
-    list-style: none;
-}
-.footer-nav li::after {
-    content: ":";
-    padding-left: 12px;
-}
-.footer-nav li a{
-    color: #000;
-}
-.right-footer {
-    float: left;
-    width: 50%;
-	text-align:right;
-}
 
 /**===== Start Dashboard Page=====**/
 .dashboard .section1 h3{

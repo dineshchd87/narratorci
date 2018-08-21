@@ -8,7 +8,7 @@
 <link rel="icon" href="<?php echo base_url();?>assets/images/nrf_icon.ico" type="image/x-icon" />
 <link rel="shortcut icon" href="<?php echo base_url();?>assets/images/nrf_icon.ico" type="image/x-icon" />
 <title>Order Entry Tool : Password Recovery </title><meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<link href="<?php echo base_url();?>assets/css/style.css" rel="stylesheet" type="text/css" />
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"><link href="<?php echo base_url();?>assets/css/custom.css" rel="stylesheet" type="text/css" />  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 <!--<script language="JavaScript" src="<?php //echo base_url();?>assets/js/validation.js"></script>-->
 <script Language="JavaScript" type="text/javascript">
 /*
@@ -30,99 +30,6 @@ function frmadd_Validate(frm)
 </script>
 </head>
 
-<body>
-<div align="center">
-<table width="440" border="0" cellspacing="0" cellpadding="0">
-  <tr>
-    <td valign="top">
-    <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#ececec">
-      <tr>
-        <td width="50" height="50">&nbsp;</td>
-        <td>&nbsp;</td>
-        <td width="50">&nbsp;</td>
-      </tr>
-      <tr>
-        <td>&nbsp;</td>
-        <td>
-        <table width="100%" border="0" cellspacing="0" cellpadding="0">
-          <tr>
-            <td valign="top"  width="340" style="border:1px solid #dddddd; background:#FFF;"><table width="100%" border="0" cellspacing="0" cellpadding="0">
-              <tr>
-                <td height="82"><img src="<?php echo base_url();?>images/logo.gif" width="340" height="82" /></td>
-              </tr>
-              <tr>
-                <td height="40" align="left" class="report" style="padding-left:20px;">Password Recovery:</td>
-              </tr>
-              <tr>
-                <td>
-				<?php echo form_open('users/resetpassword',array('name'=>'passrecovery','enctype'=>'multipart/form-data')); ?>
-				<?php
-						echo $this->session->flashdata('error');
-						
-					?>
-               <!-- <form action="<?php // echo base_url();?>users/post_resetpassword" name="passrecovery" method="post"  enctype="multipart/form-data" onsubmit="return frmadd_Validate(this);">-->
-                <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                  <tr>
-                    <td width="21%" height="30" align="left" class="report" style="padding-left:20px;">Email:*</td>
-                    <td width="4%">&nbsp;</td>
-                    <td align="left" width="75%">
-                    <input type="text" name="email" id="email" value="" class="report"  style="width:222px;"/>
-					<?= form_error('email', '<label class="error">', '</label>'); ?>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td width="21%" height="55" align="left" class="report" style="padding-left:20px;">Captcha:*:</td>
-                    <td>&nbsp;</td>
-                    <td align="left">
-					
-                    <input type="hidden" name="valuecheck" id="valuecheck" value="run61vk97sj5vspkeqfl0rjsk7"><?php echo $image; ?>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td align="center" height="30" colspan="3">
-                    <input type="text" id="security_code" name="security_code"  class="report" value="" style="width:282px;"/>
-					<?= form_error('security_code', '<label class="error">', '</label>'); ?>
-                    </td>
-                  </tr>
-                  <!--<tr>
-                    <td align="center" height="30" colspan="3"  class="report">
-                    <input type="hidden" id="remote_ip" name="remote_ip"  class="report" value="117.197.148.65"/>Your IP: 117.197.148.65                    </td>
-                  </tr>-->
-                  <tr>
-                    <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
-                      <tr>
-                        <td>&nbsp;</td>
-                        <td width="45">
-                        <input type="image" src="<?php echo base_url();?>images/go_but.gif"  />
-						
-						  </td>
-                      </tr>
-                    </table></td>
-                    <td>&nbsp;</td>
-                    <td height="30">&nbsp;</td>
-                  </tr>
-                  <tr>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                  </tr>
-                </table>
-                <?php echo form_close(); ?>
-                </td>
-              </tr>
-            </table></td>
-          </tr>
-          </table></td>
-        <td >&nbsp;</td>
-      </tr>
-      <tr>
-        <td height="50">&nbsp;</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-      </tr>
-    </table></td>
-  </tr>
-</table>
-</div>
+<body style=" background: url(<?php echo base_url();?>assets/images/main_bg_1px.gif); background-repeat: repeat-x;"><div class="login-box"><?php echo form_open('users/resetpassword',array('name'=>'passrecovery','enctype'=>'multipart/form-data')); ?><div class="form-group text-center">	<img src="<?php echo base_url();?>assets/images/narrow_files_logo.gif" width="185" height="82" alt="logo" /></div><?php if($this->session->flashdata('error')) { ?><div class="alert alert-danger alert-dismissible fade show">    <button type="button" class="close" data-dismiss="alert">&times;</button>   <strong>Error! </strong><?php echo $this->session->flashdata('error');?>  </div><?php } ?><?php if($this->session->flashdata('success')) { ?>	<div class="alert alert-success alert-dismissible fade show">    <button type="button" class="close" data-dismiss="alert">&times;</button>   <strong>Success! </strong><?php echo $this->session->flashdata('success');?>  </div><?php } ?><h5>Password Recovery:</h5>  <div class="form-group">    <label for="email">Email * :</label>    	<input type="text" name="email" id="email" value="" class="form-control report" placeholder="Enter Email"/><?= form_error('email', '<label class="text-danger">', '</label>'); ?>	 </div>  <div class="form-group">    <label for="pwd">Captcha * :</label>	                    <input type="hidden" name="valuecheck" id="valuecheck" value="run61vk97sj5vspkeqfl0rjsk7">						<?php echo $image; ?><br><br><input type="text" id="security_code" name="security_code" class="form-control report" placeholder="Enter Captcha code"/>					<?= form_error('security_code', '<label class="text-danger">', '</label>'); ?>  </div>     <button type="submit" class="btn btn-primary">Go</button> <?php echo form_close(); ?></div>
 </body>
 </html>

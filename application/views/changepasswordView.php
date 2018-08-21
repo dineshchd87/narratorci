@@ -8,6 +8,8 @@
 								<h1>Change Your Access Password</h1>
 							</div>
 							<div class="width100">
+								<?php if($this->session->flashdata('errorMsg')){ ?>
+								<h1 style="text-align: center;color:#BC371A"><?php echo $this->session->flashdata('errorMsg'); } ?></h1>
 								<?php if($this->session->flashdata('successMsg')){ ?>
 								<h1 style="text-align: center;color:green"><?php echo $this->session->flashdata('successMsg'); } ?></h1>
 							</div>

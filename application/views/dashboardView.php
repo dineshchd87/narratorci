@@ -1,6 +1,6 @@
-		<section id="content" class="dashboard">
+		<section id="content" class="dashboard"><div class="row">
 			<div class="section1">
-				<h3>Administrative Dashboard</h3>
+				<h4>Administrative Dashboard</h4>
 			</div>
 			<div class="section2">
 				<div class="width50 box1">
@@ -25,14 +25,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="right-box">
-						<a href="#" class="button button-aqua button-eq">Customers</a>	
-						<a href="#" class="button button-aqua button-eq">Talent	</a>
-						<a href="#" class="button button-aqua button-eq">Personnel	</a>
-						<a href="#" class="button button-aqua button-eq">Invoicing	</a>
-						<a href="#" class="button button-aqua button-eq">Payments	</a>
-
-					</div>
+					<div class="right-box btn-group-vertical">						<a href="#" class="btn btn-outline-info">Customers</a>							<a href="#" class="btn btn-outline-info">Talent	</a>						<a href="#" class="btn btn-outline-info">Personnel	</a>						<a href="#" class="btn btn-outline-info">Invoicing	</a>						<a href="#" class="btn btn-outline-info">Payments	</a>					</div>
 				</div>
 				<div class="width50 box2">
 					Sales Snapshot	
@@ -177,6 +170,6 @@ Project Name: Intermediate Rigging	<br>
 					</div>
 					
 				</div>
-			</div>
+			</div></div>
 		</section>
 		

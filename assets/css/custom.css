@@ -1,0 +1,70 @@
+.login-box{
+	padding: 30px;
+	width: 500px;
+	background-color: #fff;
+	border: 1px solid #bbb;
+	margin: 100px auto;
+}
+
+
+
+/**=== FOOTER CSS ===**/
+
+#footer{
+
+	width: 100%;
+
+	float:left;
+
+	margin-bottom: 20px;
+
+}
+
+.left-footer {
+
+    float: left;
+
+    width: 50%;
+
+}
+
+.footer-nav ul {
+
+    padding: 0;
+
+}
+
+.footer-nav li {
+
+    display: inline;
+
+    padding: 0px 6px;
+
+    list-style: none;
+
+}
+
+.footer-nav li::after {
+
+    content: ":";
+
+    padding-left: 12px;
+
+}
+
+.footer-nav li a{
+
+    color: #000;
+
+}
+
+.right-footer {
+
+    float: left;
+
+    width: 50%;
+
+	text-align:right;
+
+}
+
