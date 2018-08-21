@@ -75,7 +75,7 @@ class Orders extends CI_Controller {
         }
 		//echo"<pre>";print_r($params);die;
 			
-		echo"<pre>";print_r($data);die;		
+		//echo"<pre>";print_r($data);die;		
 		$this->load->view('common/header.php',$data);
 		$this->load->view('orderView.php',$data);
 		$this->load->view('common/footer.php',$data);
