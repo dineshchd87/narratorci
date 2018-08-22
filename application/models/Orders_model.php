@@ -54,10 +54,10 @@ class Orders_model extends CI_Model {
      */
     public function getAllOrdres($limit, $start){ 
 
-		$this->db->select('ordr.*,c.*,otr.*');
+		$this->db->select('ordr.order_id,ordr.order_date,c.cust_name');
         $this->db->from('nrf_orders ordr');
         $this->db->join('nrf_customers c', 'ordr.order_customer = c.cust_id', 'left');
-		$this->db->join('nrf_order_talent_rel otr', 'otr.order_id = ordr.order_id', 'left');		
+		//$this->db->join('nrf_order_talent_rel otr', 'otr.order_id = ordr.order_id', 'left');		
 		$this->db->limit($limit, $start);		
         $orderInfo = $this->db->get()->result_array(); 
         //echo $this->db->last_query();
@@ -65,7 +65,7 @@ class Orders_model extends CI_Model {
             return $orderInfo;
         }else{
           
-		return array();
+			return array();
 
 		}
     }
