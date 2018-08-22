@@ -1,42 +1,49 @@
-		<section id="content">
-			<div class="section1">
-				<div class="view-order">
-					<label>View:</label> jjj
-					<select class="form-select">
+			<div class="col-sm-12 mt-4">
+				<div class="view-order form-inline">
+					<label class="label mr-3"><strong>View:</strong> </label> 
+					<select class="form-control">
 						<option>All Orders</option>
 						<option>All Active</option>
 					</select>
 				</div>
 			</div>
-			<div class="section2">
+			<div class="col-sm-12 mt-2">
 				<p>Your orders are shown below. Click the plus icon next to an order to see its complete details.</p>
 			</div>
-			<div class="section3">
-				<div class="sec3-1">
-					<a href="#" class="button button-aqua">Add an Order</a>
+			<div class="col-sm-12">
+				<div class="row">
+					<div class="col-sm-4">
+						<a href="#" class="btn btn-info"><i class="fas fa-plus-circle"></i> Add an Order</a>
+					</div>
+					<div class="col-sm-8">
+						<form class="form-inline float-right" id="searchForm" action="#" method="get">
+						<div class="form-group mr-3">
+							<label class="mr-3"><strong>Search : </strong> </label> 	 	
+							<select name="searchField" id="searchField" class="form-control form-control-sm">
+								<option value="cust">Customer/ Client</option>
+								<option value="comp">Company</option>
+								<option value="tlnt">Talent</option>
+								<option value="csr">CSR</option>
+							</select>
+						</div>
+						<div class="form-group mr-3">
+						
+							<input type="text" name="searchWord" class="form-control form-control-sm"/>
+						</div>
+							<div class="form-group">
+						
+							<button type="submit" class="btn btn-primary btn-sm"><i class="fas fa-search"></i> Search</button>
+						</div>
+						</form>
+					</div>
 				</div>
-				<div class="sec3-2">
-					<form id="searchForm" action="#" method="get">
-						<label>Search</label> 	 	
-						<select name="searchField" id="searchField">
-							<option value="cust">Customer/ Client</option>
-							<option value="comp">Company</option>
-							<option value="tlnt">Talent</option>
-							<option value="csr">CSR</option>
-						</select>
-					
-						<input type="text" name="searchWord" class="text-input"/>
-						<input type="submit" value="Search" class="search-btn">
-					</form>
-				</div>
-				
 			</div>
-			<div class="section4">
-				<div class="rightalign">
+			<!--div class="col-sm-12">
+				<div class="float-right">
 				<?php echo $links; ?>					
-					<div class="dropdown">
+					<div class="form-inline">
 						<label>Per Page : </label>
-						<select name="setPerPage">
+						<select name="setPerPage" class="form-control form-control-sm">
 							<option value="10" selected="selected">10</option>
 							<option value="25">25</option>
 							<option value="50">50</option>
@@ -46,66 +53,52 @@
 						</select>
 					</div>
 				</div>
-			</div>
-			<div class="section5">
-				<div class="tbl">
-					<div class="tbl-row headings">
-						<div class="cl cl-1">
-							<input type="checkbox" name="chkLoop[]" id="chkLoop">
-						</div>
-						<div class="cl cl-2">
-						</div>
-						<div class="cl cl-3">
-						ID
-						</div>
-						<div class="cl cl-4">
-						Customer
-						</div>
-						<div class="cl cl-5">
-						Date
-						</div>
-						<div class="cl cl-6">
-						Total
-						</div>
-						<div class="cl cl-7">
-						Talent
-						</div>
-						<div class="cl cl-8">
-						Account Manager (CSR)	
-						</div>
-						<div class="cl cl-9">
+			</div-->
+			<div class="col-sm-12 mt-4">
+				<table id="example" class="table table-striped table-bordered" style="width:100%">
+				<thead>
+				
+					<tr>
+						<th><input type="checkbox" name="chkLoop[]" id="chkLoop"></th>
+						<th></th>
+						<th>ID</th>
+						<th>Customer</th>
+						<th>Date</th>
+						<th>Total</th>
+						<th>Talent</th>
+						<th>Account Manager (CSR)</th>
+						<th></th>
+						<th>Status</th>
 						
-						</div>
-						<div class="cl cl-10">
-						Status
-						</div>
-					</div>
-					<?php foreach($orders as $order){  $i=1;?>
-					<div class="tbl-row rowdata">
-						<div class="cl-1">
+					</tr>
+				</thead>
+			<tbody>
+				<?php foreach($orders as $order){  $i=1;?>
+					<tr>
+						<td>
 							<input type="checkbox" name="chkLoop[]" id="chkLoop">
-						</div>
-						<div class="cl-2">
+						</td>
+						<td>
 							<img class="collapse" id="collapse_1" src="images/plus.gif" width="9" height="9" onclick="showDesc('1');">
-						</div>
-						<div class="cl-3">
+						</td>
+						<td>
 						<?php echo $order['order_id']; ?>
-						</div>
-						<div class="cl-4">
+						</td>
+						<td>
 							
 							<?php echo $order['cust_name']; ?>
-						</div>
-						<div class="cl-5">
+						</td>
+						<td>
 						<?php echo date("Y/m/d",$order['order_date']); ?>
-						</div>
-						<div class="cl-6">
-							<img src="images/paid.gif" width="30" height="31"> 1 Pages
-						</div>
-						<div class="cl-7">
+						</td>
+						<td>
+							<span class="badge badge-info text-uppercase">Paid</span> 1 Pages
+						</td>
+						<td>
 						Derek
-						</div>
-						<div class="cl-8">
-							<select name="csrep_1" id="csrep_1">
+						</td>
+						<td>
+							<select name="csrep_1" id="csrep_1" class="form-control form-control-sm">
 								<option value="0">Select a CSR</option>
 								<option value="10">Anne Brown</option>
 								<option value="16">Diego Pinto</option>
@@ -115,12 +108,12 @@
 								<option value="14">Khalil Abu-jamous</option>
 								<option value="12">test ee</option>
 							</select>	
-						</div>
-						<div class="cl-9 bg-green">
+						</td>
+						<td class="bg-green">
 						
-						</div>
-						<div class="cl-10">
-							<select name="ostat_1" id="ostat_1">
+						</td>
+						<td>
+							<select name="ostat_1" id="ostat_1" class="form-control form-control-sm">
 								<option value="1">Received</option>
 								<option value="2">Out to Talent</option>
 								<option value="3">Audio Received</option>
@@ -128,8 +121,15 @@
 								<option value="5">Sent to Client</option>
 								<option value="6" selected="selected">Completed</option>
 							</select>
-						</div>
-						<div class="row-details rd_1" style="display:none;">
+						</td>
+						</tr>
+					<?php $i+1; } ?>
+			</tbody>
+			</table>
+		</div>	
+				
+				
+					<div class="row-details rd_1" style="display:none;">
 							<div class="cl-d1">
 								<div class="width40">
 									<label>Customer Details:</label>
@@ -168,8 +168,11 @@ Project Name: Intermediate Rigging	<br>
 04/23/2010    --   Completed<br>
 							</div>
 						</div>
-					</div>
-					<?php $i+1; } ?>
-				</div>
-			</div>
-		</section>
+					
+					
+					
+<script>
+$(document).ready(function() {
+    $('#example').DataTable();
+} );
+</script>
