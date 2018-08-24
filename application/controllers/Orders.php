@@ -54,7 +54,7 @@ class Orders extends CI_Controller {
      */
 	public function getOrdres(){
 		$condition= array();
-		//echo "<pre>";print_r($_GET);die;
+		
 		if(isset($_GET['type'])){
 			if($_GET['type']=='active'){
 				$condition= array('active' =>true);
@@ -80,15 +80,7 @@ class Orders extends CI_Controller {
 			$orderby='ordr.order_id';
 			$dir='desc';
 		}
-		$search= array();
-		if($_GET['search']['value']!=""){
-			$searchfield=explode('&',$_GET['search']['value']);
-			$search['field']=explode('=',$searchfield[0])[1];
-			$search['value']=explode('=',$searchfield[1])[1];
-			
-		}
-		//echo "<pre>";print_r($search);die;
-        $total_records = $this->orders_model->get_total($condition,$search);
+        $total_records = $this->orders_model->get_total($condition);
 		if ($total_records > 0) 
         {
 			$data["draw"]=$_GET['draw'];
@@ -96,7 +88,7 @@ class Orders extends CI_Controller {
 			$data["recordsFiltered"]=$total_records;			
 			
             // get current page records
-            $data["data"] = $this->orders_model->getAllOrdres($limit_per_page,$start_index,$orderby,$dir,$condition,$search);             
+            $data["data"] = $this->orders_model->getAllOrdres($limit_per_page,$start_index,$orderby,$dir,$condition);             
             
         }
 		echo json_encode($data);die;		

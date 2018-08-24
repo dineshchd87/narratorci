@@ -21,13 +21,37 @@
 								<h6 class="what-next">Your Store at a Glance....</h6>
 								<div class="label">
 									<button type="button" class="btn btn-outline-info btn-sm">
-										Orders <span class="badge badge-info">8952</span>
+										Orders <span class="badge badge-info">
+											<?php 
+												if(isset($totallOrdersCount) && !empty($totallOrdersCount)){
+													echo $totallOrdersCount[0]['order_count'];
+												}else{
+													echo '0';
+												}
+											?>
+										</span>
 									</button>
 									<button type="button" class="btn btn-outline-info btn-sm">
-										Customers <span class="badge badge-info">756</span>
+										Customers <span class="badge badge-info">
+											<?php 
+												if(isset($cOrderCount) && !empty($cOrderCount)){
+													echo $cOrderCount[0]['cust_count'];
+												}else{
+													echo '0';
+												}
+											?>
+										</span>
 									</button>
 									<button type="button" class="btn btn-outline-info btn-sm">
-										Voice Talents <span class="badge badge-info">15</span>
+										Voice Talents <span class="badge badge-info">
+											<?php 
+												if(isset($voiceCount) && !empty($voiceCount)){
+													echo $voiceCount;
+												}else{
+													echo '0';
+												}
+											?>
+										</span>
 									</button>
 								</div>
 							</div>
