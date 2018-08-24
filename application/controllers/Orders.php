@@ -38,7 +38,7 @@ class Orders extends CI_Controller {
 		$data['userData'] = $this->session->userdata();
 		// init params
         $params = array();
-        $limit_per_page = 50;
+        $limit_per_page = 500;
         $start_index = ($this->uri->segment(2)) ? $this->uri->segment(2) : 0;		
         $total_records = $this->orders_model->get_total();
 		if ($total_records > 0) 
