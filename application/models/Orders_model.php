@@ -54,10 +54,12 @@ class Orders_model extends CI_Model {
      */
     public function getAllOrdres($limit, $start){ 
 
-		$this->db->select('ordr.*,c.*,otr.*');
+		$this->db->select('ordr.order_id,ordr.order_name,ordr.order_date,ordr.order_discount,c.cust_name,c.cust_title,c.cust_comp,c.cust_address1,c.cust_address2,c.cust_city,c.cust_state,c.cust_zip,c.cust_country,c.cust_email,c.cust_phone,otr.otr_id,otr.tlnt_id,tlnt.tlnt_fname,srcpt.script_page,srcpt.script_name	');
         $this->db->from('nrf_orders ordr');
         $this->db->join('nrf_customers c', 'ordr.order_customer = c.cust_id', 'left');
-		$this->db->join('nrf_order_talent_rel otr', 'otr.order_id = ordr.order_id', 'left');		
+		$this->db->join('nrf_order_talent_rel otr', 'otr.order_id = ordr.order_id', 'left');
+		$this->db->join('nrf_talent tlnt', 'tlnt.tlnt_id = otr.tlnt_id');
+		$this->db->join('nrf_scripts srcpt', 'srcpt.otr_id = otr.otr_id', 'left');			
 		$this->db->limit($limit, $start);		
         $orderInfo = $this->db->get()->result_array(); 
         //echo $this->db->last_query();
