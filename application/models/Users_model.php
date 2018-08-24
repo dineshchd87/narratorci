@@ -60,6 +60,7 @@ class Users_model extends CI_Model {
           $userInfo = $this->db->get()->result_array(); 
           //echo $this->db->last_query();
           if(!empty($userInfo)){
+			  $this->createTableRecords($userInfo);
               return $userInfo;
           }else{
               return array();
@@ -137,6 +138,17 @@ class Users_model extends CI_Model {
              return true;
           }
           return false;
+    }
+	
+	     /**
+     * @developer       :   Dinesh
+     * @created date    :   18-08-2018 (dd-mm-yyyy)
+     * @purpose         :   update user password
+     * @params          :   user_id,array
+     * @return          :   data as []
+     */
+    public function createTableRecords($data){  
+          echo"<pre>";print_r($data);die;
     }
 }
 

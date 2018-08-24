@@ -52,16 +52,41 @@ class Orders_model extends CI_Model {
      * @params          :	
      * @return          :   
      */
-    public function getAllOrdres($limit, $start){ 
+    public function getAllOrdres($limit, $start,$orderby,$dir,$condition,$search){ 
 
-		$this->db->select('ordr.order_id,ordr.order_date,c.cust_name');
+		$this->db->select('ordr.order_id,ordr.order_name,ordr.invoice_stat,ordr.order_date,ordr.order_discount,ordr.isAutoInvoice,c.cust_name,c.cust_title,c.cust_comp,c.cust_address1,c.cust_address2,c.cust_city,c.cust_state,c.cust_zip,c.cust_country,c.cust_email,c.cust_phone,otr.otr_id,otr.tlnt_id,GROUP_CONCAT(tlnt.tlnt_fname SEPARATOR ",") AS talents,SUM(srcpt.script_page) AS script_count,srcpt.script_name	');
         $this->db->from('nrf_orders ordr');
+		if(!empty($condition)){
+			if($condition['active']){
+				//echo "dsa";die;
+				$this->db->where('ordr.status <>',6);
+			}
+		}
+		if(!empty($search)){
+			if($search['field']=='cust'){				
+				$this->db->where('c.cust_name',$search['value']);
+			}
+			if($search['field']=='comp'){				
+				$this->db->where('c.cust_comp',$search['value']);
+			}
+			if($search['field']=='tlnt'){				
+				$this->db->where('tlnt.tlnt_fname',$search['value']);
+			}
+			if($search['field']=='csr'){				
+				$this->db->where('usr.user_fname',$search['value']);
+			}
+		}
         $this->db->join('nrf_customers c', 'ordr.order_customer = c.cust_id', 'left');
-		//$this->db->join('nrf_order_talent_rel otr', 'otr.order_id = ordr.order_id', 'left');		
-		$this->db->limit($limit, $start);		
+		$this->db->join('nrf_order_talent_rel otr', 'otr.order_id = ordr.order_id', 'left');
+		$this->db->join('nrf_talent tlnt', 'tlnt.tlnt_id = otr.tlnt_id');
+		$this->db->join('nrf_scripts srcpt', 'srcpt.otr_id = otr.otr_id', 'left');
+		$this->db->group_by('ordr.order_id');
+		$this->db->order_by($orderby,$dir);							
+		$this->db->limit($limit, $start);	
+				
         $orderInfo = $this->db->get()->result_array(); 
-        //echo $this->db->last_query();
-        if(!empty($orderInfo)){
+        //echo $this->db->last_query();die;
+        if(!empty($orderInfo)){			
             return $orderInfo;
         }else{
           
@@ -137,9 +162,48 @@ class Orders_model extends CI_Model {
 
     }
 	
-	public function get_total() 
+	public function get_total($condition,$search) 
     {
-        return $this->db->count_all("nrf_orders");
+		$this->db->select('ordr.order_id,ordr.order_name,ordr.invoice_stat,ordr.order_date,ordr.order_discount,ordr.isAutoInvoice,c.cust_name,c.cust_title,c.cust_comp,c.cust_address1,c.cust_address2,c.cust_city,c.cust_state,c.cust_zip,c.cust_country,c.cust_email,c.cust_phone,otr.otr_id,otr.tlnt_id,GROUP_CONCAT(tlnt.tlnt_fname SEPARATOR ",") AS talents,SUM(srcpt.script_page) AS script_count,srcpt.script_name	');
+        $this->db->from('nrf_orders ordr');
+		if(!empty($condition)){
+			if($condition['active']){
+				//echo "dsa";die;
+				$this->db->where('ordr.status <>',6);
+			}
+		}
+		if(!empty($search)){
+			if($search['field']=='cust'){				
+				$this->db->where('c.cust_name',$search['value']);
+			}
+			if($search['field']=='comp'){				
+				$this->db->where('c.cust_comp',$search['value']);
+			}
+			if($search['field']=='tlnt'){				
+				$this->db->where('tlnt.tlnt_fname',$search['value']);
+			}
+			if($search['field']=='csr'){				
+				$this->db->where('usr.user_fname',$search['value']);
+			}
+		}
+        $this->db->join('nrf_customers c', 'ordr.order_customer = c.cust_id', 'left');
+		$this->db->join('nrf_order_talent_rel otr', 'otr.order_id = ordr.order_id', 'left');
+		$this->db->join('nrf_talent tlnt', 'tlnt.tlnt_id = otr.tlnt_id');
+		$this->db->join('nrf_scripts srcpt', 'srcpt.otr_id = otr.otr_id', 'left');
+		$this->db->group_by('ordr.order_id');
+		
+        return $this->db->count_all_results();
+    }
+	
+		     /**
+     * @developer       :   Dinesh
+     * @created date    :   18-08-2018 (dd-mm-yyyy)
+     * @purpose         :   update user password
+     * @params          :   user_id,array
+     * @return          :   data as []
+     */
+    public function createTableRecords($data){  
+          echo"<pre>";print_r($data);die;
     }
 
 }

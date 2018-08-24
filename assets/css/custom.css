@@ -24,6 +24,16 @@ body{
     top: 23px;
 	z-index:1;
 }
+td.details-control {
+    background: url(../images/details_open.png) no-repeat center center;
+    cursor: pointer;
+}
+tr.shown td.details-control {
+    background: url(../images/details_close.png) no-repeat center center;
+}
+.order-detail{
+	display:none;
+}
 .top-right-header {
     min-height: 50px;
     padding-top: 20px;

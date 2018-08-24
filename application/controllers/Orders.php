@@ -36,51 +36,75 @@ class Orders extends CI_Controller {
      */
 	public function index(){
 		$data['userData'] = $this->session->userdata();
-		// init params
-        $params = array();
-        $limit_per_page = 50;
-        $start_index = ($this->uri->segment(2)) ? $this->uri->segment(2) : 0;		
-        $total_records = $this->orders_model->get_total();
-		if ($total_records > 0) 
-        {
-            // get current page records
-            $data["orders"] = $this->orders_model->getAllOrdres($limit_per_page, $start_index);             
-            $config['base_url'] = base_url() . 'orders';
-            $config['total_rows'] = $total_records;
-            $config['per_page'] = $limit_per_page;
-            $config["uri_segment"] = 2;			
-			$config['full_tag_open'] = '<div class="pagination">';
-            $config['full_tag_close'] = '</div>';              
-            $config['last_link'] = 'Last';
-            $config['last_tag_open'] = '<span class="lastlink">';
-            $config['last_tag_close'] = '</span>';             
-            $config['next_link'] = 'Next';
-            $config['next_tag_open'] = '<span class="nextlink">';
-            $config['next_tag_close'] = '</span>'; 
-            $config['prev_link'] = 'Prev';
-            $config['prev_tag_open'] = '<span class="prevlink">';
-            $config['prev_tag_close'] = '</span>';
- 
-            $config['cur_tag_open'] = '<span class="curlink">';
-            $config['cur_tag_close'] = '</span>';
- 
-            $config['num_tag_open'] = '<span class="numlink">';
-            $config['num_tag_close'] = '</span>';
-             
-             
-            $this->pagination->initialize($config);
-             
-            // build paging links
-            $data["links"] = $this->pagination->create_links();
-        }
-		//echo"<pre>";print_r($params);die;
 			
-		echo"<pre>";print_r($data);die;		
 		$this->load->view('common/header.php',$data);
-		$this->load->view('orderView.php',$data);
+		$this->load->view('orderView.php');
 		$this->load->view('common/footer.php',$data);
 
 	}
+	
+	
+		/**
+     * @developer       :   Dinesh
+     * @created date    :   09-08-2018 (dd-mm-yyyy)
+	 * @updated date    :   16-08-2018 (dd-mm-yyyy)
+     * @purpose         :   load admin orders
+     * @params          :
+     * @return          :   data as []
+     */
+	public function getOrdres(){
+		$condition= array();
+		//echo "<pre>";print_r($_GET);die;
+		if(isset($_GET['type'])){
+			if($_GET['type']=='active'){
+				$condition= array('active' =>true);
+			}
+		}
+		$user = $this->session->userdata();
+		if($user['group_id']==3){
+			$condition['restrictedGroup']=true;
+		}
+	  
+        $limit_per_page = $_GET['length'];
+        $start_index = 	$_GET['start'];
+		if($_GET['order'][0]['column']==2){
+			$orderby='ordr.order_id';
+			$dir=$_GET['order'][0]['dir'];
+		}elseif($_GET['order'][0]['column']==3){
+			$orderby='c.cust_name';
+			$dir=$_GET['order'][0]['dir'];
+		}elseif($_GET['order'][0]['column']==4){
+			$orderby='ordr.order_date';
+			$dir=$_GET['order'][0]['dir'];
+		}else{
+			$orderby='ordr.order_id';
+			$dir='desc';
+		}
+		$search= array();
+		if($_GET['search']['value']!=""){
+			$searchfield=explode('&',$_GET['search']['value']);
+			$search['field']=explode('=',$searchfield[0])[1];
+			$search['value']=explode('=',$searchfield[1])[1];
+			
+		}
+		//echo "<pre>";print_r($search);die;
+        $total_records = $this->orders_model->get_total($condition,$search);
+		if ($total_records > 0) 
+        {
+			$data["draw"]=$_GET['draw'];
+			$data["recordsTotal"]=$total_records;
+			$data["recordsFiltered"]=$total_records;			
+			
+            // get current page records
+            $data["data"] = $this->orders_model->getAllOrdres($limit_per_page,$start_index,$orderby,$dir,$condition,$search);             
+            
+        }
+		echo json_encode($data);die;		
+		
+
+	}
+
+
 
 
 }
