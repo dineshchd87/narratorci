@@ -19,6 +19,7 @@ class Users extends CI_Controller {
 		$this->load->model('common_model');
 	    $this->load->model('users_model');
 		$this->load->model('emails_model');
+		$this->load->model('orders_model');
 		$this->load->helper('cookie');
 		$this->load->helper('string');
 		$this->load->helper('captcha');
@@ -173,13 +174,17 @@ class Users extends CI_Controller {
      * @developer       :   Dinesh
      * @created date    :   09-08-2018 (dd-mm-yyyy)
 	 * @updated date    :   16-08-2018 (dd-mm-yyyy)
-     * @purpose         :   load user dashboard
+     * @purpose         :   load user dashboard,get customer order count
      * @params          :
      * @return          :   
      */
 	public function dashboard(){
 		if($this->session->userdata('user_name')){
-			$data['userData'] = $this->session->userdata();			
+			$data['userData'] = $this->session->userdata();		
+			$data['cOrderCount'] = $this->orders_model->getAllCustomersOrdresCount($data['userData']);
+			$data['totallOrdersCount'] = $this->orders_model->getAllOrdresCount($data['userData']);
+			$data['voiceCount'] = count($this->orders_model->getVoiceTalent());
+			        //echo "<pre>"; print_r($data); die('hello');	
 			$this->load->view('common/header.php',$data);
 			$this->load->view('dashboardView.php',$data);
 			$this->load->view('common/footer.php',$data);

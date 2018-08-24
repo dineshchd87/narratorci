@@ -137,9 +137,80 @@ class Orders_model extends CI_Model {
 
     }
 	
-	public function get_total() 
+	  public function get_total() 
     {
         return $this->db->count_all("nrf_orders");
+    }
+
+    /**
+     * @developer       :   Dinesh
+     * @created date    :   22-08-2018 (dd-mm-yyyy)
+     * @purpose         :   get customer's order count 
+     * @params          :   current_user
+     * @return          :   []
+     */
+    public function getAllCustomersOrdresCount($current_user){ 
+        $this->db->select('COUNT(DISTINCT order_customer) AS cust_count');
+        $this->db->from('nrf_orders');
+        if($current_user['group_id'] == 3){
+           $this->db->where('order_csr', $current_user['user_id']);
+        }
+        $customerOrderCount = $this->db->get()->result_array(); 
+        if(!empty($customerOrderCount)){
+            return $customerOrderCount;
+        }else{
+        return array();
+        }
+    }
+
+    /**
+     * @developer       :   Dinesh
+     * @created date    :   22-08-2018 (dd-mm-yyyy)
+     * @purpose         :   get all orders count 
+     * @params          :   current_user
+     * @return          :   []
+     */
+    public function getAllOrdresCount($current_user){ 
+        $this->db->select('COUNT(order_id) AS order_count');
+        $this->db->from('nrf_orders');
+        if($current_user['group_id'] == 3){
+           $this->db->where('order_csr', $current_user['user_id']);
+            $this->db->where('order_csr', $current_user['user_id']);
+            $this->db->where('status >', 1);
+        }
+        $OrderCount = $this->db->get()->result_array(); 
+       // echo $this->db->last_query();
+        if(!empty($OrderCount)){
+            return $OrderCount;
+        }else{
+        return array();
+        }
+    }
+
+     /**
+     * @developer       :   Dinesh
+     * @created date    :   22-08-2018 (dd-mm-yyyy)
+     * @purpose         :   get all voice talents
+     * @params          :   current_user
+     * @return          :   []
+     */
+    public function getVoiceTalent(){ 
+        $sql = "SELECT 
+                      TALENT.* , 
+                      CNTRY.printable_name AS country
+                 FROM nrf_talent AS TALENT 
+                 LEFT JOIN nrf_country AS CNTRY 
+                 ON (TALENT.tlnt_country = CNTRY.iso) 
+                 WHERE TALENT.`is_active` = 'Y' 
+                 ORDER BY tlnt_fname ASC";
+        $query = $this->db->query($sql);
+        $voiceTalent = $query->result_array(); 
+       // echo $this->db->last_query();
+        if(!empty($voiceTalent)){
+            return $voiceTalent;
+        }else{
+        return array();
+        }
     }
 
 }
