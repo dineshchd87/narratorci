@@ -54,7 +54,7 @@ class Orders_model extends CI_Model {
      */
     public function getAllOrdres($limit, $start,$orderby,$dir,$condition){ 
 
-		$this->db->select('ordr.order_id,ordr.order_name,ordr.invoice_stat,ordr.order_date,ordr.order_discount,ordr.isAutoInvoice,c.cust_name,c.cust_title,c.cust_comp,c.cust_address1,c.cust_address2,c.cust_city,c.cust_state,c.cust_zip,c.cust_country,c.cust_email,c.cust_phone,otr.otr_id,otr.tlnt_id,GROUP_CONCAT(tlnt.tlnt_fname SEPARATOR ",") AS talents,SUM(srcpt.script_page) AS script_count,srcpt.script_name	');
+		$this->db->select('ordr.order_id,ordr.invoice_stat,ordr.order_date,ordr.isAutoInvoice,c.cust_name,otr.otr_id,otr.tlnt_id,GROUP_CONCAT(tlnt.tlnt_fname SEPARATOR ",") AS talents,SUM(srcpt.script_page) AS script_count');
         $this->db->from('nrf_orders ordr');
 		if(!empty($condition)){
 			if($condition['active']){
