@@ -26,7 +26,7 @@ class Orders_model extends CI_Model {
 
            $this->db->from('nrf_orders');
 
-           $this->db->where('order_id',$$id);
+           $this->db->where('order_id',$id);
 
            $query = $this->db->get();
            
@@ -58,7 +58,6 @@ class Orders_model extends CI_Model {
         $this->db->from('nrf_orders ordr');
 		if(!empty($condition)){
 			if($condition['active']){
-				//echo "dsa";die;
 				$this->db->where('ordr.status <>',6);
 			}
 		}
@@ -247,6 +246,89 @@ class Orders_model extends CI_Model {
         return array();
         }
     }
+
+    /**
+     * @developer       :   Dinesh
+     * @created date    :   25-08-2018 (dd-mm-yyyy)
+     * @purpose         :   get order talent relation
+     * @params          :   
+     * @return          :   []
+     */
+    public function get_order_talent_relation($order_id){ 
+     $this->db->select('otr_id');
+        $this->db->from('nrf_order_talent_rel');
+        $this->db->where('order_id',$order_id); 
+        $data = $this->db->get()->result_array(); 
+        if(!empty($data)){
+            return $data;
+        }else{
+          return array();
+        }
+    }
+
+    /**
+     * @developer       :   Dinesh
+     * @created date    :   25-08-2018 (dd-mm-yyyy)
+     * @purpose         :   get order talent relation
+     * @params          :   
+     * @return          :   []
+     */
+    public function get_order_script_page_pages($otrIds){ 
+     $this->db->select('IFNULL( SUM(s.script_page), 0) AS pages');
+        $this->db->from('nrf_scripts as s');
+        $this->db->where_in('otr_id',$otrIds); 
+        $data = $this->db->get()->result_array(); 
+        if(!empty($data)){
+            return $data;
+        }else{
+          return array();
+        }
+    }
+
+    /**
+     * @developer       :   Dinesh
+     * @created date    :   22-08-2018 (dd-mm-yyyy)
+     * @purpose         :   get top 5 recent order
+     * @params          :   
+     * @return          :   []
+     */
+    public function getRecentOrder(){ 
+     $this->db->select('o.* ,c.*,t.ostat_text,u.*,ist.istat_text AS in_status_text');
+        $this->db->from('nrf_orders AS o');
+        $this->db->join('nrf_customers c', 'c.cust_id = o.order_customer', 'left');
+        $this->db->join('nrf_order_status_text t', 't.ostat_id = o.status', 'left');
+        $this->db->join('nrf_csrm csr', 'csr.user_id = o.order_csr', 'left');
+        $this->db->join('nrf_users u', 'u.user_id = o.order_csr', 'left');
+        $this->db->join('nrf_invoice_status_text ist', 'ist.istat_id = o.invoice_stat', 'left');
+        $this->db->order_by("order_id", "desc");
+        $this->db->limit(100);  
+        $recentOrder = $this->db->get()->result_array(); 
+        //echo $this->db->last_query();
+        if(!empty($recentOrder)){
+          for ($i=0; $i < count($recentOrder);$i++) {
+            $order_talent = $this->get_order_talent_relation($recentOrder[$i]['order_id']);
+            if(!empty($order_talent)){
+              $ids = [];
+              for ($j=0; $j < count($order_talent);$j++) {
+                array_push($ids,$order_talent[$j]['otr_id']);
+              }
+
+              if(!empty($ids)){
+                  $otrId = implode(",", $ids);
+                  $recentOrder[$i]['pages'] = $this->get_order_script_page_pages($otrId);
+              }else{
+                $recentOrder[$i]['pages'] = [];
+              }
+            }
+          }
+            return $recentOrder;
+        }else{
+        return array();
+        }
+    }
+
+
+
 
 }
 

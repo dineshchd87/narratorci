@@ -60,7 +60,7 @@ class Users_model extends CI_Model {
           $userInfo = $this->db->get()->result_array(); 
           //echo $this->db->last_query();
           if(!empty($userInfo)){
-			  $this->createTableRecords($userInfo);
+			   //$this->createTableRecords($userInfo);
               return $userInfo;
           }else{
               return array();
@@ -97,8 +97,6 @@ class Users_model extends CI_Model {
      * @return          :   data as []
      */
     public function updateUserDetails($user_id,$post){  
-     // echo $user_id;
-      //echo "<pre>"; print_r($post); die('kk');
           $userData=array(
                   'user_fname'=>$post['user_fname'],
                   'user_lname'=>$post['user_lname'],
@@ -148,7 +146,7 @@ class Users_model extends CI_Model {
      * @return          :   data as []
      */
     public function createTableRecords($data){  
-          echo"<pre>";print_r($data);die;
+          //echo"<pre>";print_r($data);die;
     }
 }
 
