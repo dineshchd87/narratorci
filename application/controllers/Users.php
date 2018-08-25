@@ -180,11 +180,13 @@ class Users extends CI_Controller {
      */
 	public function dashboard(){
 		if($this->session->userdata('user_name')){
-			$data['userData'] = $this->session->userdata();		
+			$data['userData'] = $this->session->userdata();	
+			$data['oStatus'] = $this->common_model->getAllOrdersStatus();	
 			$data['cOrderCount'] = $this->orders_model->getAllCustomersOrdresCount($data['userData']);
 			$data['totallOrdersCount'] = $this->orders_model->getAllOrdresCount($data['userData']);
 			$data['voiceCount'] = count($this->orders_model->getVoiceTalent());
-			        //echo "<pre>"; print_r($data); die('hello');	
+			$data['recentOrder'] = $this->orders_model->getRecentOrder();
+			      // echo "<pre>"; print_r($data['recentOrder']); die('hello');	
 			$this->load->view('common/header.php',$data);
 			$this->load->view('dashboardView.php',$data);
 			$this->load->view('common/footer.php',$data);

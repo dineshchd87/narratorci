@@ -28,6 +28,24 @@ class Common_model extends CI_Model {
             return array();
         }
 	}
+
+    /**
+     * @developer       :   Dinesh
+     * @created date    :   18-08-2018 (dd-mm-yyyy)
+     * @purpose         :   get all orders status
+     * @params          :   
+     * @return          :   data as []
+     */
+    public function getAllOrdersStatus(){ 
+        $this->db->select('*');
+        $this->db->from('nrf_order_status_text');
+        $oStatus = $this->db->get()->result_array(); 
+        if(!empty($oStatus)){
+            return $oStatus;
+        }else{
+            return array();
+        }
+    }
 }
 
 ?>

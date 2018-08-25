@@ -1,3 +1,13 @@
+	<?php 
+function local_time($GMTtime, $localTZoffSet=false)
+{
+    if(!$localTZoffSet)
+    {
+        $localTZoffSet = LOCAL_TIME_OFFSET; 
+    }
+    return $GMTtime+$localTZoffSet;
+}
+	?>
 	<section class="col-sm-12">
 		<div class="row">
 			<div class="col-sm-12 mb-2 mt-3"><h4>Administrative Dashboard</h4></div>
@@ -118,74 +128,76 @@
 						</tr>
 					</thead>
 					<tbody>
+						<?php 
+						if(!empty($recentOrder))
+						{
+							foreach ($recentOrder as $order) 
+							{
+						?>
 						<tr>
-							<td><span class="badge badge-info text-uppercase">Out to Talent</span>	</td>
-							<td>Order #9709 - Morgan Walkup <br>August 21st, 2018 at 1:03 PM , 7 pages</td>
-							<td>Assigned To:<br>Anne Brown</td>
-							<td><span class="badge badge-success text-uppercase">Paid</span></td>
+							<td><span class="badge badge-info text-uppercase"><?php echo $order['ostat_text'];?></span>	</td>
+							<td><span class="text-primary">Order #<?php echo $order['order_id'];?> - <?php echo $order['cust_name'];?></span> <br><?php 
+							echo date("F dS, Y", local_time($order["order_date"]) );
+							if(!$order["is_date_mod"])
+							{
+								echo ' at '.date("g:i A " , local_time($order["order_date"]) ); 
+							}
+							?> , 
+							<?php 
+								if(!empty($order['pages'])){
+									echo $order['pages'][0]['pages'];
+								}
+
+							?> pages</td>
+							<td class="text-primary">Assigned To:<br><?php echo $order['user_fname'];?> <?php echo $order['user_lname'];?></td>
+							<td>
+								<?php 
+								if($order["invoice_stat"]==3)
+									{ ?>
+						            <img src="<?php echo base_url();?>assets/images/paid.gif" width="30" height="31" onclick="openPaidwin(<?php echo $order["order_id"]; ?>);" style="cursor:pointer;"/>
+									<?php 
+									} else if($order['isAutoInvoice'] == 'Y' && $order["invoice_stat"]==2) {
+									?>
+									<a href=""><img src="<?php echo base_url();?>assets/images/resend.png" width="28" height="22" style="cursor:pointer;"/></a>
+									<?php echo $order["in_status_text"]; ?>
+									<?php 
+									} 
+									?>
+
+							</td>
 							<td>
 								<select name="ostat_1" id="ostat_1" onchange="checkSatus(1,9709)" class=" form-control form-control-sm">
-								<option value="1" style="background-color:#DFECFD;">Received</option>
-								<option value="2" selected="selected" style="background-color:#DFECFD;">Out to Talent</option>
-								<option value="3" style="background-color:#DFECFD;">Audio Received</option>
-								<option value="4" style="background-color:#DFECFD;">Pickups</option>
-								<option value="5" style="background-color:#DFECFD;">Sent to Client</option>
-								<option value="6" style="background-color:#94c500;">Completed</option>
+								<?php
+									$selected = $order["status"];
+								    foreach($oStatus as $ostatrow)
+								    {
+								        $showSelected = '';
+										$disableOldStat = '';
+								        if($selected == $ostatrow['ostat_id'])    
+								        {
+								            $showSelected = 'selected="selected"';
+								        }
+										if($selected >= $ostatrow['ostat_id'])
+										{
+											$disableOldStat = 'disabled="disabled"';
+										}
+										if($ostatrow['ostat_id']==6)
+											$statColor = '#94c500';
+										else	
+											$statColor = '#DFECFD';
+								?>
+								    <option value="<?=$ostatrow['ostat_id']?>" <?=$showSelected?> style="background-color:<?=$statColor?>;" ><?=$ostatrow['ostat_text']?></option>
+								<?php
+								    }
+								?>    
 								</select>
 							</td>
 							<td><a href="#" class="btn btn-info btn-sm"> View <i class="fas fa-eye"></i></a></td>
 						</tr>
-						<tr>
-							<td><span class="badge badge-info text-uppercase">Out to Talent</span>	</td>
-							<td>Order #9709 - Morgan Walkup <br>August 21st, 2018 at 1:03 PM , 7 pages</td>
-							<td>Assigned To:<br>Anne Brown</td>
-							<td><span class="badge badge-success text-uppercase">Paid</span></td>
-							<td>
-								<select name="ostat_1" id="ostat_1" onchange="checkSatus(1,9709)" class=" form-control form-control-sm">
-								<option value="1" style="background-color:#DFECFD;">Received</option>
-								<option value="2" selected="selected" style="background-color:#DFECFD;">Out to Talent</option>
-								<option value="3" style="background-color:#DFECFD;">Audio Received</option>
-								<option value="4" style="background-color:#DFECFD;">Pickups</option>
-								<option value="5" style="background-color:#DFECFD;">Sent to Client</option>
-								<option value="6" style="background-color:#94c500;">Completed</option>
-								</select>
-							</td>
-							<td><a href="#" class="btn btn-info btn-sm"> View <i class="fas fa-eye"></i></a></td>
-						</tr>
-						<tr>
-							<td><span class="badge badge-info text-uppercase">Out to Talent</span>	</td>
-							<td>Order #9709 - Morgan Walkup <br>August 21st, 2018 at 1:03 PM , 7 pages</td>
-							<td>Assigned To:<br>Anne Brown</td>
-							<td><span class="badge badge-info text-uppercase">Received</span></td>
-							<td>
-								<select name="ostat_1" id="ostat_1" onchange="checkSatus(1,9709)" class=" form-control form-control-sm">
-								<option value="1" style="background-color:#DFECFD;">Received</option>
-								<option value="2" selected="selected" style="background-color:#DFECFD;">Out to Talent</option>
-								<option value="3" style="background-color:#DFECFD;">Audio Received</option>
-								<option value="4" style="background-color:#DFECFD;">Pickups</option>
-								<option value="5" style="background-color:#DFECFD;">Sent to Client</option>
-								<option value="6" style="background-color:#94c500;">Completed</option>
-								</select>
-							</td>
-							<td><a href="#" class="btn btn-info btn-sm"> View <i class="fas fa-eye"></i></a></td>
-						</tr>
-						<tr>
-							<td><span class="badge badge-info text-uppercase">Out to Talent</span>	</td>
-							<td>Order #9709 - Morgan Walkup <br>August 21st, 2018 at 1:03 PM , 7 pages</td>
-							<td>Assigned To:<br>Anne Brown</td>
-							<td><span class="badge badge-success text-uppercase">Paid</span></td>
-							<td>
-								<select name="ostat_1" id="ostat_1" onchange="checkSatus(1,9709)" class=" form-control form-control-sm">
-								<option value="1" style="background-color:#DFECFD;">Received</option>
-								<option value="2" selected="selected" style="background-color:#DFECFD;">Out to Talent</option>
-								<option value="3" style="background-color:#DFECFD;">Audio Received</option>
-								<option value="4" style="background-color:#DFECFD;">Pickups</option>
-								<option value="5" style="background-color:#DFECFD;">Sent to Client</option>
-								<option value="6" style="background-color:#94c500;">Completed</option>
-								</select>
-							</td>
-							<td><a href="#" class="btn btn-info btn-sm"> View <i class="fas fa-eye"></i></a></td>
-						</tr>
+						<?php 
+							}
+						}
+						?>
 					  
 					</tbody>
 				  </table>
