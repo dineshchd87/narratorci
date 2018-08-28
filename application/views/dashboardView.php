@@ -68,7 +68,7 @@ function local_time($GMTtime, $localTZoffSet=false)
 						</div>
 						<div class="col-sm-3 mt-3">
 							<div class="btn-group-vertical">		
-								<a href="#" class="btn btn-outline-info">Customers</a>			
+								<a href="<?php echo base_url();?>customers" class="btn btn-outline-info">Customers</a>			
 								<a href="#" class="btn btn-outline-info">Talent	</a>		
 								<a href="#" class="btn btn-outline-info">Personnel	</a>	
 								<a href="#" class="btn btn-outline-info">Invoicing	</a>	
@@ -109,7 +109,7 @@ function local_time($GMTtime, $localTZoffSet=false)
 		<div class="row mt-4">
 			<div class="col-sm-12 mb-3">
 				<h5>Recent Orders On The Narrator Files	
-				<a href="#" class="btn btn-info float-right">View All Orders 
+				<a href="<?php echo base_url();?>orders?type=all" class="btn btn-info float-right">View All Orders 
 				<i class="fas fa-eye"></i></a>	</h5> 
 			</div>
 			<div class="col-sm-12">
@@ -118,9 +118,9 @@ function local_time($GMTtime, $localTZoffSet=false)
 					<thead class="thead-light">
 						<tr>
 							<th colspan="3">Show: 
-								<a href="#" class="btn btn-info btn-sm">Recent Orders</a>	
-								<a href="#" class="btn btn-info btn-sm">Completed Orders</a>
-								<a href="#" class="btn btn-info btn-sm">	New Orders</a>
+								<a href="<?php echo base_url();?>users/dashboard/recent" class="btn <?php  echo $class = ($orderType == '' || $orderType == 'recent') ? 'btn-secondary' : 'btn-info'; ?> btn-sm">Recent Orders</a>	
+								<a href="<?php echo base_url();?>users/dashboard/complete" class="btn <?php  echo $class = ($orderType == 'complete') ? 'btn-secondary' : 'btn-info'; ?> btn-sm">Completed Orders</a>
+								<a href="<?php echo base_url();?>users/dashboard/new" class="btn <?php  echo $class = ($orderType == 'new') ? 'btn-secondary' : 'btn-info'; ?> btn-sm">	New Orders</a>
 							</th>
 							<th>Invoice Status</th>
 							<th>Set Order Status</th>
@@ -132,10 +132,10 @@ function local_time($GMTtime, $localTZoffSet=false)
 						if(!empty($recentOrder))
 						{
 							foreach ($recentOrder as $order) 
-							{
+							{ 
 						?>
 						<tr>
-							<td><span class="badge badge-info text-uppercase"><?php echo $order['ostat_text'];?></span>	</td>
+							<td><span class="badge <?php  echo $class = ($order['ostat_text'] == 'Completed') ? 'badge-danger' : 'badge-primary'; ?> text-uppercase"><?php echo $order['ostat_text'];?></span>	</td>
 							<td><span class="text-primary">Order #<?php echo $order['order_id'];?> - <?php echo $order['cust_name'];?></span> <br><?php 
 							echo date("F dS, Y", local_time($order["order_date"]) );
 							if(!$order["is_date_mod"])
@@ -161,6 +161,8 @@ function local_time($GMTtime, $localTZoffSet=false)
 									<a href=""><img src="<?php echo base_url();?>assets/images/resend.png" width="28" height="22" style="cursor:pointer;"/></a>
 									<?php echo $order["in_status_text"]; ?>
 									<?php 
+									}else{
+										echo $order["in_status_text"];
 									} 
 									?>
 

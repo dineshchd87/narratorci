@@ -54,7 +54,7 @@ class Orders_model extends CI_Model {
      */
     public function getAllOrdres($limit, $start,$orderby,$dir,$condition){ 
 
-		$this->db->select('ordr.order_id,ordr.invoice_stat,ordr.order_date,ordr.isAutoInvoice,c.cust_name,otr.otr_id,otr.tlnt_id,GROUP_CONCAT(tlnt.tlnt_fname SEPARATOR ",") AS talents,SUM(srcpt.script_page) AS script_count');
+		$this->db->select('ordr.order_id,ordr.order_name,ordr.invoice_stat,ordr.order_date,ordr.order_discount,ordr.isAutoInvoice,c.cust_name,c.cust_title,c.cust_comp,c.cust_address1,c.cust_address2,c.cust_city,c.cust_state,c.cust_zip,c.cust_country,c.cust_email,c.cust_phone,otr.otr_id,otr.tlnt_id,GROUP_CONCAT(tlnt.tlnt_fname SEPARATOR ",") AS talents,SUM(srcpt.script_page) AS script_count,srcpt.script_name	');
         $this->db->from('nrf_orders ordr');
 		if(!empty($condition)){
 			if($condition['active']){
@@ -292,7 +292,7 @@ class Orders_model extends CI_Model {
      * @params          :   
      * @return          :   []
      */
-    public function getRecentOrder(){ 
+    public function getRecentOrder($orderType){ 
      $this->db->select('o.* ,c.*,t.ostat_text,u.*,ist.istat_text AS in_status_text');
         $this->db->from('nrf_orders AS o');
         $this->db->join('nrf_customers c', 'c.cust_id = o.order_customer', 'left');
@@ -300,8 +300,11 @@ class Orders_model extends CI_Model {
         $this->db->join('nrf_csrm csr', 'csr.user_id = o.order_csr', 'left');
         $this->db->join('nrf_users u', 'u.user_id = o.order_csr', 'left');
         $this->db->join('nrf_invoice_status_text ist', 'ist.istat_id = o.invoice_stat', 'left');
-        $this->db->order_by("order_id", "desc");
-        $this->db->limit(100);  
+        if($orderType == 'complete'){
+          $this->db->where('o.status',6);
+        }
+        $this->db->order_by("o.order_id", "desc");
+        $this->db->limit(5);  
         $recentOrder = $this->db->get()->result_array(); 
         //echo $this->db->last_query();
         if(!empty($recentOrder)){
