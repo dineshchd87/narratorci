@@ -93,7 +93,7 @@ function local_time($GMTtime, $localTZoffSet=false)
 					</tr>
 				</thead>
 			<tbody>
-			<?php foreach($orders as $order){ ?>
+			<?php if(isset($orders)){ foreach($orders as $order){ ?>
 			<tr>
 				<td class="details-control" id="<?php echo $order['order_id'];  ?>"></td>
 				<td><input type="checkbox" name="chkLoop[]" id="chkLoop"></td>
@@ -107,7 +107,17 @@ function local_time($GMTtime, $localTZoffSet=false)
 				</td>
                 <td> <?php if($order["invoice_stat"]==3){ ?><img src="<?php echo base_url();?>/assets/images/paid.gif" width="30" height="31" onclick="openPaidwin(9709);" style="cursor:pointer;"><?php }elseif($order["invoice_stat"]==2 && $order["isAutoInvoice"]=='Y'){?><a href=""><img src="<?php echo base_url();?>/assets/images/resend.png" width="28" height="22" style="cursor:pointer;"></a> <?php }else{ ?><?php } ?> <?php $totalPage=0; foreach($order["pages"] as $pages){  $totalPage=$totalPage+$pages['script_page']; } echo $totalPage; ?> Pages </td>
                 <td><?php echo $order['talents']; ?></td>
-                <td><select name='csrep_1' id='csrep_1' class='form-control form-control-sm'><option value='0'>Select a CSR</option><option value='10'>Anne Brown</option><option value='16'>Diego Pinto</option><option value='8'>Jack Braglia</option><option value='3' selected='selected'>Jack Courtney</option><option value='15'>Jake McEvoy</option><option value='14'>Khalil Abu-jamous</option><option value='12'>test ee</option></select></td>
+                <td> 
+				<?php  if(3 != $this->session->userdata('group_id')){ ?>
+					<select name='csrep_1' id='csrep_1' class='form-control form-control-sm'><option value='0'>Select a CSR</option><option value='10'>Anne Brown</option><option value='16'>Diego Pinto</option><option value='8'>Jack Braglia</option><option value='3' selected='selected'>Jack Courtney</option><option value='15'>Jake McEvoy</option><option value='14'>Khalil Abu-jamous</option><option value='12'>test ee</option></select>
+				<?php
+				}
+				else
+				{
+					echo $this->session->userdata('user_fname').' ' .$this->session->userdata('user_lname');
+				}
+				?>
+				</td>
 				<td><select name='ostat_1' id='ostat_1' class='form-control form-control-sm'><option value='1'>Received</option><option value='2'>Out to Talent</option><option value='3'>Audio Received</option><option value='4'>Pickups</option><option value='5'>Sent to Client</option><option value='6' selected='selected'>Completed</option></select></td>
             </tr>
 			<tr class="order-detail" id="detailRow-<?php echo $order['order_id'];  ?>"><td colspan="9">
@@ -173,10 +183,14 @@ function local_time($GMTtime, $localTZoffSet=false)
 			  </div>
 			</div>
 			</td></tr>
+			<?php } 
+			}else{ 
+			?>
+			<tr><td colspan="9" style="text-align:center;">No results found<td></tr>
 			<?php } ?>
 			</tbody>
 			</table>
-			<div class="col-sm-12 col-md-7"><?php echo $links; ?></div>
+			<?php if(isset($orders)){?> <div class="col-sm-12 col-md-7"><?php echo $links; ?></div> <?php } ?>
 		</div>	
 				
 				

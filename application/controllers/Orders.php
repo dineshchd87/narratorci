@@ -38,6 +38,7 @@ class Orders extends CI_Controller {
 		
 		$user = $this->session->userdata();
 		$params = array();
+		$data=array();
 		if(isset($_GET['type'])){
 			if($_GET['type']=='active'){
 				$condition= 'active';
