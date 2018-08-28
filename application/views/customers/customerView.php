@@ -1,37 +1,15 @@
 			<div class="col-sm-12 mt-4">
 				<div class="view-order form-inline">
-					<label class="label mr-3"><strong>Customers</strong> </label> 
+					<h2>Customers Management</h2> 
 					
 				</div>
 			</div>
-			<div class="col-sm-12 mt-2">
-				<p>Your orders are shown below. Click the plus icon next to an order to see its complete details.</p>
-			</div>
+			
 			<div class="col-sm-12">
 				<div class="row">
 					<div class="col-sm-4">
-						<a href="#" class="btn btn-info"><i class="fas fa-plus-circle"></i> Add an Order</a>
-					</div>
-					<div class="col-sm-8">
-						<form class="form-inline float-right" id="searchForm" action="#" method="get">
-						<div class="form-group mr-3">
-							<label class="mr-3"><strong>Search : </strong> </label> 	 	
-							<select name="searchField" id="searchField" class="form-control form-control-sm">
-								<option value="cust">Customer/ Client</option>
-								<option value="comp">Company</option>
-								<option value="tlnt">Talent</option>
-								<option value="csr">CSR</option>
-							</select>
-						</div>
-						<div class="form-group mr-3">
-						
-							<input type="text" name="searchWord" class="form-control form-control-sm"/>
-						</div>
-							<div class="form-group">
-						
-							<button type="submit" class="btn btn-primary btn-sm"><i class="fas fa-search"></i> Search</button>
-						</div>
-						</form>
+						<a href="#" class="btn btn-info"><i class="fas fa-plus-circle"></i> Add Customer</a>
+                        <a href="#" class="btn btn-info"><i class="fas fa-cloud-download-alt"></i> Export Customers</a>
 					</div>
 				</div>
 			</div>
@@ -50,7 +28,22 @@
                 </div>
             </div>
 			<div class="col-sm-12 mt-4">
-				<table id="customerTable" class="table display table-striped table-bordered" style="width:100%">
+                    <div id="example_wrapper">
+                        
+                        <div class="yyyyyyyyyyyy"></div>
+                    </div>
+                <form class="form-inline float-right" id="searchForm" action="#" method="get">
+                        <div class="form-group mr-3">
+                            <label class="mr-3"><strong>Manage : </strong> </label>         
+                            <select name="searchField" id="searchField" class="form-control form-control-sm">
+                                <option value="cust">Customers</option>
+                                <option value="comp">Voice Talent</option>
+                                <option value="tlnt">Personnel</option>
+                                <option value="csr">Managers</option>
+                            </select>
+                        </div>
+                        </form>
+                <table id="customerTable" class="table display table-striped table-bordered" style="width:100%">
                 <thead>
                     <tr>
                         <th>Name</th>
@@ -76,10 +69,10 @@
                             </select>
                          <td> 
                             <a data-toggle="modal" data-target="#deleteCustomerModal" data="<?php echo $customer['cust_id'];?>" href="javascript:void(0)" class="btn btn-danger btn-sm delete_btn">
-                               <i class="fas fa-times"></i> Remove
+                               <i class="fas fa-ban"></i> Delete
                             </a>
                             <a href="javascript:void(0)" class="btn btn-info btn-sm">
-                                <i class="fas fa-eye"></i>
+                                <i class="fas fa-edit"></i>
                                  Edit
                             </a>
                         </td>
@@ -162,10 +155,21 @@ Project Name: Intermediate Rigging	<br>
     }
 
 $(document).ready(function() {	
-	$('#customerTable').DataTable( {
+	var table = $('#customerTable').DataTable( {
         "order": [[ 3, "desc" ]],
-        "pagingType": "full_numbers"
+        "pagingType": "full_numbers",
+        "searching":   false,
+         "buttons": [  'excel' ]
     });
+
+   
+ 
+    table.buttons().container()
+        .appendTo( '#example_wrapper .yyyyyyyyyyyy' );
+
+
+
+
 
      $('#customerTable tbody').on('click', 'td.details-control', function () {
         var tr = $(this).closest('tr');

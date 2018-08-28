@@ -60,7 +60,12 @@ tr.shown td.details-control {
 .what-next{padding: 10px 0px; font-weight: bold; display: block;}
 
 .bg-green{background-color: #94c500;}
-
+.editAccount{
+	margin: auto;
+}
+.editAccount h3{
+	margin: 20px 0;
+}
 
 /**=== FOOTER CSS ===**/
 .footer-nav ul {
