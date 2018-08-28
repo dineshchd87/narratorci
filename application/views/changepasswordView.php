@@ -1,54 +1,63 @@
-<section id="content">
+<section id="content" class="col-sm-12">
 				<div class="editAccount">
-					
-					<h3>Edit Account Info</h3>
 					<form action="<?php echo base_url();?>users/changepassword" method="post" class="editform">
-						<div class="form-row">
-							<div class="width100">
-								<h1>Change Your Access Password</h1>
+						<div class="row form-group">
+							<div class="col-sm-9 offset-sm-3">
+								<h3>Change Your Access Password</h3>
 							</div>
-							<div class="width100">
-								<?php if($this->session->flashdata('errorMsg')){ ?>
-								<h1 style="text-align: center;color:#BC371A"><?php echo $this->session->flashdata('errorMsg'); } ?></h1>
+							<div class="col-sm-12">
+									<?php if($this->session->flashdata('errorMsg')){ ?>
+								<div class="alert alert-danger alert-dismissible">
+									<button type="button" class="close" data-dismiss="alert">&times;</button>
+									<strong>Error!</strong><?php echo $this->session->flashdata('errorMsg'); ?>
+								</div>
+								<?php } ?>
 								<?php if($this->session->flashdata('successMsg')){ ?>
-								<h1 style="text-align: center;color:green"><?php echo $this->session->flashdata('successMsg'); } ?></h1>
-							</div>
-							<div class="width40">
-								Current Password:*
-							</div>
-							<div class="width60">
-								<input type="password" value="<?php echo set_value('current_password'); ?>" name="current_password"  class="form-input" />
-							</div>
-							<div class="width100">
-              				<?php echo form_error('current_password', '<span class="error">', '</span>'); ?>
+								<div class="alert alert-success alert-dismissible">
+									<button type="button" class="close" data-dismiss="alert">&times;</button>
+									<strong>Success!</strong><?php echo $this->session->flashdata('successMsg'); ?>
+								</div>
+								<?php } ?>
 							</div>
 						</div>
-						<div class="form-row">
-							<div class="width40">
-							New Password:*
+						<div class="row form-group">
+							<div class="col-sm-3 text-right">
+								Current Password: <span class="text-danger">*</span>
 							</div>
-							<div class="width60">
-								<input type="password"  value="<?php echo set_value('new_password'); ?>" name="new_password" class="form-input" />
+							<div class="col-sm-5">
+								<input type="password" value="<?php echo set_value('current_password'); ?>" name="current_password"  class="form-control" />
 							</div>
-							<div class="width100">
-							<?php echo form_error('new_password', '<span class="error">', '</span>'); ?>
-							</div>
-						</div>
-						<div class="form-row">
-							<div class="width40">
-								Confirm New Password:*
-							</div>
-							<div class="width60">
-								<input type="password"  value="<?php echo set_value('confirm_password'); ?>" name="confirm_password" class="form-input" />
-							</div>
-							<div class="width100">
-							<?php echo form_error('confirm_password', '<span class="error">', '</span>'); ?>
+							<div class="col-sm-12 offset-sm-3">
+              				<?php echo form_error('current_password', '<span class="text-danger">', '</span>'); ?>
 							</div>
 						</div>
-						<div class="form-row">
-							<div class="width25">
-								<a href="<?php echo base_url();?>users/profile" class="button button-right button-aqua">Back</a>
-								<input type="submit" class="button button-aqua" value="submit"/>
+						<div class="row form-group">
+							<div class="col-sm-3 text-right">
+							New Password: <span class="text-danger">*</span>
+							</div>
+							<div class="col-sm-5">
+								<input type="password"  value="<?php echo set_value('new_password'); ?>" name="new_password" class="form-control" />
+							</div>
+							<div class="col-sm-12 offset-sm-3">
+							<?php echo form_error('new_password', '<span class="text-danger">', '</span>'); ?>
+							</div>
+						</div>
+						<div class="row form-group">
+							<div class="col-sm-3 text-right">
+								Confirm New Password: <span class="text-danger">*</span>
+							</div>
+							<div class="col-sm-5">
+								<input type="password"  value="<?php echo set_value('confirm_password'); ?>" name="confirm_password" class="form-control" />
+							</div>
+							<div class="col-sm-9 offset-sm-3">
+							<?php echo form_error('confirm_password', '<span class="text-danger">', '</span>'); ?>
+							</div>
+						</div>
+						<div class="row form-group">
+							<div class="col-sm-9 offset-sm-3">
+								<button type="submit" class="btn btn-info mr-2" value="Save"><i class="fas fa-save"></i> Save</button>
+								<a href="<?php echo base_url();?>users/profile" class="btn btn-outline-info"><i class="fas fa-arrow-left"></i> Back</a>
+								
 							</div>
 						</div>
 					</form>
