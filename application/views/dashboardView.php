@@ -21,7 +21,7 @@ function local_time($GMTtime, $localTZoffSet=false)
 								<h6 class="what-next">What's Next</h5>
 							</div>
 							<div class="left-box-1">
-								<a href="<?php echo base_url();?>orders?type=all" class="btn btn-info"> 
+								<a href="<?php echo base_url();?>orders/10/1?type=all" class="btn btn-info"> 
 								<i class="fas fa-edit"></i> Manage Orders</a>	
 								<a href="#" class="btn btn-info">
 								<i class="fas fa-plus-circle"></i> Add an Order</a>	
