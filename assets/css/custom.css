@@ -31,6 +31,12 @@ td.details-control {
 tr.shown td.details-control {
     background: url(../images/details_close.png) no-repeat center center;
 }
+.country-name{
+	margin:5px;
+}
+.flag-image{
+	margin:5px;
+}
 .order-detail{
 	display:none;
 }

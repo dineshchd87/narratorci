@@ -60,7 +60,7 @@ class Users_model extends CI_Model {
           $userInfo = $this->db->get()->result_array(); 
           //echo $this->db->last_query();
           if(!empty($userInfo)){
-			   //$this->createTableRecords($userInfo);
+			  //$this->createTableRecords($userInfo);
               return $userInfo;
           }else{
               return array();
