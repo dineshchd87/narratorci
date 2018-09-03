@@ -145,7 +145,8 @@ $(document).ready(function() {
         .appendTo( '#export_buttons' );
 
 
-     $('#customerTable tbody').on('click', 'td.details-control', function () { 
+     //$('#customerTable tbody').on('click', 'td.details-control', function () { 
+        $('body').on('click', 'td.details-control', function() {
         var customerId = $(this).attr('data');
         var tr = $(this).closest('tr');
         var row = table.row( tr );
@@ -165,11 +166,14 @@ $(document).ready(function() {
              });
              $.ajax({url: "<?php echo base_url();?>customers/get_revenue_details/"+customerId, 
                 success: function(result){
-                    var obj = jQuery.parseJSON(result);
                     swal.close();
-                    var totalVal = parseInt(obj[0]['totalval']).toFixed(2);
-                    totalVal = totalVal.replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
-                    $('#revenuVal_'+customerId).html('$'+totalVal);
+                    if(result != ""){
+                        var obj = jQuery.parseJSON(result);
+                        var totalVal = parseInt(obj[0]['totalval']).toFixed(2);
+                        totalVal = totalVal.replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,"); 
+                        $('#revenuVal_'+customerId).html('$'+totalVal);
+                    } 
+                    
                     row.child( $('#record_'+customerId).html()).show();
                     tr.addClass('shown');
                     tr.next().addClass('created-new-row');
@@ -179,7 +183,7 @@ $(document).ready(function() {
     } );
 
      //===delete customer=======================
-     $('.delete_btn').click(function(){
+     $('body').on('click', '.delete_btn', function() {
         var selectedCustomer = $(this).attr('data');
         $('#selectedCustomer').val();
         swal({
@@ -203,7 +207,7 @@ $(document).ready(function() {
      });
 
 
-      $('.change_status_btn').change(function(){
+    $('body').on('change', '.change_status_btn', function() {
         var selectedCustomer = $(this).attr('data');
         var status_type = $(this).val();
         $.ajax({url: "<?php echo base_url();?>customers/updateStatus/"+selectedCustomer, 
