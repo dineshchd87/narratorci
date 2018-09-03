@@ -177,6 +177,7 @@ $(document).ready(function() {
                     row.child( $('#record_'+customerId).html()).show();
                     tr.addClass('shown');
                     tr.next().addClass('created-new-row');
+                    tr.next().attr('id','created_new_row_'+customerId);
                 }
             }); 
         }
@@ -200,6 +201,7 @@ $(document).ready(function() {
             $.ajax({url: "<?php echo base_url();?>customers/deleteCustomer/"+selectedCustomer, 
                 success: function(result){
                     $('#customerRow_'+selectedCustomer).remove();
+                    $('#created_new_row_'+selectedCustomer).remove();
                     swal("Deleted!", "Customer deleted successfully.", "success");
                 }
             });
