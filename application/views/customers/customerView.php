@@ -1,38 +1,31 @@
-			<div class="col-sm-12 mt-4">
+            <div class="col-sm-12 mt-4">
 				<div class="view-order form-inline">
 					<h2>Customers Management</h2> 
-					
 				</div>
+                <div class="col-sm-12">
+                    <?php if($this->session->flashdata('errorMsg')){ ?>
+                    <div class="alert alert-danger alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        <strong>Error!</strong><?php echo $this->session->flashdata('errorMsg'); ?>
+                    </div>
+                    <?php } ?>
+                    <?php if($this->session->flashdata('successMsg')){ ?>
+                    <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        <strong>Success!</strong><?php echo $this->session->flashdata('successMsg'); ?>
+                    </div>
+                    <?php } ?>
+                    
+                </div>
 			</div>
 			
 			<div class="col-sm-12">
 				<div class="row">
-					<div class="col-sm-4">
-						<a href="#" class="btn btn-info"><i class="fas fa-plus-circle"></i> Add Customer</a>
-                        <a href="#" class="btn btn-info"><i class="fas fa-cloud-download-alt"></i> Export Customers</a>
-					</div>
+					<div class="col-sm-4" id="export_buttons"></div>
 				</div>
 			</div>
-            <div id="delete_success_msg" class="col-sm-12 mt-4" style="text-align: center; display:none;">
-    			<div class="alert alert-success fade in alert-dismissible show">
-                         <button style="margin-top: -5px;" type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <!--<span aria-hidden="true" style="font-size:20px">×</span>-->
-                          </button>    <strong>Success!</strong> Customer deleted successfully.
-                </div>
-            </div>
-             <div id="status_success_msg" class="col-sm-12 mt-4" style="text-align: center; display:none;">
-                <div class="alert alert-success fade in alert-dismissible show">
-                         <button style="margin-top: -5px;" type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <!--<span aria-hidden="true" style="font-size:20px">×</span>-->
-                          </button>    <strong>Success!</strong> Status updated successfully.
-                </div>
-            </div>
 			<div class="col-sm-12 mt-4">
-                    <div id="example_wrapper">
-                        
-                        <div class="yyyyyyyyyyyy"></div>
-                    </div>
-                <form class="form-inline float-right" id="searchForm" action="#" method="get">
+                     <form class="form-inline float-right" id="searchForm" action="" method="get">
                         <div class="form-group mr-3">
                             <label class="mr-3"><strong>Manage : </strong> </label>         
                             <select name="searchField" id="searchField" class="form-control form-control-sm">
@@ -42,10 +35,12 @@
                                 <option value="csr">Managers</option>
                             </select>
                         </div>
+                        <a href="<?php echo base_url();?>customers/add" class="btn btn-info"><i class="fas fa-plus-circle"></i> Add Customer</a>
                         </form>
                 <table id="customerTable" class="table display table-striped table-bordered" style="width:100%">
                 <thead>
                     <tr>
+                        <th></th>
                         <th>Name</th>
                         <th>Email Address</th>
                         <th>Phone</th>
@@ -55,10 +50,12 @@
                 </thead>
                 <tbody>
                     <?php
-                            if(!empty($allCustomers)){ //echo "<pre>"; print_r($allCustomers); die;
+                            if(!empty($allCustomers)){ 
                                 foreach ($allCustomers as $customer) {
                         ?>
+                    
                     <tr id="customerRow_<?php echo $customer['cust_id'];?>">
+                        <td class="details-control" data="<?php echo $customer['cust_id'];?>" id="<?php echo $customer['cust_id'];?>"></td>
                          <td><?php echo stripslashes($customer['cust_name']);?></td>
                          <td><a href="mailto:<?php echo $customer["cust_email"]; ?>" title="<?php echo $customer["cust_email"]; ?>"><?php echo $customer["cust_email"]; ?></a></td>
                          <td><?php echo $customer['cust_phone'];?></td>
@@ -69,141 +66,140 @@
                             </select>
                          <td> 
                             <a data-toggle="modal" data-target="#deleteCustomerModal" data="<?php echo $customer['cust_id'];?>" href="javascript:void(0)" class="btn btn-danger btn-sm delete_btn">
-                               <i class="fas fa-ban"></i> Delete
+                               <i class="fas fa-trash"></i> Delete
                             </a>
-                            <a href="javascript:void(0)" class="btn btn-info btn-sm">
+                            <a href="<?php echo base_url();?>customers/edit/<?php echo $customer['cust_id'];?>" class="btn btn-info btn-sm">
                                 <i class="fas fa-edit"></i>
                                  Edit
                             </a>
+
+                            <div id="record_<?php echo $customer['cust_id'];?>" style="display: none;">
+                               <div class="container">
+                                    <div class="row">
+                                        <div class="col-sm mycontent-left">
+                                            <?php 
+                                                echo $customer["cust_title"].'<br/>';
+                                                echo $customer["cust_comp"];
+                                                ?>
+                                        </div>
+                                        <div class="col-sm mycontent-left">
+                                             <div style="line-height:16px;">
+                                                <?php echo $customer["cust_address1"];?>
+                                                    
+                                                </div>
+                                            <div style="line-height:16px;">
+                                                <?php
+                                                    echo $customer["cust_city"].', ';
+                                                    echo $customer["cust_state"].' ';
+                                                    echo $customer["cust_zip"];
+                                                ?>
+                                            </div>
+                                            <div style="line-height:16px;"><?php echo $customer["country"];?></div>
+                                        </div>
+                                        <div class="col-sm" id="revenuVal_<?php echo $customer['cust_id'];?>"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+
                         </td>
                     </tr>
+
                      <?php
                        }
-                   }
+                   }else{
                     ?>
+                    <tr>
+                        <td colspan="6">
+                             <div style="text-align: center;" class="alert alert-danger alert-dismissible">
+                                <strong>Sorry!</strong> No records found.
+                            </div>
+                        </td>
+                    </tr>
+                    <?php } ?>
                 </tbody>
             </table>
 				
 			
 			</div>	
-				
-				
-					<div class="row-details rd_1" style="display:none;">
-							<div class="cl-d1">
-								<div class="width40">
-									<label>Customer Details:</label>
-									<textarea name="textarea" class="text" id="comment_1"></textarea>
-									<label>Order Discount</label>
-									<div class="width100">
-									$0.00/page
-									<img src="images/page_white_edit.png" id="discedit_1" class="editimg"></div>
-								</div>
-								<div class="width60">
-								Dominique Valdez<br>
-								Director of Operations - eSystem Training Solutions<br><br>
-
-								<img src="images/flags/US.gif" class="countryFlagImg">United States<br><br>
-								dv@esystemtraining.com<br>
-								832-632-2805<br>
-								</div>
-							</div>
-							<div class="cl-d2">
-								
-<label>Order Details</label>
-Project Name: Intermediate Rigging	<br>
-<a href="mailto:rachael@rachaelwesttalent.com" title="rachael@rachaelwesttalent.com">Rachael West</a><br>
- 	- 43 pages - <a href="#">1271829884-T_6-Intermediate Rigging Script.pdf</a><br>
- 
-							</div>
-							<div class="cl-d3">
-								
-<label>Order History</label>
-04/21/2010    --   Received<br>
-04/20/2010    --   Out to Talent<br>
-04/20/2010    --   Invoiced<br>
-04/21/2010    --   Paid<br>
-04/22/2010    --   Audio Received<br>
-04/23/2010    --   Sent to Client<br>
-04/23/2010    --   Completed<br>
-							</div>
-						</div>
-					
-<!-- The delete customer modal -->
-<div class="modal" id="deleteCustomerModal">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">Note!</h4>
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-      </div>
-      <div class="modal-body">
-        <b>Are you sure you want to delete this imagnary data ?</b>
-        <input id="selectedCustomer" type="hidden" value=""  />
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal" >N0</button>
-        <button id="proceed_delete_btn" type="button" class="btn btn-primary btn-sm" >Yes</button>
-      </div>
-
-    </div>
-  </div>
-</div>					
 
 <script>
-    function format ( d ) {
-        return '<span>test</span>'
-    }
-
 $(document).ready(function() {	
 	var table = $('#customerTable').DataTable( {
-        "order": [[ 3, "desc" ]],
+        //"order": [[ 1, "desc" ]],
         "pagingType": "full_numbers",
         "searching":   false,
-         "buttons": [  'excel' ]
+        // "processing": true,
+       // "serverSide": true,
+        //"ajax": "<?php //echo base_url();?>customers",
+         "buttons": [  
+         { 
+            extend: 'excel', 
+             text: '<i class="fas fa-cloud-download-alt"></i> Export Customers',
+              init: function(api, node, config) {
+                   $(node).addClass('btn-info')
+                } 
+         } ]
     });
-
-   
- 
     table.buttons().container()
-        .appendTo( '#example_wrapper .yyyyyyyyyyyy' );
+        .appendTo( '#export_buttons' );
 
 
-
-
-
-     $('#customerTable tbody').on('click', 'td.details-control', function () {
+     $('#customerTable tbody').on('click', 'td.details-control', function () { 
+        var customerId = $(this).attr('data');
         var tr = $(this).closest('tr');
         var row = table.row( tr );
  
         if ( row.child.isShown() ) {
-            // This row is already open - close it
             row.child.hide();
             tr.removeClass('shown');
         }
         else {
-            // Open this row
-            row.child( format(row.data()) ).show();
-            tr.addClass('shown');
+           // row.child( format(row.data()) ).show();
+             swal({
+                title: "Please wait!",
+                text: "Loading...",
+                type: "info",
+                showCancelButton: false,
+                showConfirmButton: false
+             });
+             $.ajax({url: "<?php echo base_url();?>customers/get_revenue_details/"+customerId, 
+                success: function(result){
+                    var obj = jQuery.parseJSON(result);
+                    swal.close();
+                    var totalVal = parseInt(obj[0]['totalval']).toFixed(2);
+                    totalVal = totalVal.replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+                    $('#revenuVal_'+customerId).html('$'+totalVal);
+                    row.child( $('#record_'+customerId).html()).show();
+                    tr.addClass('shown');
+                    tr.next().addClass('created-new-row');
+                }
+            }); 
         }
     } );
 
      //===delete customer=======================
      $('.delete_btn').click(function(){
-        $('#selectedCustomer').val($(this).attr('data'));
-     });
-
-      $('#proceed_delete_btn').click(function(){
-         var selectedCustomer = $('#selectedCustomer').val();
-         $.ajax({url: "<?php echo base_url();?>customers/deleteCustomer/"+selectedCustomer, 
-            success: function(result){
-                $('#delete_success_msg').css('display','block');
-                $('#customerRow_'+selectedCustomer).remove();
-                setTimeout(function(){ 
-                    $('#delete_success_msg').css('display','none');
-                 }, 2000);
-            }
+        var selectedCustomer = $(this).attr('data');
+        $('#selectedCustomer').val();
+        swal({
+          title: "Are you sure?",
+          text: "You want to delete this customer.",
+          type: "warning",
+          showCancelButton: true,
+          confirmButtonClass: "btn-danger",
+          confirmButtonText: "Yes",
+          cancelButtonText: "No",
+          closeOnConfirm: false
+        },
+        function(){
+            $.ajax({url: "<?php echo base_url();?>customers/deleteCustomer/"+selectedCustomer, 
+                success: function(result){
+                    $('#customerRow_'+selectedCustomer).remove();
+                    swal("Deleted!", "Customer deleted successfully.", "success");
+                }
+            });
         });
-         $('#deleteCustomerModal').modal('toggle');
      });
 
 
@@ -214,13 +210,13 @@ $(document).ready(function() {
             type: "POST",
              data : { type : status_type },
             success: function(result){
-                console.log(result);
-                $('#status_success_msg').css('display','block');
-                setTimeout(function(){ 
-                    $('#status_success_msg').css('display','none');
-                 }, 2000);
+                    swal({
+                      title: "Sweet!",
+                      text: "Customer status updated successfully.",
+                      imageUrl: '<?php echo base_url();?>assets/images/thumbs-up.jpg'
+                    });
             }
         });
      });
 });
-</script>
+</script>  

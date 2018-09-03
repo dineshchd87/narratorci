@@ -98,3 +98,18 @@ tr.shown td.details-control {
 
 }
 
+.logo a img{
+   margin-top: -2px;
+}
+
+input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 1000px white inset !important;
+}
+
+.mycontent-left {
+  border-right: 1px dashed #333;
+}
+
+.created-new-row{
+    background: #b8e6a6 !important;
+}
