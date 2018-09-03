@@ -128,7 +128,7 @@ $(document).ready(function() {
 	var table = $('#customerTable').DataTable( {
         //"order": [[ 1, "desc" ]],
         "pagingType": "full_numbers",
-        "searching":   false,
+        "searching":   true,
         // "processing": true,
        // "serverSide": true,
         //"ajax": "<?php //echo base_url();?>customers",
