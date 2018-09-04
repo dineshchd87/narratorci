@@ -165,6 +165,7 @@ $(document).ready(function() {
 
      //===delete customer=======================
      $('body').on('click', '.delete_btn', function() {
+      return false;
         var selectedUser = $(this).attr('data');
         var selectedCsr = $(this).attr('data-target');
         swal({
