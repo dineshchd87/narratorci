@@ -1,6 +1,6 @@
             <div class="col-sm-12 mt-4">
 				<div class="view-order form-inline">
-					<h2>Customers Management</h2> 
+					<h2>CS Representative Management</h2> 
 				</div>
                 <div class="col-sm-12">
                     <?php if($this->session->flashdata('errorMsg')){ ?>
@@ -29,20 +29,22 @@
                         <div class="form-group mr-3">
                             <label class="mr-3"><strong>Manage : </strong> </label>         
                             <select data="<?php echo base_url();?>" name="searchField" id="searchField" class="form-control form-control-sm manage_page">
-                                <option selected value="customers">Customers</option>
+                                <option value="customers">Customers</option>
                                 <option value="talents">Voice Talent</option>
-                                <option value="representative">Personnel</option>
+                                <option value="representative" selected>Personnel</option>
                                 <option value="managers">Managers</option>
                             </select>
                         </div>
-                        <a href="<?php echo base_url();?>customers/add" class="btn btn-info"><i class="fas fa-plus-circle"></i> Add Customer</a>
+                        <!--<a href="<?php //echo base_url();?>representative/add" class="btn btn-info"><i class="fas fa-plus-circle"></i> Add CS Representative</a>-->
+                        <a href="javascript:void(0)" class="btn btn-info"><i class="fas fa-plus-circle"></i> Add CS Representative</a>
                         </form>
-                <table id="customerTable" class="table display table-striped table-bordered" style="width:100%">
+                <table id="csrTable" class="table display table-striped table-bordered" style="width:100%">
                 <thead>
                     <tr>
                         <th></th>
                         <th>Name</th>
                         <th>Email Address</th>
+                         <th>Rate</th>
                         <th>Phone</th>
                         <th>Status</th>
                         <th>Action</th>
@@ -50,53 +52,50 @@
                 </thead>
                 <tbody>
                     <?php
-                            if(!empty($allCustomers)){ 
-                                foreach ($allCustomers as $customer) {
+                            if(!empty($allCsr)){ 
+                                foreach ($allCsr as $csr) {
                         ?>
                     
-                    <tr id="customerRow_<?php echo $customer['cust_id'];?>">
-                        <td class="details-control" data="<?php echo $customer['cust_id'];?>" id="<?php echo $customer['cust_id'];?>"></td>
-                         <td><?php echo stripslashes($customer['cust_name']);?></td>
-                         <td><a href="mailto:<?php echo $customer["cust_email"]; ?>" title="<?php echo $customer["cust_email"]; ?>"><?php echo $customer["cust_email"]; ?></a></td>
-                         <td><?php echo $customer['cust_phone'];?></td>
+                    <tr id="csrRow_<?php echo $csr['csrm_id'];?>">
+                        <td class="details-control" data="<?php echo $csr['csrm_id'];?>" id="<?php echo $csr['csrm_id'];?>"></td>
+                         <td><?php echo $csr["user_fname"].' '.$csr["user_lname"];?></td>
+                         <td><a href="mailto:<?php echo $csr["user_email"]; ?>" title="<?php echo $csr["user_email"]; ?>"><?php echo $csr["user_email"]; ?></a></td>
+                         <td><?php echo $csr['csrm_rate'];?></td>
+                         <td><?php echo $csr['user_phone'];?></td>
                          <td>
-                             <select data="<?php echo $customer['cust_id'];?>" class="form-control change_status_btn" id="customerStatus_<?php echo $customer['cust_id'];?>">
-                             <option value="Y" <?php if($customer['is_active'] == "Y"){ ?> selected="selected" <?php } ?>>Active</option>
-                            <option value="N" <?php if($customer['is_active'] == "N"){?> selected="selected" <?php } ?>>Inactive</option>
+                             <select data="<?php echo $csr['user_id'];?>" class="form-control change_status_btn" id="customerStatus_<?php echo $csr['user_id'];?>">
+                             <option value="Y" <?php if($csr['is_active'] == "Y"){ ?> selected="selected" <?php } ?>>Active</option>
+                            <option value="N" <?php if($csr['is_active'] == "N"){?> selected="selected" <?php } ?>>Inactive</option>
                             </select>
                          <td> 
-                            <a data-toggle="modal" data-target="#deleteCustomerModal" data="<?php echo $customer['cust_id'];?>" href="javascript:void(0)" class="btn btn-danger btn-sm delete_btn">
+                          <a data-toggle="modal" data-target="<?php echo $csr['csrm_id'];?>" data="<?php echo $csr['user_id'];?>" href="javascript:void(0)" class="btn btn-dark btn-sm">
+                               <i class="fas fa-edit"></i> Change Password
+                            </a>
+                            <a data-toggle="modal" data-target="<?php echo $csr['csrm_id'];?>" data="<?php echo $csr['user_id'];?>" href="javascript:void(0)" class="btn btn-danger btn-sm delete_btn">
                                <i class="fas fa-trash"></i> Delete
                             </a>
-                            <a href="<?php echo base_url();?>customers/edit/<?php echo $customer['cust_id'];?>" class="btn btn-info btn-sm">
+                            <a href="<?php echo base_url();?>customers/edit/<?php echo $csr['csrm_id'];?>" class="btn btn-info btn-sm">
                                 <i class="fas fa-edit"></i>
                                  Edit
                             </a>
 
-                            <div id="record_<?php echo $customer['cust_id'];?>" style="display: none;">
+                            <div id="record_<?php echo $csr['csrm_id'];?>" style="display: none;">
                                <div class="container">
                                     <div class="row">
                                         <div class="col-sm mycontent-left">
-                                            <?php 
-                                                echo $customer["cust_title"].'<br/>';
-                                                echo $customer["cust_comp"];
-                                                ?>
-                                        </div>
-                                        <div class="col-sm mycontent-left">
-                                             <div style="line-height:16px;">
-                                                <?php echo $customer["cust_address1"];?>
-                                                    
-                                                </div>
-                                            <div style="line-height:16px;">
+                                           <?php echo $csr["csrm_address1"];?>
+                                           <div >
                                                 <?php
-                                                    echo $customer["cust_city"].', ';
-                                                    echo $customer["cust_state"].' ';
-                                                    echo $customer["cust_zip"];
+                                                    echo $csr["csrm_city"].', ';
+                                                    echo $csr["csrm_state"].' ';
+                                                    echo $csr["csrm_zip"];
                                                 ?>
                                             </div>
-                                            <div style="line-height:16px;"><?php echo $customer["country"];?></div>
+                                            <div ><?php echo $csr["country"];?></div>
                                         </div>
-                                        <div class="col-sm" id="revenuVal_<?php echo $customer['cust_id'];?>"></div>
+                                        <div class="col-sm mycontent-left">
+                                            User name: <?php echo $csr["user_name"];?><br>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -125,27 +124,27 @@
 
 <script>
 $(document).ready(function() {	
-	var table = $('#customerTable').DataTable( {
+	var table = $('#csrTable').DataTable( {
         //"order": [[ 1, "desc" ]],
         "pagingType": "full_numbers",
         "searching":   true,
         // "processing": true,
        // "serverSide": true,
         //"ajax": "<?php //echo base_url();?>customers",
-         "buttons": [  
+         /*"buttons": [  
          { 
             extend: 'excel', 
              text: '<i class="fas fa-cloud-download-alt"></i> Export Customers',
               init: function(api, node, config) {
                    $(node).addClass('btn-info')
                 } 
-         } ]
+         } ]*/
     });
-    table.buttons().container()
-        .appendTo( '#export_buttons' );
+  /*  table.buttons().container()
+        .appendTo( '#export_buttons' );*/
 
 
-     //$('#customerTable tbody').on('click', 'td.details-control', function () { 
+     //$('#csrTable tbody').on('click', 'td.details-control', function () { 
         $('body').on('click', 'td.details-control', function() {
         var customerId = $(this).attr('data');
         var tr = $(this).closest('tr');
@@ -156,36 +155,18 @@ $(document).ready(function() {
             tr.removeClass('shown');
         }
         else {
-           // row.child( format(row.data()) ).show();
-             swal({
-                title: "Please wait!",
-                text: "Loading...",
-                type: "info",
-                showCancelButton: false,
-                showConfirmButton: false
-             });
-             $.ajax({url: "<?php echo base_url();?>customers/get_revenue_details/"+customerId, 
-                success: function(result){
-                    swal.close();
-                    if(result != ""){
-                        var obj = jQuery.parseJSON(result);
-                        var totalVal = parseInt(obj[0]['totalval']).toFixed(2);
-                        totalVal = totalVal.replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,"); 
-                        $('#revenuVal_'+customerId).html('$'+totalVal);
-                    } 
-                    
-                    row.child( $('#record_'+customerId).html()).show();
-                    tr.addClass('shown');
-                    tr.next().addClass('created-new-row');
-                    tr.next().attr('id','created_new_row_'+customerId);
-                }
-            }); 
+          // row.child( format(row.data()) ).show();
+          row.child( $('#record_'+customerId).html()).show();
+          tr.addClass('shown');
+          tr.next().addClass('created-new-row');
+          tr.next().attr('id','created_new_row_'+customerId); 
         }
     } );
 
      //===delete customer=======================
      $('body').on('click', '.delete_btn', function() {
-        var selectedCustomer = $(this).attr('data');
+        var selectedUser = $(this).attr('data');
+        var selectedCsr = $(this).attr('data-target');
         swal({
           title: "Are you sure?",
           text: "Really want to delete this record.",
@@ -197,11 +178,11 @@ $(document).ready(function() {
           closeOnConfirm: false
         },
         function(){
-            $.ajax({url: "<?php echo base_url();?>customers/deleteCustomer/"+selectedCustomer, 
+            $.ajax({url: "<?php echo base_url();?>representative/deleteUser/"+selectedUser, 
                 success: function(result){
-                    $('#customerRow_'+selectedCustomer).remove();
-                    $('#created_new_row_'+selectedCustomer).remove();
-                    swal("Deleted!", "Customer deleted successfully.", "success");
+                    $('#csrRow_'+selectedCsr).remove();
+                    $('#created_new_row_'+selectedCsr).remove();
+                    swal("Deleted!", "User deleted successfully.", "success");
                 }
             });
         });
@@ -209,15 +190,15 @@ $(document).ready(function() {
 
 
     $('body').on('change', '.change_status_btn', function() {
-        var selectedCustomer = $(this).attr('data');
+        var selectedUser = $(this).attr('data');
         var status_type = $(this).val();
-        $.ajax({url: "<?php echo base_url();?>customers/updateStatus/"+selectedCustomer, 
+        $.ajax({url: "<?php echo base_url();?>representative/updateStatus/"+selectedUser, 
             type: "POST",
              data : { type : status_type },
             success: function(result){
                     swal({
                       title: "Sweet!",
-                      text: "Customer status updated successfully.",
+                      text: "User status updated successfully.",
                       imageUrl: '<?php echo base_url();?>assets/images/thumbs-up.jpg'
                     });
             }
