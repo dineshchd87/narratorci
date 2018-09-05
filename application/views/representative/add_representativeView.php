@@ -4,7 +4,7 @@
 					<form autocomplete="off" action="<?php echo base_url();?>customers/add" method="post" class="add_customer_form">
 						<div class="form-group">
 							<div class="col-sm-10 offset-sm-2">
-								<h3>Add Customer</h3>
+								<h3>Add CS Representative</h3>
 							</div>
 							<div class="col-sm-12">
 								<?php if($this->session->flashdata('errorMsg')){ ?>
@@ -24,7 +24,7 @@
 						</div>
 							<div class="row form-group">
 								<div class="col-sm-3 text-right">
-									Title:
+									User name : <span class="text-danger">*</span>
 								</div>
 								<div class="col-sm-4">
 									<input type="text" value="<?php echo set_value('cust_title') ?>" name="cust_title"  class="form-control" />
@@ -33,7 +33,7 @@
 						
 						<div class="row form-group">
 							<div class="col-sm-3 text-right">
-									Name : <span class="text-danger">*</span>
+								First name : <span class="text-danger">*</span>
 							</div>
 							<div class="col-sm-4">
 								<input type="text"  value="<?php  echo set_value('cust_name'); ?>" name="cust_name" class="form-control" />
@@ -44,7 +44,7 @@
 						</div>
 						<div class="row form-group">
 							<div class="col-sm-3 text-right">
-								Company name : <span class="text-danger">*</span>
+								Last name : <span class="text-danger">*</span>
 							</div>
 							<div class="col-sm-4">
 								<input type="text" name="cust_comp" value="<?php echo set_value('cust_comp'); ?>" class="form-control"/>
@@ -62,25 +62,14 @@
 							</div>
 							<div class="col-sm-12 offset-sm-3">
 								<?php echo form_error('cust_email', '<span class="text-danger">', '</span>'); ?>
-								</div>
+							</div>
 						</div>
 						<div class="row form-group">
 							<div class="col-sm-3 text-right">
-								Bill to Email : 
+								Rate per page : <span class="text-danger">*</span>
 							</div>
 							<div class="col-sm-4">
 								<input id="cust_bill_to" type="text" name="cust_bill_to" value="<?php echo set_value('cust_bill_to'); ?>" class="form-control" />
-							</div>
-							<div class="col-sm-5">
-								<a type="button" class="btn btn-primary" href="javascript:void(0)" id="addredd_link">Same as above</a>
-							</div>
-						</div>
-						<div class="row form-group">
-							<div class="col-sm-3 text-right">
-								Copy Invoice To : 
-							</div>
-							<div class="col-sm-4">
-								<input type="text" name="cust_copy_invoice_to" value="<?php echo set_value('cust_copy_invoice_to'); ?>" class="form-control" />
 							</div>
 						</div>
 						<div class="row form-group">
@@ -142,42 +131,6 @@
 							<div class="col-sm-12 offset-sm-3">
 								<?php echo form_error('cust_country', '<span class="text-danger">', '</span>'); ?>
 								</div>
-						</div>
-						<div class="row form-group">
-							<div class="col-sm-3 text-right">
-								Phone number: 
-							</div>
-							<div class="col-sm-4">
-								<input type="text" name="cust_phone"  value="<?php echo set_value('cust_phone'); ?>" class="form-control"  />
-							</div>
-							<div class="col-sm-12 offset-sm-3">
-								<?php echo form_error('cust_phone', '<span class="text-danger">', '</span>'); ?>
-								</div>
-						</div>
-						<div class="row form-group">
-							<div class="col-sm-3 text-right">
-								Is Active : 
-							</div>
-							<div class="col-sm-1">
-								<input type="checkbox" name="is_active"  value="Y" <?php echo set_checkbox('is_active', 'Y', false); ?> class="form-control"  />
-							</div>
-						</div>
-						<div class="row form-group">
-							<div class="col-sm-12">
-									To prove your authenticity please enter the current password
-							</div>
-
-						</div>
-						<div class="row form-group">
-							<div class="col-sm-3 text-right">
-								Password : <span class="text-danger">*</span>
-							</div>
-							<div class="col-sm-4">
-								<input type="password" value="<?php echo set_value('current_password'); ?>" autocomplete="new-password" name="current_password" class="form-control" />
-							</div>
-							<div class="col-sm-12 offset-sm-3">
-								<?php echo form_error('current_password', '<span class="text-danger">', '</span>'); ?>
-							</div>
 						</div>
 						<div class="row form-group">
 							<div class="col-sm-9 offset-sm-2">

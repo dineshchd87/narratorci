@@ -35,8 +35,8 @@
                                 <option value="managers">Managers</option>
                             </select>
                         </div>
-                        <!--<a href="<?php //echo base_url();?>representative/add" class="btn btn-info"><i class="fas fa-plus-circle"></i> Add CS Representative</a>-->
-                        <a href="javascript:void(0)" class="btn btn-info"><i class="fas fa-plus-circle"></i> Add CS Representative</a>
+                        <a href="<?php echo base_url();?>representative/add" class="btn btn-info"><i class="fas fa-plus-circle"></i> Add CS Representative</a>
+                      
                         </form>
                 <table id="csrTable" class="table display table-striped table-bordered" style="width:100%">
                 <thead>

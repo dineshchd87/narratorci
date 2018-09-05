@@ -58,7 +58,6 @@ class Representative extends CI_Controller {
 		if($this->session->userdata('user_name')){
 			$data['userData'] = $this->session->userdata();
 			if($this->input->post()){
-				
 				$this->form_validation->set_rules('cust_name', 'name', 'trim|required',
 						array('required' => 'Please enter %s.')
 				);
@@ -95,7 +94,7 @@ class Representative extends CI_Controller {
 			}
 			$data['countries'] = $this->common_model->getCountries();
 			$this->load->view('common/header.php',$data);
-			$this->load->view('customers/add_customerView.php',$data);
+			$this->load->view('representative/add_representativeView.php',$data);
 			$this->load->view('common/footer.php',$data);
 		}else{
 			redirect('/');
