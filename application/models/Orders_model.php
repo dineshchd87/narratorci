@@ -230,20 +230,20 @@ class Orders_model extends CI_Model {
      */
     public function getVoiceTalent(){ 
         $sql = "SELECT 
-                      TALENT.* , 
-                      CNTRY.printable_name AS country
-                 FROM nrf_talent AS TALENT 
-                 LEFT JOIN nrf_country AS CNTRY 
-                 ON (TALENT.tlnt_country = CNTRY.iso) 
-                 WHERE TALENT.`is_active` = 'Y' 
-                 ORDER BY tlnt_fname ASC";
+                TALENT.* , 
+                CNTRY.printable_name AS country
+                FROM nrf_talent AS TALENT 
+                LEFT JOIN nrf_country AS CNTRY 
+                ON (TALENT.tlnt_country = CNTRY.iso) 
+                WHERE TALENT.`is_active` = 'Y' 
+                ORDER BY tlnt_fname ASC";
         $query = $this->db->query($sql);
         $voiceTalent = $query->result_array(); 
-       // echo $this->db->last_query();
+        // echo $this->db->last_query();
         if(!empty($voiceTalent)){
             return $voiceTalent;
         }else{
-        return array();
+            return array();
         }
     }
 

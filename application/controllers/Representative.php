@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Customers extends CI_Controller {
+class Representative extends CI_Controller {
 	/**
      * @developer       :   Dinesh
      * @created date    :   09-08-2018 (dd-mm-yyyy)
@@ -20,6 +20,7 @@ class Customers extends CI_Controller {
 		$this->load->model('emails_model');
 		$this->load->model('orders_model');
 		$this->load->model('customers_model');
+		$this->load->model('representative_model');
 		$this->load->helper('cookie');
 		$this->load->helper('string');
 		$this->load->helper('captcha');
@@ -37,33 +38,13 @@ class Customers extends CI_Controller {
 	public function index(){
 		if($this->session->userdata('user_name')){
 				$data['userData'] = $this->session->userdata();	
-				$data['allCustomers'] = $this->customers_model->getAllCustomers();
-				//echo $myJSONString = json_encode($data['allCustomers']);die;
+				$data['allCsr'] = $this->representative_model->getAllCSR();
 				$this->load->view('common/header.php',$data);
-				$this->load->view('customers/customerView.php',$data);
+				$this->load->view('representative/representativeView.php',$data);
 				$this->load->view('common/footer.php',$data);
 			}else{
 				redirect('/');
 			}
-	}
-
-
-	/**
-     * @developer       :   Dinesh
-     * @created date    :   27-08-2018 (dd-mm-yyyy)
-     * @purpose         :   validate current password
-     * @params          :   password
-     * @return          :   
-     */
-	public function pword_check($password){                                 
-	  $currentUserPassword = $this->session->userdata('user_pass');	
-	  if( $password != "" && $password != $currentUserPassword){ 
-	    $this->form_validation->set_message('pword_check', 'The %s does not exist in our database.');
-	    return FALSE;
-	  }
-	  else{
-	    return TRUE;
-	  }                                                                              
 	}
 
 	/**
@@ -77,7 +58,6 @@ class Customers extends CI_Controller {
 		if($this->session->userdata('user_name')){
 			$data['userData'] = $this->session->userdata();
 			if($this->input->post()){
-				
 				$this->form_validation->set_rules('cust_name', 'name', 'trim|required',
 						array('required' => 'Please enter %s.')
 				);
@@ -107,14 +87,14 @@ class Customers extends CI_Controller {
 				);
 
                 if ($this->form_validation->run() == TRUE) {
-                	$this->customers_model->addCustomer($this->input->post());
+                	$this->representative_model->addCustomer($this->input->post());
                 	$this->session->set_flashdata('successMsg', ' Customer added successfully.');
                 			redirect('customers/add');
                 } 
 			}
 			$data['countries'] = $this->common_model->getCountries();
 			$this->load->view('common/header.php',$data);
-			$this->load->view('customers/add_customerView.php',$data);
+			$this->load->view('representative/add_representativeView.php',$data);
 			$this->load->view('common/footer.php',$data);
 		}else{
 			redirect('/');
@@ -133,11 +113,11 @@ class Customers extends CI_Controller {
 	    if( empty($customerInfo) || $customerId == ""){
 	    	return TRUE;
 	    }else{
-			$customer = $this->customers_model->getCustomerById($customerInfo[1]);
+			$customer = $this->representative_model->getCustomerById($customerInfo[1]);
 			if(!empty($customer) && $customer[0]['cust_email'] == $customerInfo[0] ){
 				return  TRUE;
 			}else{
-				$customerCount = $this->customers_model->check_unique_customer_email($customerInfo[1],$customerInfo[0]); 
+				$customerCount = $this->representative_model->check_unique_customer_email($customerInfo[1],$customerInfo[0]); 
 				if($customerCount > 0){
 					$this->form_validation->set_message('check_customer_email', 'The email address is already taken.');
 					return FALSE;
@@ -191,13 +171,13 @@ class Customers extends CI_Controller {
 				);
 
                 if ($this->form_validation->run() == TRUE) {
-                	$this->customers_model->updateCustomerData($customerId,$this->input->post());
+                	$this->representative_model->updateCustomerData($customerId,$this->input->post());
                 	$this->session->set_flashdata('successMsg', ' Customer updated successfully.');
                 	redirect('customers/');
                 } 
 			}
 			$data['countries'] = $this->common_model->getCountries();
-			$data['customer_details'] = $this->customers_model->getCustomerById($customerId);
+			$data['customer_details'] = $this->representative_model->getCustomerById($customerId);
 			$this->load->view('common/header.php',$data);
 			$this->load->view('customers/edit_customerView.php',$data);
 			$this->load->view('common/footer.php',$data);
@@ -208,42 +188,18 @@ class Customers extends CI_Controller {
 
 	/**
      * @developer       :   Dinesh
-     * @created date    :   27-08-2018 (dd-mm-yyyy)
-     * @purpose         :   delete customers page
-     * @params          :   cust_id
+     * @created date    :   04-09-2018 (dd-mm-yyyy)
+     * @purpose         :   delete user from users and csr tables
+     * @params          :   user_id
      * @return          :   
      */
-	public function deleteCustomer($customerID = ''){
+	public function deleteUser($userId = ''){
 		if($this->session->userdata('user_name')){
-				if($customerID != ''){
-					$this->customers_model->deleteCustomer($customerID);
+				if($userId != ''){
+					$this->representative_model->deleteUser($userId);
 					die();
 				}else{
-					redirect('customers');
-				}
-				
-			}else{
-				redirect('/');
-			}
-	}
-
-	/**
-     * @developer       :   Dinesh
-     * @created date    :   27-08-2018 (dd-mm-yyyy)
-     * @purpose         :   get customers revenue and page
-     * @params          :   cust_id
-     * @return          :   
-     */
-	public function get_revenue_details($customerID = ''){ 
-		if($this->session->userdata('user_name')){
-				if($customerID != ''){
-					$data = $this->customers_model->get_revenue_details($customerID);
-					if(!empty($data[0])){
-						echo json_encode($data);
-					}
-					die();
-				}else{
-					redirect('customers');
+					redirect('representative');
 				}
 				
 			}else{
@@ -252,21 +208,20 @@ class Customers extends CI_Controller {
 	}
 
 
-
 	/**
      * @developer       :   Dinesh
-     * @created date    :   27-08-2018 (dd-mm-yyyy)
-     * @purpose         :   update customers status
-     * @params          :   cust_id
+     * @created date    :   04-09-2018 (dd-mm-yyyy)
+     * @purpose         :   update user status
+     * @params          :   user_id
      * @return          :   
      */
-	public function updateStatus($customerID = ''){
+	public function updateStatus($userID = ''){
 		if($this->session->userdata('user_name')){
-				if($customerID != ''){
-					$this->customers_model->updateCustomer($customerID,$this->input->post('type'));
+				if($userID != ''){
+					$this->representative_model->updateUserStatus($userID,$this->input->post('type'));
 					die();
 				}else{
-					redirect('customers');
+					redirect('representative');
 				}
 				
 			}else{

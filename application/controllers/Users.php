@@ -69,6 +69,46 @@ class Users extends CI_Controller {
 
 	/**
      * @developer       :   Dinesh
+     * @created date    :   27-08-2018 (dd-mm-yyyy)
+     * @purpose         :   validate current password
+     * @params          :   password
+     * @return          :   
+     */
+	public function pword_check($password){                                 
+	  $currentUserPassword = $this->session->userdata('user_pass');	
+	  if( $password != "" && $password != $currentUserPassword){ 
+	    $this->form_validation->set_message('pword_check', 'The %s does not exist in our database.');
+	    return FALSE;
+	  }
+	  else{
+	    return TRUE;
+	  }                                                                              
+	}
+
+	/**
+     * @developer       :   Dinesh
+     * @created date    :   09-02-2018 (dd-mm-yyyy)
+     * @purpose         :   check email if exist
+     * @params          :   email
+     * @return          :   
+     */
+	function check_user_email($email) {      
+		$current_email = $this->session->userdata('user_email') ; 
+	    if( $email == "" || $email == $current_email){
+	    	return TRUE;
+	    }else{
+			$userCount = $this->users_model->check_unique_user_email($email);
+			if($userCount > 0){
+				$this->form_validation->set_message('check_user_email', 'The email address is already taken.');
+				return  FALSE;
+			}else{
+				return TRUE;
+			}
+	    }
+	}
+
+	/**
+     * @developer       :   Dinesh
      * @created date    :   17-08-2018 (dd-mm-yyyy)
      * @purpose         :   get user details
      * @params          :
@@ -76,6 +116,7 @@ class Users extends CI_Controller {
      */
 	public function profile(){
 		if($this->session->userdata('user_name')){
+
 			if($this->input->post()){
 				$this->form_validation->set_rules('user_name', 'user name', 'trim|required',
 						array('required' => 'Please enter %s.')
@@ -86,31 +127,27 @@ class Users extends CI_Controller {
 				$this->form_validation->set_rules('user_lname', 'last name', 'trim|required',
 						array('required' => 'Please enter %s.')
 				);
-				$this->form_validation->set_rules('user_email', 'email address', 'trim|required|valid_email',
-						array('required' => 'Please enter %s.','valid_email' => 'Please enter valid email address.')
+				$this->form_validation->set_rules('user_email', 'email address', 'trim|required|valid_email|callback_check_user_email[' . $this->input->post('user_email') . ']',
+						array(
+							'required' => 'Please enter %s.',
+							'valid_email' => 'Please enter valid email address.'
+						)
 				);
 				$this->form_validation->set_rules('user_phone', ' phone number', 'required|max_length[12]',
-						array('required' => 'Please enter %s.','max_length' => 'The lenght of phone number should be 12.')
+						array('required' => 'Please enter %s.','max_length' => 'The lenght of phone number should be less then or equal to 12.')
 				);
 				$this->form_validation->set_rules('csrm_country', 'country name', 'trim|required',
 						array('required' => 'Please select %s.')
 				);
-				$this->form_validation->set_rules('password', 'current password', 'trim|required',
+				$this->form_validation->set_rules('password', 'current password', 'trim|required|callback_pword_check[' . $this->input->post('password') . ']',
 						array('required' => 'Please enter %s for validation.')
 				);
 
                 if ($this->form_validation->run() == TRUE) {
-                		$currentUserPassword = $this->session->userdata('user_pass');
-                		$password = $this->input->post('password');
-
-                		if($currentUserPassword == $password){
-                			 $this->users_model->updateUserDetails($this->session->userdata('user_id'),$this->input->post());
-                			$this->session->set_flashdata('successMsg', 'User details updated successfully.');
-                			redirect('users/profile');
-                		}else{
-                			$this->session->set_flashdata('errorMsg', 'You have entered wrong password.');
-                			redirect('users/profile');
-                		} 
+                	echo "<pre>"; print_r($this->input->post());
+                		$this->users_model->updateUserDetails($this->session->userdata('user_id'),$this->input->post());
+        			$this->session->set_flashdata('successMsg', 'User details updated successfully.');
+        			redirect('users/profile'); 
                 } 
 			}
 

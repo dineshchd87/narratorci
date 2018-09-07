@@ -190,7 +190,7 @@
 								Password : <span class="text-danger">*</span>
 							</div>
 							<div class="col-sm-4">
-								<input type="password" name="password" class="form-control" />
+								<input type="password" autocomplete="new-password" name="password" class="form-control" />
 							</div>
 							<div class="col-sm-5">
 							</div>
