@@ -97,4 +97,7 @@ tr.shown td.details-control {
     color: #000;
 
 }
+.saveCSR{
+	cursor:pointer;
+}
 

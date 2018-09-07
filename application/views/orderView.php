@@ -65,6 +65,20 @@ function local_time($GMTtime, $localTZoffSet=false)
 					</div>
 				</div>
 			</div-->
+			 <div id="csrChange_success_msg" class="col-sm-12 mt-4" style="text-align: center; display:none;">
+    			<div class="alert alert-success fade in alert-dismissible show">
+                         <button style="margin-top: -5px;" type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <!--<span aria-hidden="true" style="font-size:20px">×</span>-->
+                          </button>    <strong>Success!</strong> CSR changed successfully.
+                </div>
+            </div>
+			<div id="statusChange_success_msg" class="col-sm-12 mt-4" style="text-align: center; display:none;">
+    			<div class="alert alert-success fade in alert-dismissible show">
+                         <button style="margin-top: -5px;" type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <!--<span aria-hidden="true" style="font-size:20px">×</span>-->
+                          </button>    <strong>Success!</strong> Status changed successfully.
+                </div>
+            </div>
 			<div class="col-sm-12 mt-4">
 			<div class="dataTables_length" id="example_length">
 			<label>Show 
@@ -109,7 +123,16 @@ function local_time($GMTtime, $localTZoffSet=false)
                 <td><?php echo $order['talents']; ?></td>
                 <td> 
 				<?php  if(3 != $this->session->userdata('group_id')){ ?>
-					<select name='csrep_1' id='csrep_1' class='form-control form-control-sm'><option value='0'>Select a CSR</option><option value='10'>Anne Brown</option><option value='16'>Diego Pinto</option><option value='8'>Jack Braglia</option><option value='3' selected='selected'>Jack Courtney</option><option value='15'>Jake McEvoy</option><option value='14'>Khalil Abu-jamous</option><option value='12'>test ee</option></select>
+					<select  name='csrep_1'  class='form-control form-control-sm selectCsr'>
+					<option value="0">Select a CSR</option>
+					<?php foreach($allCsr as $csr){  
+						if($csr['user_id'] == $order['order_csr']) $selected = 'selected="selected"'; 
+                                    else $selected ='';
+					?>
+						<option  <?php echo $selected; ?> value='<?php echo $csr['user_id']; ?>'><?php echo $csr["user_fname"].' '.$csr["user_lname"]; ?></option>
+					<?php } ?>
+					
+					</select>
 				<?php
 				}
 				else
@@ -117,8 +140,20 @@ function local_time($GMTtime, $localTZoffSet=false)
 					echo $this->session->userdata('user_fname').' ' .$this->session->userdata('user_lname');
 				}
 				?>
+				<img style="display:none;" class="saveCSR"  data-oldcsr="<?php echo $order['order_csr'] ?>" data-orderid="<?php echo $order['order_id'] ;  ?>" src="<?php echo base_url();?>/assets/images/save_but1.gif"  name="save" alt="Save">
 				</td>
-				<td><select name='ostat_1' id='ostat_1' class='form-control form-control-sm'><option value='1'>Received</option><option value='2'>Out to Talent</option><option value='3'>Audio Received</option><option value='4'>Pickups</option><option value='5'>Sent to Client</option><option value='6' selected='selected'>Completed</option></select></td>
+				<td>
+					<select name='ostat_1' class='statusList' class='form-control form-control-sm'>
+					<?php foreach($allstatus as $status){ 
+					
+					if($status['ostat_id'] == $order['status']) $selectedStatus = 'selected="selected"'; 
+                                    else $selectedStatus ='';
+					?>
+					<option <?php echo $selectedStatus; ?> value='<?php echo $status['ostat_id']; ?>'><?php echo $status['ostat_text']; ?></option>
+					<?php } ?>
+					</select>
+					<img style="display:none;" class="saveStatus"   data-orderid="<?php echo $order['order_id'] ;  ?>" src="<?php echo base_url();?>/assets/images/save_but1.gif"  name="save" alt="Save">
+				</td>
             </tr>
 			<tr class="order-detail" id="detailRow-<?php echo $order['order_id'];  ?>"><td colspan="9">
 			<div class="row">
@@ -293,6 +328,64 @@ $(document).ready(function() {
 			});
 		  
      });
+	 
+	 $('.selectCsr').on('change', function() {
+		$(this).next().show();
+	});
+	
+	$('.statusList').on('change', function() {
+		$(this).next().show();
+	});
+	
+	
+	
+	$('.saveCSR').on('click', function() {
+		var csrId=$(this).prev().val();
+		var orderId=$(this).attr('data-orderid');
+		var oldcsrId=$(this).attr('data-oldcsr');
+		var obj=$(this);
+		var data = { 'order_id' : orderId, 'csrId' : csrId,'oldcsrId':oldcsrId}		  
+			$.ajax({
+			  type: 'POST',
+			  url: "<?php echo base_url();?>orders/changeCsr",
+			  data: data,
+			  dataType: "text",
+			  success: function(resultData) {
+				  obj.attr('data-oldcsr',csrId);
+				  $('#csrChange_success_msg').css('display','block');
+				  obj.hide();
+                setTimeout(function(){ 
+                    $('#csrChange_success_msg').css('display','none');
+                 }, 2000);
+			  }
+			});
+		
+	});
+	
+	$('.saveStatus').on('click', function() {
+		var ostId=$(this).prev().val();
+		var orderId=$(this).attr('data-orderid');
+		
+		var obj=$(this);
+		var data = { 'order_id' : orderId, 'ostId' : ostId}		  
+			$.ajax({
+			  type: 'POST',
+			  url: "<?php echo base_url();?>orders/saveStatus",
+			  data: data,
+			  dataType: "text",
+			  success: function(resultData) {
+				  
+				  $('#statusChange_success_msg').css('display','block');
+				  obj.hide();
+                setTimeout(function(){ 
+                    $('#statusChange_success_msg').css('display','none');
+                 }, 2000);
+			  }
+			});
+		
+	});
+	
+	
 	 
 	 $('.discountRate').on('focusout', function () {
 		 var that=$(this);
