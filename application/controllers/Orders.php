@@ -17,9 +17,10 @@ class Orders extends CI_Controller {
 	public function __construct() {
 	    parent::__construct();
 	    $this->load->helper('url');
-        $this->load->library('pagination');
-		
+        $this->load->library('pagination');		
+		$this->load->model('emails_model');
 		$this->load->model('orders_model');
+		$this->load->helper('global');
 		//print_r($this->session->userdata());die;
 		if(!$this->session->userdata('user_name')){
 			redirect('/', 'refresh');
@@ -49,8 +50,9 @@ class Orders extends CI_Controller {
         $limit_per_page = ($this->uri->segment(2)) ? $this->uri->segment(2) : 10;
         $start_index = ($this->uri->segment(3)) ? ($this->uri->segment(3)- 1) : 0;
         $total_records = $this->orders_model->getAllOrdresCountOrderPage($user,$condition)[0]['order_count'];
-		//echo "<pre>"; print_r($total_records);die;
 		
+		$data['allCsr'] =$this->orders_model->getAllCsr();
+		$data['allstatus'] =$this->orders_model->getAllStatus();
 		if ($total_records > 0) 
         {
             // get current page records
@@ -200,5 +202,70 @@ class Orders extends CI_Controller {
 			}
 		}
 	}
+	
+	
+		/**
+     * @developer       :   Dinesh
+     * @created date    :   09-08-2018 (dd-mm-yyyy)
+	 * @updated date    :   16-08-2018 (dd-mm-yyyy)
+     * @purpose         :   change CSR by ajax
+     * @params          :
+     * @return          :   data as []
+     */
+	public function changeCsr(){
+		if ($this->input->method() == 'post') {
+			$data=$this->input->post();	
+			
+			$newCsrData = $this->orders_model->getSingleRepresentative($data['csrId']);
+			$oldCsrData = $this->orders_model->getSingleRepresentative($data['oldcsrId']);
+			if($this->orders_model->changeCsr($data['csrId'],$data['order_id'])){
+				
+				$orderData=$this->orders_model->getOrderbyId($data['order_id']);
+				
+				$templateData=$this->emails_model->getEmailbyId(3)[0];			
+				$templateData =array_merge($templateData,$orderData[0]);
+				
+				$emailDataNewCsr=array_merge($templateData,$newCsrData[0]);	
+				$emailDataOldCsr=array_merge($templateData,$oldCsrData[0]);								
+				send_email($emailDataNewCsr['user_email'],'change_csr.php',$emailDataNewCsr);
+				send_email($emailDataNewCsr['email'],'change_csr.php',$emailData);
+				send_email($emailDataNewCsr['user_email'],'change_csr.php',$emailDataOldCsr);
+				$this->orders_model->recordHistory($data['order_id'],'Account Manager Changed');
+				echo "success";die;
+			}else{
+				echo "error";die;
+			}	
+			
+		}
+	}
+	
+			/**
+     * @developer       :   Dinesh
+     * @created date    :   09-08-2018 (dd-mm-yyyy)
+	 * @updated date    :   16-08-2018 (dd-mm-yyyy)
+     * @purpose         :   save status by ajax
+     * @params          :
+     * @return          :   data as []
+     */
+	public function saveStatus(){
+		if ($this->input->method() == 'post') {
+			$data=$this->input->post();	
+			
+			
+			if($this->orders_model->changeStatus($data['ostId'],$data['order_id'])){
+				
+				$satusData=$this->orders_model->getStatusDetailbyId($data['ostId']);
+				
+				$this->orders_model->recordHistory($data['order_id'],$satusData[0]['ostat_text']);
+				echo "success";die;
+			}else{
+				echo "error";die;
+			}	
+			
+		}
+	}
+	
+	
+	
 
 }

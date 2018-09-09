@@ -97,6 +97,9 @@ tr.shown td.details-control {
     color: #000;
 
 }
+.saveCSR{
+	cursor:pointer;
+}
 
 .logo a img{
    margin-top: -2px;

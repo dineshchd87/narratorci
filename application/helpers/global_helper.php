@@ -20,13 +20,12 @@ function send_email($to = '', $template = '', $data = []) {
     $config['mailtype'] = 'html';
     $config['validation'] = TRUE;
 
-    $ci->email->initialize($config);
-	echo $ci->load->view('email/' . $template, $data, TRUE);
+    $ci->email->initialize($config);	
     $ci->email->to($to);
     $ci->email->from('no-reply@contentlayers.com', 'Content Layers');
     $ci->email->subject($data['email_sub']);
     $ci->email->message($ci->load->view('email/' . $template, $data, TRUE));
-	//echo $ci->load->view('email/' . $template, $data, TRUE);die;
+
 	$ci->email->send();
     
 }
