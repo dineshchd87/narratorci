@@ -138,7 +138,7 @@ class Users_model extends CI_Model {
           return false;
     }
 	
-	     /**
+	   /**
      * @developer       :   Dinesh
      * @created date    :   18-08-2018 (dd-mm-yyyy)
      * @purpose         :   update user password
@@ -147,6 +147,18 @@ class Users_model extends CI_Model {
      */
     public function createTableRecords($data){  
           //echo"<pre>";print_r($data);die;
+    }
+
+    /**
+     * @developer       :   Dinesh
+     * @created date    :   09-02-2018 (dd-mm-yyyy)
+     * @purpose         :   check user email
+     * @params          :   eamil
+     * @return          :   data as []
+     */
+    function check_unique_user_email($email) {
+        $this->db->where('user_email', $email);
+        return $this->db->get('nrf_users')->num_rows();
     }
 }
 

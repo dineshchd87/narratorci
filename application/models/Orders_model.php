@@ -230,20 +230,20 @@ class Orders_model extends CI_Model {
      */
     public function getVoiceTalent(){ 
         $sql = "SELECT 
-                      TALENT.* , 
-                      CNTRY.printable_name AS country
-                 FROM nrf_talent AS TALENT 
-                 LEFT JOIN nrf_country AS CNTRY 
-                 ON (TALENT.tlnt_country = CNTRY.iso) 
-                 WHERE TALENT.`is_active` = 'Y' 
-                 ORDER BY tlnt_fname ASC";
+                TALENT.* , 
+                CNTRY.printable_name AS country
+                FROM nrf_talent AS TALENT 
+                LEFT JOIN nrf_country AS CNTRY 
+                ON (TALENT.tlnt_country = CNTRY.iso) 
+                WHERE TALENT.`is_active` = 'Y' 
+                ORDER BY tlnt_fname ASC";
         $query = $this->db->query($sql);
         $voiceTalent = $query->result_array(); 
-       // echo $this->db->last_query();
+        // echo $this->db->last_query();
         if(!empty($voiceTalent)){
             return $voiceTalent;
         }else{
-        return array();
+            return array();
         }
     }
 
@@ -515,6 +515,184 @@ class Orders_model extends CI_Model {
           }
           return false;
     }
+	
+	
+		/**
+     * @developer       :   Dinesh
+     * @created date    :   22-08-2018 (dd-mm-yyyy)
+     * @purpose         :   get all voice talents
+     * @params          :   get all csr
+     * @return          :   []
+     */
+    public function getAllCsr(){ 
+        $sql  = "SELECT CSR.*,USR.*
+                FROM 
+                    nrf_csrm  AS CSR
+                INNER JOIN
+                    nrf_users AS USR
+                ON
+                    (USR.user_id = CSR.user_id AND USR.group_id=3)
+				WHERE USR.is_active = 'Y' 	
+				ORDER BY USR.user_fname ASC , USR.user_lname ASC";
+        $query = $this->db->query($sql);
+        $allCsr = $query->result_array(); 
+		 // echo $this->db->last_query();
+        if(!empty($allCsr)){
+            return $allCsr;
+        }else{
+        return array();
+        }
+    }
+	
+	
+			/**
+     * @developer       :   Dinesh
+     * @created date    :   22-08-2018 (dd-mm-yyyy)
+     * @purpose         :   get all voice talents
+     * @params          :   get singale csr
+     * @return          :   []
+     */
+    public function getSingleRepresentative($csrm_id){ 
+         $sql = "SELECT 
+                    CSR.*,
+                    CNTRY.printable_name AS country,
+                    USR.*
+                FROM
+                    nrf_csrm AS CSR
+                INNER JOIN
+                    nrf_users AS USR
+                ON
+                    (USR.user_id = CSR.user_id AND USR.group_id=3)
+                LEFT JOIN
+                    nrf_country AS CNTRY
+                ON
+                    (CSR.csrm_country = CNTRY.iso)
+                WHERE  
+                    CSR.user_id=$csrm_id";
+        $query = $this->db->query($sql);
+        $csrData = $query->result_array(); 
+		 // echo $this->db->last_query();
+        if(!empty($csrData)){
+            return $csrData;
+        }else{
+        return array();
+        }
+    }
+	
+		     /**
+     * @developer       :   Dinesh
+     * @created date    :   18-08-2018 (dd-mm-yyyy)
+     * @purpose         :   change orders CSR
+     * @params          :   
+     * @return          :   data as []
+     */
+    public function changeCsr($csr,$orderId){	
+          $discountData=array(
+                  'order_csr'=>$csr
+                );
+          $this->db->where('order_id',$orderId);
+          if($this->db->update('nrf_orders',$discountData)){
+             return true;
+          }
+          return false;
+    }
+	
+		/**
+     * @developer       :   Dinesh
+     * @created date    :   18-08-2018 (dd-mm-yyyy)
+     * @purpose         :   change orders status
+     * @params          :   
+     * @return          :   data as []
+     */
+    public function changeStatus($ostId,$orderId){	
+          $statusData=array(
+                  'status'=>$ostId
+                );
+          $this->db->where('order_id',$orderId);
+          if($this->db->update('nrf_orders',$statusData)){
+             return true;
+          }
+          return false;
+    }
+	
+	
+	
+			     /**
+     * @developer       :   Dinesh
+     * @created date    :   18-08-2018 (dd-mm-yyyy)
+     * @purpose         :   record order history
+     * @params          :   
+     * @return          :   data as []
+     */
+    public function recordHistory($orderId,$msg){
+		 $data['order_id']=$orderId;	
+		$data['hist_date']=strtotime(date('Y-m-d H:i:s'));
+
+		$data['hist_text']=$msg;		
+         if($this->db->insert('nrf_order_history', $data)){
+
+           return true;
+
+        }else{
+
+           return false;
+
+        }
+    }
+	
+	    /**
+     * @developer       :   Dinesh
+     * @created date    :   26-08-2018 (dd-mm-yyyy)
+     * @purpose         :   get all customers
+     * @params          :   
+     * @return          :   []
+     */
+    public function getAllStatus(){ 
+        $this-> db ->select('ost.*');
+        $this-> db -> from('nrf_order_status_text AS ost');
+        
+        $this-> db ->order_by("ost.ostat_id", "ASC"); 
+        $allStatus = $this->db->get()->result_array(); 
+        if(!empty($allStatus)){
+            return $allStatus;
+        }else{
+        return array();
+        }
+    
+	}
+	
+		/**
+     * @developer       :   Dinesh
+     * @created date    :   09-08-2018 (dd-mm-yyyy)
+     * @purpose         :   get status detail by id
+     * @params          :	id
+     * @return          :   
+     */
+
+     public function getStatusDetailbyId($id){  
+
+           $this->db->select('*');
+
+           $this->db->from('nrf_order_status_text');
+
+           $this->db->where('ostat_id',$id);
+
+           $query = $this->db->get();
+           
+           if($query->num_rows() == 1)
+           {
+
+               return $query->result_array();
+
+           }
+           else
+           {
+
+             return 0;
+
+          }
+
+     }
 	
 }
 

@@ -24,8 +24,7 @@ function local_time($GMTtime, $localTZoffSet=false)
 								<a href="<?php echo base_url();?>orders/10/1?type=all" class="btn btn-info"> 
 								<i class="fas fa-edit"></i> Manage Orders</a>	
 								<a href="#" class="btn btn-info">
-								<i class="fas fa-plus-circle"></i> Add an Order</a>	
-							
+								<i class="fas fa-plus-circle"></i> Add an Order</a>							
 							</div>
 							<div class="left-box-1">
 								<h6 class="what-next">Your Store at a Glance....</h6>
@@ -70,7 +69,7 @@ function local_time($GMTtime, $localTZoffSet=false)
 							<div class="btn-group-vertical">		
 								<a href="<?php echo base_url();?>customers" class="btn btn-outline-info">Customers</a>			
 								<a href="#" class="btn btn-outline-info">Talent	</a>		
-								<a href="#" class="btn btn-outline-info">Personnel	</a>	
+								<a href="<?php echo base_url();?>representative" class="btn btn-outline-info">Personnel	</a>	
 								<a href="#" class="btn btn-outline-info">Invoicing	</a>	
 								<a href="#" class="btn btn-outline-info">Payments	</a>	
 							</div>
@@ -79,8 +78,7 @@ function local_time($GMTtime, $localTZoffSet=false)
 				</div>
 			</div>
 			<div class="col-sm-6">
-			<div class="col-sm-12 box2">
-			
+			<div class="col-sm-12 box2">			
 				<div class="row">
 					<div class="col-sm-4">
 						<h6 class="what-next">Sales Snapshot	</h6>
