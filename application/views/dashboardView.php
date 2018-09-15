@@ -71,7 +71,7 @@ function local_time($GMTtime, $localTZoffSet=false)
 								<a href="#" class="btn btn-outline-info">Talent	</a>		
 								<a href="<?php echo base_url();?>representative" class="btn btn-outline-info">Personnel	</a>	
 								<a href="#" class="btn btn-outline-info">Invoicing	</a>	
-								<a href="#" class="btn btn-outline-info">Payments	</a>	
+								<a href="<?php echo base_url();?>payments" class="btn btn-outline-info">Payments	</a>	
 							</div>
 						</div>
 					</div>
