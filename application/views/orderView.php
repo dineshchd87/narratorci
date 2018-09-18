@@ -17,6 +17,7 @@ function local_time($GMTtime, $localTZoffSet=false)
 						<option id='active' value="<?php echo base_url();?>orders/10/1?type=active" <?php if($_GET['type']=='active') echo "selected"; ?>>All Active</option>
 					</select>
 				</div>
+				
 			</div>
 			<div class="col-sm-12 mt-2">
 				<p>Your orders are shown below. Click the plus icon next to an order to see its complete details.</p>
@@ -24,7 +25,7 @@ function local_time($GMTtime, $localTZoffSet=false)
 			<div class="col-sm-12">
 				<div class="row">
 					<div class="col-sm-4">
-						<a href="#" class="btn btn-info"><i class="fas fa-plus-circle"></i> Add an Order</a>
+						<a href="<?php echo base_url();?>orders/create_order" class="btn btn-info"><i class="fas fa-plus-circle"></i> Add an Order</a>
 					</div>
 					<div class="col-sm-8">
 						<form class="form-inline float-right" id="searchForm" action="#" method="get">
@@ -81,20 +82,30 @@ function local_time($GMTtime, $localTZoffSet=false)
             </div>
 			<div class="col-sm-12 mt-4">
 			<div class="dataTables_length" id="example_length">
-			<label>Show 
+			<label> 
+			<select id="actionDropdown">
+				<option value='0'>Choose an action</option>
+				<option value='1'>Hide Selected</option>
+				<option value='2'>Delete Selected</option>
+			</select> 
+			<input id="go" type="button" value="Go">
+			</label>
+			
+			<label style="float:right;">Show 
 			<select id ='pagination' name="example_length" aria-controls="example" class="">
 			<option  <?php if($this->uri->segment(2)=='10') echo "selected"; ?> value="<?php echo base_url();?>orders/10/1">10</option>
 			<option  <?php if($this->uri->segment(2)=='25') echo "selected"; ?> value="<?php echo base_url();?>orders/25/1">25</option>
 			<option  <?php if($this->uri->segment(2)=='50') echo "selected"; ?>  value="<?php echo base_url();?>orders/50/1">50</option>
 			<option  <?php if($this->uri->segment(2)=='100') echo "selected"; ?> value="<?php echo base_url();?>orders/100/1">100</option>
 			</select> 
-			entries</label></div>
+			entries</label>
+			</div>
 				<table id="example" class="table table-striped table-bordered" style="width:100%">
 				<thead>
 				
 					<tr>
 					<th></th>
-						<th><input type="checkbox" name="chkLoop[]" id="chkLoop"></th>
+						<th><input type="checkbox"  name="chkLoop[]" id="checkAll"></th>
 						
 						<th>ID</th>						
 						<th>Customer</th>
@@ -108,9 +119,9 @@ function local_time($GMTtime, $localTZoffSet=false)
 				</thead>
 			<tbody>
 			<?php if(isset($orders)){ foreach($orders as $order){ ?>
-			<tr>
+			<tr  id="brifRow-<?php echo $order['order_id'];  ?>">
 				<td class="details-control" id="<?php echo $order['order_id'];  ?>"></td>
-				<td><input type="checkbox" name="chkLoop[]" id="chkLoop"></td>
+				<td><input type="checkbox" name="chkLoop" value ="<?php echo $order['order_id']; ?>" id="chkLoop"></td>
                 <td><?php echo $order['order_id']; ?></td>
                 <td><?php echo $order['cust_name']; ?></td>
                 <td><?php echo date("F dS, Y", local_time($order["order_date"]) );
@@ -334,7 +345,61 @@ $(document).ready(function() {
 	});
 	
 	$('.statusList').on('change', function() {
-		$(this).next().show();
+		var orderId=$(this).next().attr('data-orderid');
+		var ostId=$(this).val();
+		
+		if($(this).val()==5){
+			swal({
+			  title: "Enter here the script file name only.",
+			  text: "N.B. file name only, not full path.",
+			  type: "input",
+			  showCancelButton: true,
+			  confirmButtonClass: "btn-danger",
+			  confirmButtonText: "Submit",
+			  cancelButtonText: "Cancel",
+			  closeOnConfirm: false
+			},
+			function(inputValue){
+				var resource_path=inputValue;
+				var dataArr = { 'order_id' : orderId, 'ostId' : ostId,'resource_path':resource_path}
+				$.ajax({
+					type: "POST",
+					data: dataArr,
+					url: "<?php echo base_url();?>orders/saveStatus", 
+					success: function(result){
+						
+						swal("Saved!", "Status changed successfully.", "success");
+					}
+				});
+			});
+		}else if($(this).val()==4){
+						swal({
+			  title: "Please enter your pickups below:",
+			  text: "<textarea  style='width: 100%;height:100px;' id='text'></textarea>",
+			  html: true,
+			  showCancelButton: true,
+			  confirmButtonClass: "btn-danger",
+			  confirmButtonText: "Ok",
+			  cancelButtonText: "Cancel",
+			  closeOnConfirm: false
+			},
+			function(text){
+				var  resource_path=$("#text").val();
+				
+				var dataArr = { 'order_id' : orderId, 'ostId' : ostId,'resource_path':resource_path}
+				$.ajax({
+					type: "POST",
+					data: dataArr,				  
+					url: "<?php echo base_url();?>orders/saveStatus",  
+					success: function(result){						
+						swal("Saved!", "Status changed successfully.", "success");
+					}
+				});
+			});
+		}else{
+			$(this).next().show();
+			
+		}
 	});
 	
 	
@@ -405,162 +470,70 @@ $(document).ready(function() {
 			});
 		  
      });
-	/*
-	function format ( d ) {
-		//console.log(d)
-    // `d` is the original data object for the row
-	return '<div class="row">'+
-			'<div class="col-sm-4">'+
-				'<div class="card bg-light mb-3">'+
-				'<div class="card-header">Customer Details</div>'+
-		  '<div class="card-body">'+
-			'<h6 class="card-title">	Kathy Haratonik- Genentech</h6>'+
-				'<p class="card-text">With supporting text below as a natural lead-in to additional content.</p>'+
-				'<div class="form-group">'+
-      '<label for="comment">Comment:</label>'+
-      '<textarea class="form-control" rows="5" id="comment" name="text"></textarea>'+
-    '</div>'+
-			  '</div>'+
-			'</div>'+
-		  '</div>'+
-		  '<div class="col-sm-4">'+
-				'<div class="card bg-light mb-3">'+
-				'<div class="card-header">Order Details</div>'+
-		  '<div class="card-body">'+
-			'<h5 class="card-title">Special title treatment</h5>'+
-				'<p class="card-text">With supporting text below as a natural lead-in to additional content.</p>'+
-				
-			  '</div>'+
-			'</div>'+
-		  '</div>'+
-	'<div class="col-sm-4">'+
-				'<div class="card bg-light mb-3">'+
-				'<div class="card-header">Order History</div>'+
-		  '<div class="card-body">'+
-			'<h5 class="card-title">Special title treatment</h5>'+
-				'<p class="card-text">With supporting text below as a natural lead-in to additional content.</p>'+
-				'</div>'+
-			'</div>'+
-		  '</div>'+
-		'</div>';
-		
-    return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">'+
-        '<tr>'+
-            '<td>Full name:</td>'+
-            '<td>'+d.cust_name+'</td>'+
-        '</tr>'+
-        '<tr>'+
-            '<td>Extension number:</td>'+
-            '<td>'+d.order_id+'</td>'+
-        '</tr>'+
-        '<tr>'+
-            '<td>Extra info:</td>'+
-            '<td>And any further details here (images etc)...</td>'+
-        '</tr>'+
-    '</table>';
-}
-	 var table =$('#example').DataTable({
-        "processing": true,
-        "serverSide": true,
-		"sDom": "ltipr",
-        "ajax": "<?php echo base_url();?>orders/ajax?type=<?php echo $_GET['type'] ?>",
-		"columns": [
-			{
-                "class":          "details-control",
-                "orderable":      false,
-                "data":           null,
-                "defaultContent": ""
-            },
-			{
-                "class":          "",
-                "orderable":      false,
-                "data":           null,
-                "defaultContent": "<input type='checkbox' name='chkLoop[]' id='chkLoop'>"
-            },
-            { "data": "order_id" },
-            { "data": "cust_name" },
-            { "data": "order_date"},
-            { 
-				"orderable":      false,
-                "data":           null,
-				"render": function ( data ) { 
-					if(data.invoice_stat=='3'){
-						var status ='<span class="badge badge-success text-uppercase">Paid</span> ';
-					}else if(data.invoice_stat=='3' && data.isAutoInvoice=='Y'){
-						var status='<span class="badge badge-primary text-uppercase">Invoiced</span> ';
-					}else{
-						var status='<span class="badge badge-info text-uppercase">Received</span> ';
-						
-					}
-                     return  status+data.script_count+ 'Pages';
-                 }
-                
-				
-			},
-            { 
-				"orderable":      false,
-                "data":           function(data){
-					//console.log(data.talents)
-					return data.talents.split(",").removeDuplicates().join(",");
-					
-				},
-                "defaultContent": ""
-				
-			},
-            { 
-				"orderable":      false,
-                "data":           null,
-				"csr":function(csr){
-					console.log(csr)
-				},
-                "defaultContent": "<select name='csrep_1' id='csrep_1' class='form-control form-control-sm'><option value='0'>Select a CSR</option><option value='10'>Anne Brown</option><option value='16'>Diego Pinto</option><option value='8'>Jack Braglia</option><option value='3' selected='selected'>Jack Courtney</option><option value='15'>Jake McEvoy</option><option value='14'>Khalil Abu-jamous</option><option value='12'>test ee</option></select>"
-				
-			},			
-			{ 	
-				"orderable":      false,
-                "data":           null,
-                "defaultContent": "<select name='ostat_1' id='ostat_1' class='form-control form-control-sm'><option value='1'>Received</option><option value='2'>Out to Talent</option><option value='3'>Audio Received</option><option value='4'>Pickups</option><option value='5'>Sent to Client</option><option value='6' selected='selected'>Completed</option></select>"
-				
-			},
-        ]
-    } );
- 
-  $('#example tbody').on('click', 'td.details-control', function () {
-        var tr = $(this).closest('tr');
-        var row = table.row( tr );
- 
-        if ( row.child.isShown() ) {
-            // This row is already open - close it
-            row.child.hide();
-            tr.removeClass('shown');
-        }
-        else {
-            // Open this row
-            row.child( format(row.data()) ).show();
-            tr.addClass('shown');
-        }
-    } );
-	
-	$('#dynamic_select').on('change', function () {
-          var url = $(this).val(); // get selected value
-		  //console.log(url);
-          if (url) { // require a URL
-              window.location = url; // redirect
-          }
-          return false;
-     });
 	 
-	   $(document).on('submit', '#searchForm', function () {
-		   //console.log($(this).serialize());
-		   table.search( $(this).serialize()).draw();
-        return false;
-    } );
-	 Array.prototype.removeDuplicates = function () {        
-		  return this.filter(function (item, index, self) {
-                    return self.indexOf(item) == index;
-                });
-      };
-	  */
+	 $('#go').on('click', function () {
+
+		 var actionType=$("#actionDropdown").val();
+
+		  if(actionType=='1'){
+			swal({
+			  title: "Are you sure?",
+			  text: "Do you want to hide selected records?",
+			  type: "warning",
+			  showCancelButton: true,
+			  confirmButtonClass: "btn-danger",
+			  confirmButtonText: "Yes",
+			  cancelButtonText: "No",
+			  closeOnConfirm: false
+			},
+			function(){
+			  for ( var i = 0, l = tmp.length; i < l; i++ ) {
+						$("#detailRow-"+tmp[i]).hide();
+						$("#brifRow-"+tmp[i]).hide();						
+					}
+						 swal.close();
+			});
+		}else if(actionType=='2'){
+		swal({
+          title: "Are you sure?",
+          text: "Do you want to delete selected records?\nThis is permanent!",
+          type: "warning",
+          showCancelButton: true,
+          confirmButtonClass: "btn-danger",
+          confirmButtonText: "Yes",
+          cancelButtonText: "No",
+          closeOnConfirm: false
+        },
+        function(){
+            $.ajax({
+				type: 'POST',
+				data: { 'orderArr' :tmp},				
+				url: "<?php echo base_url();?>orders/deleteOrder/",
+                success: function(result){
+                    for ( var i = 0, l = tmp.length; i < l; i++ ) {
+						$("#detailRow-"+tmp[i]).remove();
+						$("#brifRow-"+tmp[i]).remove();						
+					}	
+                    swal("Deleted!", "Orders deleted successfully.", "success");
+                }
+            });
+        });
+		  }
+     });
+	 var tmp=[]
+	$('#checkAll').click(function () {    
+		 $('input:checkbox').prop('checked', this.checked);    
+	 });
+	
+	$("input[name='chkLoop']").change(function() {
+		var checked = $(this).val();
+		if ($(this).is(':checked')) {
+		  tmp.push(checked);
+		}else{
+		tmp.splice($.inArray(checked, tmp),1);
+		}
+	
+  });
 
 } );
 </script>

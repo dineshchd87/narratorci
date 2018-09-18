@@ -20,6 +20,7 @@ class Orders extends CI_Controller {
         $this->load->library('pagination');		
 		$this->load->model('emails_model');
 		$this->load->model('orders_model');
+		$this->load->model('customers_model');
 		$this->load->helper('global');
 		//print_r($this->session->userdata());die;
 		if(!$this->session->userdata('user_name')){
@@ -265,6 +266,44 @@ class Orders extends CI_Controller {
 		}
 	}
 	
+				/**
+     * @developer       :   Dinesh
+     * @created date    :   09-08-2018 (dd-mm-yyyy)
+	 * @updated date    :   16-08-2018 (dd-mm-yyyy)
+     * @purpose         :   save status by ajax
+     * @params          :
+     * @return          :   data as []
+     */
+	public function deleteOrder(){
+		if ($this->input->method() == 'post') {
+			$data=$this->input->post();				
+			foreach($data['orderArr'] as  $order){
+				$this->orders_model->deleteOrder($order);
+			}	
+			
+		}
+		echo "success";die;
+	}
+	
+	
+	/**
+     * @developer       :   Dinesh
+     * @created date    :   09-08-2018 (dd-mm-yyyy)
+	 * @updated date    :   16-08-2018 (dd-mm-yyyy)
+     * @purpose         :   create order function 
+     * @params          :
+     * @return          :   data as []
+     */
+	public function create_order(){
+		$data = $this->session->userdata();
+		$data['allCust']=$this->customers_model->getAllCustomers();
+		$data['allCSR']=$this->orders_model->getAllCsr();
+		//echo"<pre>";print_r($data);
+		
+		$this->load->view('common/header.php',$data);
+		$this->load->view('createOrderView.php',$data);
+		$this->load->view('common/footer.php',$data);
+	}
 	
 	
 

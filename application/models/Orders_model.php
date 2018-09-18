@@ -693,6 +693,104 @@ class Orders_model extends CI_Model {
           }
 
      }
+	 
+	 		/**
+     * @developer       :   Dinesh
+     * @created date    :   09-08-2018 (dd-mm-yyyy)
+     * @purpose         :   delete orders by id
+     * @params          :	id
+     * @return          :   
+     */
+
+     public function deleteOrder($oredrId){  
+	 
+        $sql = "SELECT
+
+                    OTR.otr_id, 
+
+                    TLNT.*
+
+                FROM
+
+                    nrf_order_talent_rel AS OTR
+
+                LEFT JOIN
+
+                    nrf_talent AS TLNT 
+
+                ON
+
+                    (OTR.tlnt_id = TLNT.tlnt_id)
+
+                WHERE
+
+                    OTR.order_id='$oredrId'" ; 
+
+         $query = $this->db->query($sql);
+		 $orderTalent= $query->result_array();
+        foreach($orderTalent as $eachOT)
+        {
+            $orderTalentScript = $this->getScripts($eachOT['otr_id']); 
+			//echo"<pre>";print_r($orderTalentScript);die;
+            foreach($orderTalentScript as $eachScript)
+            {
+
+                
+				//unlink("../../assets/scripts-upload/".$eachScript['script_name']);
+            }
+
+            $sql = "DELETE FROM nrf_scripts WHERE otr_id ='".$eachOT['otr_id']."'"; 
+
+			$this->db->query($sql);
+
+        }
+	
+	  
+		$this->db->where('order_id', $oredrId);
+		$this->db->delete('nrf_order_talent_rel');
+		
+		$this->db->where('order_id', $oredrId);
+		$this->db->delete('nrf_order_history');
+		
+		$this->db->where('order_id', $oredrId);
+		$this->db->delete('nrf_orders');
+		
+		$this->db->where('order_id', $oredrId);
+		$this->db->delete('nrf_csr_pay');	
+
+
+     }
+	 
+	 	 		/**
+     * @developer       :   Dinesh
+     * @created date    :   09-08-2018 (dd-mm-yyyy)
+     * @purpose         :   get Scripts by otr id
+     * @params          :	id
+     * @return          :   
+     */
+	 function getScripts($otr_id)
+
+    {
+
+        $allRow = array();
+
+        $sql = "SELECT
+
+                    *
+
+                FROM
+
+                    nrf_scripts
+
+                WHERE otr_id = '$otr_id'" ;         
+
+        
+		$query = $this->db->query($sql);
+        $allRow=$query->result_array();
+
+        return $allRow;     
+
+    }
 	
 }
 
