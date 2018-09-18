@@ -229,6 +229,7 @@ class Customers_model extends CI_Model {
 	}
 
     public function getPaymentList($limit, $start) {
+		$offset = $start * $limit;
 		    $sql = "SELECT OTR.*,
 				   PTXT.paystat_text,
 				   ORDR.*,
@@ -249,7 +250,7 @@ class Customers_model extends CI_Model {
 					   INNER JOIN nrf_orders AS ORDR2 ON (OTR3.order_id = ORDR2.order_id)
 					   LEFT JOIN nrf_talent AS TNLT2 ON (OTR3.tlnt_id = TNLT2.tlnt_id)
 					   ORDER BY pay_stat ASC, otr_id DESC
-					   LIMIT $start,
+					   LIMIT $offset,
 							 $limit) AS OTR2 ON (OTR2.otr_id = OTR.otr_id)
 					LEFT JOIN nrf_pay_status_text AS PTXT ON (OTR.pay_stat = PTXT.paystat_id)
 					INNER JOIN nrf_orders AS ORDR ON (OTR.order_id = ORDR.order_id)

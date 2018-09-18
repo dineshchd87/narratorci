@@ -93,7 +93,7 @@ class CI_Pagination {
 	 *
 	 * @var	int
 	 */
-	public $per_page = 10;
+	public $page = 10;
 
 	/**
 	 * Current page
@@ -265,7 +265,7 @@ class CI_Pagination {
 	 *
 	 * @var	string
 	 */
-	protected $query_string_segment = 'per_page';
+	protected $query_string_segment = 'page';
 
 	/**
 	 * Display pages flag
@@ -403,13 +403,13 @@ class CI_Pagination {
 	{
 		// If our item count or per-page total is zero there is no need to continue.
 		// Note: DO NOT change the operator to === here!
-		if ($this->total_rows == 0 OR $this->per_page == 0)
+		if ($this->total_rows == 0 OR $this->page == 0)
 		{
 			return '';
 		}
 
 		// Calculate the total number of pages
-		$num_pages = (int) ceil($this->total_rows / $this->per_page);
+		$num_pages = (int) ceil($this->total_rows / $this->page);
 
 		// Is there only one page? Hm... nothing more to do here then.
 		if ($num_pages === 1)
@@ -543,7 +543,7 @@ class CI_Pagination {
 		}
 		elseif ($this->cur_page > $this->total_rows)
 		{
-			$this->cur_page = ($num_pages - 1) * $this->per_page;
+			$this->cur_page = ($num_pages - 1) * $this->page;
 		}
 
 		$uri_page_number = $this->cur_page;
@@ -552,7 +552,7 @@ class CI_Pagination {
 		// to a page number, so we can generate the surrounding number links.
 		if ( ! $this->use_page_numbers)
 		{
-			$this->cur_page = (int) floor(($this->cur_page/$this->per_page) + 1);
+			$this->cur_page = (int) floor(($this->cur_page/$this->page) + 1);
 		}
 
 		// Calculate the start and end numbers. These determine
@@ -576,7 +576,7 @@ class CI_Pagination {
 		// Render the "Previous" link.
 		if ($this->prev_link !== FALSE && $this->cur_page !== 1)
 		{
-			$i = ($this->use_page_numbers) ? $uri_page_number - 1 : $uri_page_number - $this->per_page;
+			$i = ($this->use_page_numbers) ? $uri_page_number - 1 : $uri_page_number - $this->page;
 
 			$attributes = sprintf('%s %s="%d"', $this->_attributes, $this->data_page_attr, ($this->cur_page - 1));
 
@@ -601,7 +601,7 @@ class CI_Pagination {
 			// Write the digit links
 			for ($loop = $start - 1; $loop <= $end; $loop++)
 			{
-				$i = ($this->use_page_numbers) ? $loop : ($loop * $this->per_page) - $this->per_page;
+				$i = ($this->use_page_numbers) ? $loop : ($loop * $this->page) - $this->page;
 
 				$attributes = sprintf('%s %s="%d"', $this->_attributes, $this->data_page_attr, $loop);
 
@@ -631,7 +631,7 @@ class CI_Pagination {
 		// Render the "next" link
 		if ($this->next_link !== FALSE && $this->cur_page < $num_pages)
 		{
-			$i = ($this->use_page_numbers) ? $this->cur_page + 1 : $this->cur_page * $this->per_page;
+			$i = ($this->use_page_numbers) ? $this->cur_page + 1 : $this->cur_page * $this->page;
 
 			$attributes = sprintf('%s %s="%d"', $this->_attributes, $this->data_page_attr, $this->cur_page + 1);
 
@@ -642,7 +642,7 @@ class CI_Pagination {
 		// Render the "Last" link
 		if ($this->last_link !== FALSE && ($this->cur_page + $this->num_links + ! $this->num_links) < $num_pages)
 		{
-			$i = ($this->use_page_numbers) ? $num_pages : ($num_pages * $this->per_page) - $this->per_page;
+			$i = ($this->use_page_numbers) ? $num_pages : ($num_pages * $this->page) - $this->page;
 
 			$attributes = sprintf('%s %s="%d"', $this->_attributes, $this->data_page_attr, $num_pages);
 
