@@ -28,19 +28,20 @@ function local_time($GMTtime, $localTZoffSet=false)
 						<a href="<?php echo base_url();?>orders/create_order" class="btn btn-info"><i class="fas fa-plus-circle"></i> Add an Order</a>
 					</div>
 					<div class="col-sm-8">
-						<form class="form-inline float-right" id="searchForm" action="#" method="get">
+						<form class="form-inline float-right" id="searchForm" action="<?php echo  base_url().$this->uri->uri_string(); ?>" method="get">
 						<div class="form-group mr-3">
+						<input type='hidden' name='type' value='<?php echo $_GET['type']; ?>'>
 							<label class="mr-3"><strong>Search : </strong> </label> 	 	
 							<select name="searchField" id="searchField" class="form-control form-control-sm">
-								<option value="cust">Customer/ Client</option>
-								<option value="comp">Company</option>
-								<option value="tlnt">Talent</option>
-								<option value="csr">CSR</option>
+								<option <?php if(isset($_GET['searchField']) && $_GET['searchField']=="cust"){ echo 'selected'; } ?>  value="cust">Customer/ Client</option>
+								<option <?php if(isset($_GET['searchField']) && $_GET['searchField']=="comp"){ echo 'selected'; } ?>  value="comp">Company</option>
+								<option <?php if(isset($_GET['searchField']) && $_GET['searchField']=="tlnt"){ echo 'selected'; } ?> value="tlnt">Talent</option>
+								<option <?php if(isset($_GET['searchField']) && $_GET['searchField']=="csr"){ echo 'selected'; } ?>  value="csr">CSR</option>
 							</select>
 						</div>
 						<div class="form-group mr-3">
 						
-							<input type="text" name="searchWord" class="form-control form-control-sm"/>
+							<input type="text" name="searchWord" value="<?php if(isset($_GET['searchWord'])){ echo $_GET['searchWord']; } ?>" class="form-control form-control-sm"/>
 						</div>
 							<div class="form-group">
 						
@@ -360,6 +361,7 @@ $(document).ready(function() {
 			  closeOnConfirm: false
 			},
 			function(inputValue){
+				if(inputValue){				
 				var resource_path=inputValue;
 				var dataArr = { 'order_id' : orderId, 'ostId' : ostId,'resource_path':resource_path}
 				$.ajax({
@@ -371,6 +373,10 @@ $(document).ready(function() {
 						swal("Saved!", "Status changed successfully.", "success");
 					}
 				});
+				}else{
+					swal.close();
+					return false;
+				}
 			});
 		}else if($(this).val()==4){
 						swal({
@@ -383,18 +389,23 @@ $(document).ready(function() {
 			  cancelButtonText: "Cancel",
 			  closeOnConfirm: false
 			},
-			function(text){
-				var  resource_path=$("#text").val();
-				
-				var dataArr = { 'order_id' : orderId, 'ostId' : ostId,'resource_path':resource_path}
-				$.ajax({
-					type: "POST",
-					data: dataArr,				  
-					url: "<?php echo base_url();?>orders/saveStatus",  
-					success: function(result){						
-						swal("Saved!", "Status changed successfully.", "success");
-					}
-				});
+			function(input){
+				if(input){
+					var  resource_path=$("#text").val();
+					
+					var dataArr = { 'order_id' : orderId, 'ostId' : ostId,'resource_path':resource_path}
+					$.ajax({
+						type: "POST",
+						data: dataArr,				  
+						url: "<?php echo base_url();?>orders/saveStatus",  
+						success: function(result){						
+							swal("Saved!", "Status changed successfully.", "success");
+						}
+					});
+				}else{
+					swal.close();
+					return false;
+				}
 			});
 		}else{
 			$(this).next().show();
@@ -472,52 +483,58 @@ $(document).ready(function() {
      });
 	 
 	 $('#go').on('click', function () {
-
 		 var actionType=$("#actionDropdown").val();
-
-		  if(actionType=='1'){
-			swal({
-			  title: "Are you sure?",
-			  text: "Do you want to hide selected records?",
-			  type: "warning",
-			  showCancelButton: true,
-			  confirmButtonClass: "btn-danger",
-			  confirmButtonText: "Yes",
-			  cancelButtonText: "No",
-			  closeOnConfirm: false
-			},
-			function(){
-			  for ( var i = 0, l = tmp.length; i < l; i++ ) {
-						$("#detailRow-"+tmp[i]).hide();
-						$("#brifRow-"+tmp[i]).hide();						
-					}
-						 swal.close();
-			});
-		}else if(actionType=='2'){
-		swal({
-          title: "Are you sure?",
-          text: "Do you want to delete selected records?\nThis is permanent!",
-          type: "warning",
-          showCancelButton: true,
-          confirmButtonClass: "btn-danger",
-          confirmButtonText: "Yes",
-          cancelButtonText: "No",
-          closeOnConfirm: false
-        },
-        function(){
-            $.ajax({
-				type: 'POST',
-				data: { 'orderArr' :tmp},				
-				url: "<?php echo base_url();?>orders/deleteOrder/",
-                success: function(result){
-                    for ( var i = 0, l = tmp.length; i < l; i++ ) {
-						$("#detailRow-"+tmp[i]).remove();
-						$("#brifRow-"+tmp[i]).remove();						
-					}	
-                    swal("Deleted!", "Orders deleted successfully.", "success");
-                }
-            });
-        });
+			if(actionType=='0'){
+				swal("Please select an app. action.")
+				return false;
+			}
+			if(tmp.length>0){			  
+			  if(actionType=='1'){
+				swal({
+				  title: "Are you sure?",
+				  text: "Do you want to hide selected records?",
+				  type: "warning",
+				  showCancelButton: true,
+				  confirmButtonClass: "btn-danger",
+				  confirmButtonText: "Yes",
+				  cancelButtonText: "No",
+				  closeOnConfirm: false
+				},
+				function(){
+				  for ( var i = 0, l = tmp.length; i < l; i++ ) {
+							$("#detailRow-"+tmp[i]).hide();
+							$("#brifRow-"+tmp[i]).hide();						
+						}
+							 swal.close();
+				});
+			}else if(actionType=='2'){
+				swal({
+				  title: "Are you sure?",
+				  text: "Do you want to delete selected records?\nThis is permanent!",
+				  type: "warning",
+				  showCancelButton: true,
+				  confirmButtonClass: "btn-danger",
+				  confirmButtonText: "Yes",
+				  cancelButtonText: "No",
+				  closeOnConfirm: false
+				},
+				function(){
+					$.ajax({
+						type: 'POST',
+						data: { 'orderArr' :tmp},				
+						url: "<?php echo base_url();?>orders/deleteOrder/",
+						success: function(result){
+							for ( var i = 0, l = tmp.length; i < l; i++ ) {
+								$("#detailRow-"+tmp[i]).remove();
+								$("#brifRow-"+tmp[i]).remove();						
+							}	
+							swal("Deleted!", "Orders deleted successfully.", "success");
+						}
+					});
+				});
+			}		  
+		  }else{
+			  swal("Please select at least one Checkbox.!")
 		  }
      });
 	 var tmp=[]

@@ -166,7 +166,7 @@ function local_time($GMTtime, $localTZoffSet=false)
 
 							</td>
 							<td>
-								<select name="ostat_1" id="ostat_1" onchange="checkSatus(1,9709)" class=" form-control form-control-sm">
+								<select name="ostat_1" id="ostat_1"  class="statusList form-control form-control-sm">
 								<?php
 									$selected = $order["status"];
 								    foreach($oStatus as $ostatrow)
@@ -191,6 +191,7 @@ function local_time($GMTtime, $localTZoffSet=false)
 								    }
 								?>    
 								</select>
+								<img style="display:none;" class="saveStatus"   data-orderid="<?php echo  $order['order_id'] ;  ?>" src="<?php echo base_url();?>/assets/images/save_but1.gif"  name="save" alt="Save">
 							</td>
 							<td><a href="#" class="btn btn-info btn-sm"> View <i class="fas fa-eye"></i></a></td>
 						</tr>
@@ -204,4 +205,73 @@ function local_time($GMTtime, $localTZoffSet=false)
 			</div>
 		</div>
 	</section>
-		
+	<script>
+	$(document).ready(function() {
+		$('.statusList').on('change', function() {
+			var orderId=$(this).next().attr('data-orderid');
+			var ostId=$(this).val();		
+			if($(this).val()==5){
+				swal({
+				  title: "Enter here the script file name only.",
+				  text: "N.B. file name only, not full path.",
+				  type: "input",
+				  showCancelButton: true,
+				  confirmButtonClass: "btn-danger",
+				  confirmButtonText: "Submit",
+				  cancelButtonText: "Cancel",
+				  closeOnConfirm: false
+				},
+				function(inputValue){
+					if(inputValue){						
+						var resource_path=inputValue;
+						var dataArr = { 'order_id' : orderId, 'ostId' : ostId,'resource_path':resource_path}
+						$.ajax({
+							type: "POST",
+							data: dataArr,
+							url: "<?php echo base_url();?>orders/saveStatus", 
+							success: function(result){
+								
+								swal("Saved!", "Status changed successfully.", "success");
+							}
+						});
+					}else{
+						swal.close();
+						return false;
+					}
+				});
+			}else if($(this).val()==4){
+							swal({
+				  title: "Please enter your pickups below:",
+				  text: "<textarea  style='width: 100%;height:100px;' id='text'></textarea>",
+				  html: true,
+				  showCancelButton: true,
+				  confirmButtonClass: "btn-danger",
+				  confirmButtonText: "Ok",
+				  cancelButtonText: "Cancel",
+				  closeOnConfirm: false
+				},
+				function(input){
+					if(input){
+						var  resource_path=$("#text").val();
+						
+						var dataArr = { 'order_id' : orderId, 'ostId' : ostId,'resource_path':resource_path}
+						$.ajax({
+							type: "POST",
+							data: dataArr,				  
+							url: "<?php echo base_url();?>orders/saveStatus",  
+							success: function(result){						
+								swal("Saved!", "Status changed successfully.", "success");
+							}
+						});
+					}else{
+						swal.close();
+						return false;
+					}
+				});
+			}else{
+				$(this).next().show();
+				
+			}
+		});
+	});
+	</script>

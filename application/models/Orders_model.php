@@ -350,9 +350,22 @@ class Orders_model extends CI_Model {
         $this->db->order_by("order_id", "desc");
         $this->db->limit($limit_per_page,$start_index);
 		
-        if($condition=='active'){
+        if($condition['type']=='active'){
 			//echo $condition;die;
            $this->db->where('o.status <>',6);
+           
+        }
+		if(isset($condition['searchField']) && isset($condition['searchWord'])){
+			if($condition['searchField']=='cust'){			
+				$this->db->like('c.cust_name', $condition['searchWord']);
+			}
+			if($condition['searchField']=='comp'){			
+				$this->db->like('c.cust_comp', $condition['searchWord']);
+			}
+			if($condition['searchField']=='csr'){
+								
+				$this->db->like('u.user_fname', $condition['searchWord']);
+			}
            
         }		
         $orders = $this->db->get()->result_array();         
@@ -478,13 +491,29 @@ class Orders_model extends CI_Model {
 	
 	 public function getAllOrdresCountOrderPage($current_user,$condition){ 
         $this->db->select('COUNT(order_id) AS order_count');
-        $this->db->from('nrf_orders');
+        $this->db->from('nrf_orders as o');
+		$this->db->join('nrf_customers c', 'c.cust_id = o.order_customer', 'left');
+		$this->db->join('nrf_users u', 'u.user_id = o.order_csr', 'left');
+		if(isset($condition['searchField']) && isset($condition['searchWord'])){
+			if($condition['searchField']=='cust'){			
+				$this->db->like('c.cust_name', $condition['searchWord']);
+			}
+			if($condition['searchField']=='comp'){			
+				$this->db->like('c.cust_comp', $condition['searchWord']);
+			}
+			if($condition['searchField']=='csr'){
+								
+				$this->db->like('u.user_fname', $condition['searchWord']);
+			}
+			
+           
+        }
         if($current_user['group_id'] == 3){
            $this->db->where('order_csr', $current_user['user_id']);            
             $this->db->where('status >', 1);
         }
 		
-		if($condition == 'active'){
+		if($condition['type'] == 'active'){
            $this->db->where('status <>', 6);
             
         }
@@ -791,7 +820,7 @@ class Orders_model extends CI_Model {
         return $allRow;     
 
     }
-	
+
 }
 
 ?>

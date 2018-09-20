@@ -41,13 +41,21 @@ class Orders extends CI_Controller {
 		$user = $this->session->userdata();
 		$params = array();
 		$data=array();
+		$condition=array();
 		if(isset($_GET['type'])){
 			if($_GET['type']=='active'){
-				$condition= 'active';
+				$condition['type']= 'active';
 			}else{
-				$condition= 'all';
+				$condition['type']= 'all';
 			}
 		}
+		if(isset($_GET['searchField'])){
+			$condition['searchField']=$_GET['searchField'];
+		}
+		if(isset($_GET['searchWord'])){
+			$condition['searchWord']=$_GET['searchWord'];
+		}
+		
         $limit_per_page = ($this->uri->segment(2)) ? $this->uri->segment(2) : 10;
         $start_index = ($this->uri->segment(3)) ? ($this->uri->segment(3)- 1) : 0;
         $total_records = $this->orders_model->getAllOrdresCountOrderPage($user,$condition)[0]['order_count'];
@@ -60,10 +68,11 @@ class Orders extends CI_Controller {
             $data["orders"] = $this->orders_model->getAllOrders($limit_per_page, $start_index*$limit_per_page,$condition);
              
             $config['base_url'] = base_url() . 'orders/'. $limit_per_page;
+			
+			if (count($_GET) > 0){$config['first_url'] = base_url() . 'orders/'. $limit_per_page.'/1?'.http_build_query($_GET);}
             $config['total_rows'] = $total_records;
             $config['per_page'] = $limit_per_page;
-            $config["uri_segment"] = 3;
-			
+            $config["uri_segment"] = 3;			
 			// custom paging configuration
             $config['num_links'] = 2;
             $config['use_page_numbers'] = TRUE;
