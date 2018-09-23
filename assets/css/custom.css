@@ -126,3 +126,7 @@ input:-webkit-autofill {
 .pagination{
 	float: right;
 }
+
+.hide{
+	display:none;
+}

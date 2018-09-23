@@ -25,24 +25,36 @@
 					</div>   <br>
 					<div class="form-row">
 						<div class="col-sm-4">
-						 <select class="form-control">
-							<option value="0">Select action for all selected:</option>
+						 <select class="form-control" id="paymentaction">
+							<option value="">Select any one</option>
 							<option value="1">Request payment</option>
-							<option value="1">Mark as paid</option>
+							<option value="2">Mark as paid</option>
 						  </select>
 						</div>
-							<div class="col-sm-1">
-							  <input type="text" class="form-control" placeholder="MM">
+							<div class="col-sm-1 date-input hide">
+							 <select class="form-control" name="month">
+							    <?php for($i=1; $i<= 12;$i++){?>
+								<option value="<?php echo $i;?>"><?php echo $i;?></option>
+								<?php }?>
+							</select>
 							</div>
-							<div class="col-sm-1">
-							  <input type="text" class="form-control" placeholder="DD">
+							<div class="col-sm-1 date-input hide">
+							 <select class="form-control" name="year">
+							    <?php for($i=1; $i<= 31;$i++){?>
+								<option value="<?php echo $i;?>"><?php echo $i;?></option>
+								<?php }?>
+							</select>
 							</div>
-							<div class="col-sm-1">
-							  <input type="text" class="form-control" placeholder="YYYY">
+							<div class="col-sm-1 date-input hide">
+							  <select class="form-control" name="year">
+							    <?php for($i=1970; $i<= 2018;$i++){?>
+								<option value="<?php echo $i;?>"><?php echo $i;?></option>
+								<?php }?>
+							</select>
 							</div>
 
 						<div class="col-sm-4">
-						  <button class="btn btn-info btn-sm">Go</button>
+						  <button id="mark_action" class="btn btn-info btn-sm">Go</button>
 						</div>
 					</div>   					
                 </div>
@@ -66,13 +78,19 @@
 							</div>
 						</div>
 					</div>
-                <table id="customerTableppppppppppp" class="table display table-striped table-bordered" style="width:100%">
+                <table id="paymentTable" class="table display table-striped table-bordered" style="width:100%">
 					<thead>
 						<tr>
-							<th colspan="2"><a href="javascript:void(0)" class="btn btn-info btn-sm">
+							<th colspan="2">
+								<a  href="javascript:void(0)" class="checkall_btn checkall btn btn-info btn-sm">
 									<i class="fas fa-edit"></i>
 									 Check All
-								</a></th>
+								</a>
+								<a  href="javascript:void(0)" class="checkall_btn hide uncheckall btn btn-info btn-sm">
+									<i class="fas fa-edit"></i>
+									 Uncheck All
+								</a>
+							</th>
 							<th>ID</th>
 							<th>Talent</th>
 							<th>Total</th>
@@ -91,7 +109,7 @@
 								
 							</td>
 							<td class="" >
-								<input type="checkbox" value="<?php echo $data["otr_id"];?>">
+								<input type="checkbox" name="otr_ids[]" class="check_boxes" value="<?php echo $data["otr_id"];?>">
 							</td>
 							 <td><?php echo $data["ORDER_SERIAL"];?></td>
 							 <td><?php echo $data["tlnt_fname"].' '.$data["tlnt_lname"];?></td>
@@ -176,45 +194,43 @@ $(document).ready(function() {
 		  
     });
 
-     //===delete customer=======================
-     $('body').on('click', '.delete_btn', function() {
-        var selectedCustomer = $(this).attr('data');
-        swal({
-          title: "Are you sure?",
-          text: "Really want to delete this record.",
-          type: "warning",
-          showCancelButton: true,
-          confirmButtonClass: "btn-danger",
-          confirmButtonText: "Yes",
-          cancelButtonText: "No",
-          closeOnConfirm: false
-        },
-        function(){
-            $.ajax({url: "http://localhost/narratorci/customers/deleteCustomer/"+selectedCustomer, 
-                success: function(result){
-                    $('#customerRow_'+selectedCustomer).remove();
-                    $('#created_new_row_'+selectedCustomer).remove();
-                    swal("Deleted!", "Customer deleted successfully.", "success");
-                }
-            });
-        });
+     //===show hide date picker=======================
+     $('body').on('change', '#paymentaction', function() {
+        if($(this).val() == '2'){
+		   $('.date-input').removeClass('hide');
+	    }else{
+			$('.date-input').addClass('hide');
+		}
      });
-
-
-    $('body').on('change', '.change_status_btn', function() {
-        var selectedCustomer = $(this).attr('data');
-        var status_type = $(this).val();
-        $.ajax({url: "http://localhost/narratorci/customers/updateStatus/"+selectedCustomer, 
-            type: "POST",
-             data : { type : status_type },
-            success: function(result){
-                    swal({
-                      title: "Sweet!",
-                      text: "Customer status updated successfully.",
-                      imageUrl: 'http://localhost/narratorci/assets/images/thumbs-up.jpg'
-                    });
-            }
-        });
+	 
+	 //=========mark action process=================
+	 $('body').on('click', '#mark_action', function() {
+        if($('#paymentaction').val() == ''){
+		    swal("Sorry", "Please select any one value from dropdown.", "error");
+	    }else{
+			var checkedNum = $('input[name="otr_ids[]"]:checked').length;
+			if(checkedNum > 0){
+				console.log('good work',checkedNum);
+			}else{
+				swal("Sorry", "Please check at least one check box from table.", "error");
+			}
+		}
      });
+	 
+	  //=========check and uncheck all checkboxes=================
+	 $('body').on('click', '.checkall_btn', function() { 
+		  if($(this).hasClass("checkall")){
+			$('input[name="otr_ids[]"]:checkbox').attr('checked','checked');
+			$('.checkall').addClass('hide');
+			$('.uncheckall').removeClass('hide');
+		  } else {
+			  $('input[name="otr_ids[]"]:checkbox').removeAttr('checked');
+			  $('.uncheckall').addClass('hide');
+			  $('.checkall').removeClass('hide');
+			  
+		  }       
+     });
+	 
+
 });
 </script>  </div>
