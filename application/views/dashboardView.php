@@ -68,7 +68,7 @@ function local_time($GMTtime, $localTZoffSet=false)
 						<div class="col-sm-3 mt-3">
 							<div class="btn-group-vertical">		
 								<a href="<?php echo base_url();?>customers" class="btn btn-outline-info">Customers</a>			
-								<a href="#" class="btn btn-outline-info">Talent	</a>		
+								<a href="<?php echo base_url();?>talents" class="btn btn-outline-info">Talent	</a>		
 								<a href="<?php echo base_url();?>representative" class="btn btn-outline-info">Personnel	</a>	
 								<a href="#" class="btn btn-outline-info">Invoicing	</a>	
 								<a href="<?php echo base_url();?>payments" class="btn btn-outline-info">Payments	</a>	
@@ -84,22 +84,38 @@ function local_time($GMTtime, $localTZoffSet=false)
 						<h6 class="what-next">Sales Snapshot	</h6>
 					</div>
 					<div class="col-sm-8 mt-2">
-						<div class="btn-group">
+						<div class="btn-group nav nav-tabs">
 						  <a href="#" class="btn btn-outline-info btn-sm">View:</a>
-						  <a href="#" class="btn btn-outline-info btn-sm">Day</a>
-						  <a href="#" class="btn btn-outline-info btn-sm">Week</a>
-						  <a href="#" class="btn btn-outline-info btn-sm">Month</a>
-						  <a href="#" class="btn btn-outline-info btn-sm">Year</a>
+						  <a data-toggle="tab" href="#day" class="btn btn-outline-info btn-sm">Day</a>
+						  <a data-toggle="tab" href="#week"class="btn btn-outline-info btn-sm">Week</a>
+						  <a data-toggle="tab" href="#month"class="btn btn-outline-info btn-sm">Month</a>
+						  <a data-toggle="tab" href="#year" class="btn btn-outline-info btn-sm">Year</a>
 						</div>
 					</div>
 				</div>
-				<div class="row">
-						<table class="table">
+				<div class="row tab-content">
+						<table id="day" class="table tab-pane active">
+							<tr><td class="text-right"><a href="#" class="btn btn-outline-info btn-sm">Reports <i class="fas fa-arrow-right"></i></a>	</td><td>Last Day</td><td>	This Day</td><td>	Change</td></tr>
+							<tr><td class="text-right">Net Revenue:</td><td><?php  echo $sales_snapshot['pDayOdrVal']; ?>	</td><td><?php echo $sales_snapshot['cDayOdrVal']; ?></td><td>	<?php echo $sales_snapshot['dlDayVal']; ?></td></tr>
+							<tr><td class="text-right">Orders:</td><td><?php echo $sales_snapshot['pDayOdrTotal']; ?>	</td><td><?php echo $sales_snapshot['cDayOdrTotal']; ?></td><td><?php echo $sales_snapshot['dlDayTotal']; ?></td></tr>
+						</table>
+						<table id="week" class="table tab-pane">
 							<tr><td class="text-right"><a href="#" class="btn btn-outline-info btn-sm">Reports <i class="fas fa-arrow-right"></i></a>	</td><td>Last Week</td><td>	This Week</td><td>	Change</td></tr>
-							<tr><td class="text-right">Net Revenue:</td><td>$1902	</td><td>$1380</td><td>	- $522</td></tr>
-							<tr><td class="text-right">Orders:</td><td>19	</td><td>22	+ </td><td>3</td></tr>
+							<tr><td class="text-right">Net Revenue:</td><td><?php echo $sales_snapshot['pDayOdrVal']; ?>	</td><td><?php echo $sales_snapshot['cDayOdrVal']; ?></td><td>	<?php echo $sales_snapshot['dlDayVal']; ?></td></tr>
+							<tr><td class="text-right">Orders:</td><td><?php echo $sales_snapshot['pDayOdrTotal']; ?></td><td><?php echo $sales_snapshot['cDayOdrTotal']; ?> </td><td><?php echo $sales_snapshot['dlDayTotal']; ?></td></tr>
+						</table>
+						<table id="month" class="table tab-pane">
+							<tr><td class="text-right"><a href="#" class="btn btn-outline-info btn-sm">Reports <i class="fas fa-arrow-right"></i></a>	</td><td>Last Month</td><td>	This Month</td><td>	Change</td></tr>
+							<tr><td class="text-right">Net Revenue:</td><td><?php echo $sales_snapshot['pDayOdrVal']; ?>	</td><td><?php echo $sales_snapshot['cDayOdrVal']; ?></td><td>	<?php echo $sales_snapshot['dlDayVal']; ?></td></tr>
+							<tr><td class="text-right">Orders:</td><td><?php echo  $sales_snapshot['pDayOdrTotal']; ?></td><td><?php echo $sales_snapshot['cDayOdrTotal']; ?> </td><td><?php  echo $sales_snapshot['dlDayTotal']; ?></td></tr>
+						</table>
+						<table id="year" class="table tab-pane">
+							<tr><td class="text-right"><a href="#" class="btn btn-outline-info btn-sm">Reports <i class="fas fa-arrow-right"></i></a>	</td><td>Last Year</td><td>	This Year</td><td>	Change</td></tr>
+							<tr><td class="text-right">Net Revenue:</td><td><?php echo $sales_snapshot['pYrOdrVal']; ?></td><td><?php echo $sales_snapshot['cYrOdrVal']; ?></td><td>	<?php echo $sales_snapshot['dlYrVal']; ?></td></tr>
+							<tr><td class="text-right">Orders:</td><td><?php echo $sales_snapshot['pYrOdrTotal']; ?></td><td><?php echo $sales_snapshot['cYrOdrTotal']; ?> </td><td><?php echo $sales_snapshot['dlYrTotal']; ?></td></tr>
 						</table>
 				</div>
+				
 			</div>
 			</div>
 		</div>
