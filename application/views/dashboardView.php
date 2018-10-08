@@ -289,5 +289,28 @@ function local_time($GMTtime, $localTZoffSet=false)
 				
 			}
 		});
+		
+		$('.saveStatus').on('click', function() {
+		var ostId=$(this).prev().val();
+		var orderId=$(this).attr('data-orderid');
+		
+		var obj=$(this);
+		var data = { 'order_id' : orderId, 'ostId' : ostId}		  
+			$.ajax({
+			  type: 'POST',
+			  url: "<?php echo base_url();?>orders/saveStatus",
+			  data: data,
+			  dataType: "text",
+			  success: function(resultData) {
+				  
+				  $('#statusChange_success_msg').css('display','block');
+				  obj.hide();
+                setTimeout(function(){ 
+                    $('#statusChange_success_msg').css('display','none');
+                 }, 2000);
+			  }
+			});
+		
+		});
 	});
 	</script>
