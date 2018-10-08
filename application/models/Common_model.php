@@ -76,6 +76,32 @@ class Common_model extends CI_Model {
 		//echo $cDayEnd ;die;
 		$pDayStart = $this->localToGMT( $cDayStart-$OneDay);
 		
+		
+		$startDay = 'Monday';
+
+		$cWeekEnd = $nowTime;
+
+		$weekTime = (date("l",$cWeekEnd) == $startDay) ? ($cWeekEnd+$OneDay) : $cWeekEnd ;
+
+		$cWeekStart = strtotime("last $startDay",$weekTime);
+
+		$pWeekEnd = $cWeekStart-1;
+
+		$pWeekStart = strtotime("last $startDay",$pWeekEnd);
+		
+		list($pMonthNum,$pMonthYr) = $this->calPrevMonth(array($c_month,$c_year));
+
+
+
+		$cMonthEnd = $nowTime;
+
+		$cMonthStart = mktime(0,0,0,$c_month,1,$c_year);
+
+		$pMonthEnd = $cMonthStart-1;
+
+		$pMonthStart = mktime(0,0,0,$pMonthNum,1,$pMonthYr);
+		
+		
 		$pYrYr = $c_year-1;
 
 		$cYrEnd = $nowTime;
@@ -113,6 +139,59 @@ class Common_model extends CI_Model {
 		$data['dlDayTotal']=$dlDayTotal;
 		$data['dlDayVal']=$dlDayVal;
 		//-----------------------------------------------------  day calucalation end
+		
+		
+		//-----------------------------------------------------  week calucalation start
+		$cWeekOdrTotal = $this->getSnapCount($cWeekStart,$cWeekEnd); 
+				
+		list($cWeekOdrVal,$cWeekOdrPage,$cWeekOdrCsrVal,$discount,$rush_charge) = $this->getOrderValueFast($cWeekStart,$cWeekEnd);
+		$grsRevTotal = $cWeekOdrPage*(20) + $rush_charge - $discount;
+		$cWeekOdrVal = $grsRevTotal - (($cWeekOdrVal) + ($cWeekOdrCsrVal) );
+		$data['cWeekOdrTotal']=$cWeekOdrVal;
+		$data['cWeekOdrVal']=$cWeekOdrVal;
+		// ------- prev day
+		$pWeekOdrTotal = $this->getSnapCount($pWeekStart,$pWeekEnd); // ***
+
+
+		list($pWeekOdrVal,$pWeekOdrPage,$pWeekOdrCsrVal,$discount,$rush_charge) = $this->getOrderValueFast($pWeekStart,$pWeekEnd);
+
+		$grsRevTotal = $pWeekOdrPage*20 + $rush_charge- $discount;
+		//*******************************************************************************************
+		// Net Revenue = Total pages * 20 - ((Total pages * Talent rate) + (Total pages * CSR rate))
+		$pDayOdrVal = $grsRevTotal - (($pWeekOdrVal) + ($pWeekOdrCsrVal) );
+		$data['pWeekOdrTotal']=$pWeekOdrTotal;
+		$data['pWeekOdrVal']=$pWeekOdrVal;
+		$dlWeekTotal = $this->percent($pWeekOdrTotal,$cWeekOdrTotal);
+		$dlWeekVal = $this->percent($pWeekOdrVal,$cWeekOdrVal,true);
+		$data['dlWeekTotal']=$dlWeekTotal;
+		$data['dlWeekVal']=$dlWeekVal;
+		//-----------------------------------------------------  week calucalation end
+		
+		//-----------------------------------------------------  month calucalation start
+		$cMonthOdrTotal = $this->getSnapCount($cMonthStart,$cMonthEnd); 
+				
+		list($cMonthOdrVal,$cMonthOdrPage,$cMonthOdrCsrVal,$discount,$rush_charge) = $this->getOrderValueFast($cMonthStart,$cMonthEnd);
+		$grsRevTotal = $cMonthOdrPage*(20) + $rush_charge - $discount;
+		$cMonthOdrVal = $grsRevTotal - (($cMonthOdrVal) + ($cMonthOdrCsrVal) );
+		$data['cMonthOdrTotal']=$cMonthOdrTotal;
+		$data['cMonthOdrVal']=$cMonthOdrVal;
+		// ------- prev day
+		$pMonthOdrTotal = $this->getSnapCount($pMonthStart,$pMonthEnd); // ***
+
+
+		list($pMonthOdrVal,$pMonthOdrPage,$pMonthOdrCsrVal,$discount,$rush_charge) = $this->getOrderValueFast($pMonthStart,$pMonthEnd);
+
+		$grsRevTotal = $pMonthOdrPage*20 + $rush_charge- $discount;
+		//*******************************************************************************************
+		// Net Revenue = Total pages * 20 - ((Total pages * Talent rate) + (Total pages * CSR rate))
+		$pMonthOdrVal = $grsRevTotal - (($pMonthOdrVal) + ($pMonthOdrCsrVal) );
+		$data['pMonthOdrTotal']=$pMonthOdrTotal;
+		$data['pMonthOdrVal']=$pMonthOdrVal;
+		$dlMonthTotal = $this->percent($pMonthOdrTotal,$cMonthOdrTotal);
+		$dlMonthVal = $this->percent($pMonthOdrVal,$cMonthOdrVal,true);
+		$data['dlMonthTotal']=$dlMonthTotal;
+		$data['dlMonthVal']=$dlMonthVal;
+		//-----------------------------------------------------  month calucalation end
 		
 		
 		//------------------------------------------------------ year
@@ -288,6 +367,23 @@ class Common_model extends CI_Model {
 		//return number_format(($nxt - $prev)/($nxt == 0 ? 1 : $nxt) * 100.00,2);
 
 		return $percentText;
+
+	}
+	
+	function calPrevMonth($MnYr=array())
+	{
+		$pMonthNum = $MnYr[0]-1;
+
+		$pMonthYr = $MnYr[1];
+
+		if($pMonthNum == 0 )
+		{
+			$pMonthNum = 12 ;
+
+			$pMonthYr--;
+
+		}
+		return array($pMonthNum,$pMonthYr);
 
 	}
 }
