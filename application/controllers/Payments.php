@@ -147,9 +147,9 @@ class Payments extends CI_Controller {
 				if($otrPayment_stat >= $pay_stat_id){
 					$msg.=' Can not save a lower status to id #'.$otr_id_single;    
 				}
-				 $msg.=' Saved '.$otr_id_single;
+				$msg.=' Saved '.$otr_id_single;
                 if($pay_stat_id==2)
-                { die('hellosssssssssssss');
+                {   die('hellosssssssssssss');
                     $isToSendEmail = true;
 				}
 					
