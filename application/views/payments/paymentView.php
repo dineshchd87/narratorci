@@ -27,11 +27,19 @@
 						<div class="col-sm-4">
 						 <select class="form-control" id="paymentaction">
 							<option value="">Select any one</option>
-							<option value="1">Request payment</option>
-							<option value="2">Mark as paid</option>
+							<option value="2">Request payment</option>
+							<option value="3">Mark as paid</option>
 						  </select>
 						</div>
-							<div class="col-sm-1 date-input hide">
+						<div id="datepicker" class="input-group date col-sm-2 date-input hide" data-date-format="mm-dd-yyyy">
+							<input class="form-control" id="datepicker_value" name="datepicker_value" type="text" readonly />
+							<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+						</div>
+						
+						
+						
+						
+							<!--<div class="col-sm-1 date-input hide">
 							 <select class="form-control" name="month">
 							    <?php for($i=1; $i<= 12;$i++){?>
 								<option value="<?php echo $i;?>"><?php echo $i;?></option>
@@ -51,7 +59,7 @@
 								<option value="<?php echo $i;?>"><?php echo $i;?></option>
 								<?php }?>
 							</select>
-							</div>
+							</div>-->
 
 						<div class="col-sm-4">
 						  <button id="mark_action" class="btn btn-info btn-sm">Go</button>
@@ -196,7 +204,7 @@ $(document).ready(function() {
 
      //===show hide date picker=======================
      $('body').on('change', '#paymentaction', function() {
-        if($(this).val() == '2'){
+        if($(this).val() == '3'){
 		   $('.date-input').removeClass('hide');
 	    }else{
 			$('.date-input').addClass('hide');
@@ -205,12 +213,34 @@ $(document).ready(function() {
 	 
 	 //=========mark action process=================
 	 $('body').on('click', '#mark_action', function() {
-        if($('#paymentaction').val() == ''){
+		var pay_stat = $('#paymentaction').val();
+		var date = $('#datepicker_value').val();
+		var otr_ids =  $(".check_boxes:checked").map(function () {
+						return $(this).val();
+					}).get().join(',');
+		console.log('otr_ids',otr_ids);
+        if( pay_stat == ''){
 		    swal("Sorry", "Please select any one value from dropdown.", "error");
 	    }else{
 			var checkedNum = $('input[name="otr_ids[]"]:checked').length;
 			if(checkedNum > 0){
-				console.log('good work',checkedNum);
+				console.log('good work',otr_ids);
+				swal({
+					title: "Please wait!",
+					text: "Saving...",
+					type: "info",
+					showCancelButton: false,
+					showConfirmButton: false
+				 });
+				 $.ajax({
+					url: "<?php echo base_url();?>payments/savePaySatus", 
+					 type: "POST",
+					 data : { pay_stat : pay_stat, date : date, otr_ids : otr_ids },
+					success: function(result){
+						console.log(result);
+						swal.close();
+					}
+				}); 
 			}else{
 				swal("Sorry", "Please check at least one check box from table.", "error");
 			}
@@ -231,6 +261,9 @@ $(document).ready(function() {
 		  }       
      });
 	 
-
+  $("#datepicker").datepicker({ 
+        autoclose: true, 
+        todayHighlight: true
+  }).datepicker('update', new Date());
 });
 </script>  </div>

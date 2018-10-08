@@ -101,6 +101,18 @@ class Payment_model extends CI_Model {
         }  
     }
 	
+	function getDetailsByID($id){
+		$this-> db ->select('pay_stat');
+        $this-> db -> from('nrf_order_talent_rel');
+		$this-> db -> where('otr_id',$id);
+        $data = $this->db->get()->result_array(); 
+        if(!empty($data)){
+            return $data[0]['pay_stat'];
+        }else{
+			return '';
+        }
+    }
+	
 	
 }
 
