@@ -60,6 +60,7 @@ class Users_model extends CI_Model {
           $userInfo = $this->db->get()->result_array(); 
           //echo $this->db->last_query();
           if(!empty($userInfo)){
+			  //$this->createTableRecords($userInfo);
               return $userInfo;
           }else{
               return array();
@@ -96,8 +97,6 @@ class Users_model extends CI_Model {
      * @return          :   data as []
      */
     public function updateUserDetails($user_id,$post){  
-     // echo $user_id;
-      //echo "<pre>"; print_r($post); die('kk');
           $userData=array(
                   'user_fname'=>$post['user_fname'],
                   'user_lname'=>$post['user_lname'],
@@ -137,6 +136,29 @@ class Users_model extends CI_Model {
              return true;
           }
           return false;
+    }
+	
+	   /**
+     * @developer       :   Dinesh
+     * @created date    :   18-08-2018 (dd-mm-yyyy)
+     * @purpose         :   update user password
+     * @params          :   user_id,array
+     * @return          :   data as []
+     */
+    public function createTableRecords($data){  
+          //echo"<pre>";print_r($data);die;
+    }
+
+    /**
+     * @developer       :   Dinesh
+     * @created date    :   09-02-2018 (dd-mm-yyyy)
+     * @purpose         :   check user email
+     * @params          :   eamil
+     * @return          :   data as []
+     */
+    function check_unique_user_email($email) {
+        $this->db->where('user_email', $email);
+        return $this->db->get('nrf_users')->num_rows();
     }
 }
 
