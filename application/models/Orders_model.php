@@ -293,6 +293,7 @@ class Orders_model extends CI_Model {
      * @return          :   []
      */
     public function getRecentOrder($orderType){ 
+	$current_user =$this->session->userdata();	
      $this->db->select('o.* ,c.*,t.ostat_text,u.*,ist.istat_text AS in_status_text');
         $this->db->from('nrf_orders AS o');
         $this->db->join('nrf_customers c', 'c.cust_id = o.order_customer', 'left');
@@ -302,6 +303,10 @@ class Orders_model extends CI_Model {
         $this->db->join('nrf_invoice_status_text ist', 'ist.istat_id = o.invoice_stat', 'left');
         if($orderType == 'complete'){
           $this->db->where('o.status',6);
+        }
+		if($current_user['group_id'] == 3){			
+           $this->db->where('o.order_csr', $current_user['user_id']);            
+            $this->db->where('o.status >', 1);
         }
         $this->db->order_by("o.order_id", "desc");
         $this->db->limit(5);  
@@ -339,7 +344,8 @@ class Orders_model extends CI_Model {
      * @params          :   
      * @return          :   []
      */
-    public function getAllOrders($limit_per_page,$start_index,$condition){ 
+    public function getAllOrders($limit_per_page,$start_index,$condition,$current_user){
+	
      $this->db->select('o.* ,c.*,t.ostat_text,u.*,ist.istat_text AS in_status_text');
         $this->db->from('nrf_orders AS o');
         $this->db->join('nrf_customers c', 'c.cust_id = o.order_customer', 'left');
@@ -355,6 +361,11 @@ class Orders_model extends CI_Model {
            $this->db->where('o.status <>',6);
            
         }
+		if($current_user['group_id'] == 3){
+			
+           $this->db->where('o.order_csr', $current_user['user_id']);            
+            $this->db->where('o.status >', 1);
+        }
 		if(isset($condition['searchField']) && isset($condition['searchWord'])){
 			if($condition['searchField']=='cust'){			
 				$this->db->like('c.cust_name', $condition['searchWord']);
@@ -366,9 +377,14 @@ class Orders_model extends CI_Model {
 								
 				$this->db->like('u.user_fname', $condition['searchWord']);
 			}
+			if($condition['searchField']=='order_id'){
+								
+				 $this->db->where('o.order_id', $condition['searchWord']);
+			}
            
         }		
-        $orders = $this->db->get()->result_array();         
+        $orders = $this->db->get()->result_array();
+		
         if(!empty($orders)){
           for ($i=0; $i < count($orders);$i++) {
             $order_talent = $this->get_order_talent_relation($orders[$i]['order_id']);
@@ -505,7 +521,10 @@ class Orders_model extends CI_Model {
 								
 				$this->db->like('u.user_fname', $condition['searchWord']);
 			}
-			
+			if($condition['searchField']=='order_id'){
+								
+				 $this->db->where('o.order_id', $condition['searchWord']);
+			}
            
         }
         if($current_user['group_id'] == 3){
@@ -820,6 +839,165 @@ class Orders_model extends CI_Model {
         return $allRow;     
 
     }
+	
+	/**
+     * @developer       :   Dinesh
+     * @created date    :   09-08-2018 (dd-mm-yyyy)
+     * @purpose         :   insert order 
+     * @params          :	id
+     * @return          :   
+     */
+	function insertOrder($data)
+    {
+
+        $this-> db->insert('nrf_orders',$data);
+		return $this->db->insert_id();
+    }
+	
+	/**
+     * @developer       :   Dinesh
+     * @created date    :   09-08-2018 (dd-mm-yyyy)
+     * @purpose         :   insert csr pay 
+     * @params          :	id
+     * @return          :   
+     */
+	function insertCsrPay_table($data)
+    {
+
+        $this->db->insert('nrf_csr_pay',$data);
+    }
+	
+	/**
+     * @developer       :   Dinesh
+     * @created date    :   09-08-2018 (dd-mm-yyyy)
+     * @purpose         :   insert Order Talent Rel 
+     * @params          :	id
+     * @return          :   
+     */
+	function insertOrderTalentRel_table($data)
+    {
+
+        $this-> db->insert('nrf_order_talent_rel',$data);
+		return $this->db->insert_id();
+    }
+	
+	
+	/**
+     * @developer       :   Dinesh
+     * @created date    :   09-08-2018 (dd-mm-yyyy)
+     * @purpose         :   insert Scripts table 
+     * @params          :	id
+     * @return          :   
+     */
+	function insertScripts_table($data)
+    {
+
+        $this-> db->insert('nrf_scripts',$data);
+		return $this->db->insert_id();
+    }
+	
+		/**
+     * @developer       :   Dinesh
+     * @created date    :   09-08-2018 (dd-mm-yyyy)
+     * @purpose         :   save file 
+     * @params          :	id
+     * @return          :   
+     */
+	function saveFile($data)
+    {
+
+        $this-> db->insert('nrf_cust_files',$data);
+		return $this->db->insert_id();
+    }
+	
+	
+		/**
+     * @developer       :   Dinesh
+     * @created date    :   09-08-2018 (dd-mm-yyyy)
+     * @purpose         :   update Order With PayPal Invoice
+     * @params          :	id
+     * @return          :   
+     */
+	function updateOrderWithPayPalInvoice($id, $data){
+		if('DRAFT' == $data['pp_inv_status'] || 'SENT' == $data['pp_inv_status'] ){
+			$this->db->where('order_id', $id);
+
+		   if($this->db->update('nrf_orders', $data)){
+
+			  return true;
+
+			}else{
+
+			  return false;
+
+			}
+		}
+	}
+			/**
+     * @developer       :   Dinesh
+     * @created date    :   09-08-2018 (dd-mm-yyyy)
+     * @purpose         :   save Invoice Status
+     * @params          :	order_ids
+     * @return          :   
+     */
+	
+	function saveInvoiceStatus($status_id_invoce,$order_ids){
+		$istat_text =$this->getStatusbyId($status_id_invoce);		
+		$date = time();
+		$data=array('invoice_stat'=>$status_id_invoce,'invoice_date'=>$date);
+		foreach($order_ids as $order_id_single)
+        {
+			$this->db->where('order_id', $order_id_single);
+
+		   if($this->db->update('nrf_orders', $data)){
+				$this->recordHistory($order_id_single,$istat_text['0']['istat_text']);
+			  return true;
+
+			}else{
+
+			  return false;
+
+			}
+			 
+		}
+		
+	}
+	
+	
+	
+		/**
+     * @developer       :   Dinesh
+     * @created date    :   09-08-2018 (dd-mm-yyyy)
+     * @purpose         :   get order by id
+     * @params          :	id
+     * @return          :   
+     */
+
+     public function getStatusbyId($id){  
+
+           $this->db->select('*');
+
+           $this->db->from('nrf_invoice_status_text');
+
+           $this->db->where('istat_id',$id);
+
+           $query = $this->db->get();
+           
+           if($query->num_rows() == 1)
+           {
+
+               return $query->result_array();
+
+           }
+           else
+           {
+
+             return 0;
+
+          }
+
+     }
+	
 
 }
 

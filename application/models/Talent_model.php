@@ -31,6 +31,26 @@ class Talent_model extends CI_Model {
         return array();
         }
     }
+	
+	    /**
+     * @developer       :   Dinesh
+     * @created date    :   26-08-2018 (dd-mm-yyyy)
+     * @purpose         :   get all Talents by order Id
+     * @params          :   
+     * @return          :   []
+     */
+    public function getAllTalentByOrderId($orderId){ 
+        $this-> db ->select('otr.tlnt_id,otr.otr_id,tlnt.tlnt_fname,tlnt.tlnt_lname,tlnt.tlnt_email');
+        $this-> db -> from('nrf_order_talent_rel as otr'); 
+		$this->db->join('nrf_talent tlnt', 'tlnt.tlnt_id = otr.tlnt_id', 'left');
+		$this -> db -> where('order_id', $orderId);        
+        $allTalents = $this->db->get()->result_array();			
+        if(!empty($allTalents)){
+            return $allTalents;
+        }else{
+        return array();
+        }
+    }
 
      /**
      * @developer       :   Dinesh

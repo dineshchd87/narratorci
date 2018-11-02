@@ -31,8 +31,7 @@
 <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.colVis.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-sweetalert/1.0.1/sweetalert.js"></script>
 <script src="<?php echo base_url();?>assets/js/jquery-ui.js"></script>
-
-
+<script src="<?php echo base_url();?>assets/js/myAjax.js"></script>
 <link href="<?php echo base_url();?>assets/css/style.css" rel="stylesheet" type="text/css" />
 <link href="<?php echo base_url();?>assets/css/custom.css" rel="stylesheet" type="text/css" />
 <link href="<?php echo base_url();?>assets/css/jquery-ui.css" rel="stylesheet" type="text/css" />
