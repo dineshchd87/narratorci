@@ -350,9 +350,22 @@ class Orders_model extends CI_Model {
         $this->db->order_by("order_id", "desc");
         $this->db->limit($limit_per_page,$start_index);
 		
-        if($condition=='active'){
+        if($condition['type']=='active'){
 			//echo $condition;die;
            $this->db->where('o.status <>',6);
+           
+        }
+		if(isset($condition['searchField']) && isset($condition['searchWord'])){
+			if($condition['searchField']=='cust'){			
+				$this->db->like('c.cust_name', $condition['searchWord']);
+			}
+			if($condition['searchField']=='comp'){			
+				$this->db->like('c.cust_comp', $condition['searchWord']);
+			}
+			if($condition['searchField']=='csr'){
+								
+				$this->db->like('u.user_fname', $condition['searchWord']);
+			}
            
         }		
         $orders = $this->db->get()->result_array();         
@@ -478,13 +491,29 @@ class Orders_model extends CI_Model {
 	
 	 public function getAllOrdresCountOrderPage($current_user,$condition){ 
         $this->db->select('COUNT(order_id) AS order_count');
-        $this->db->from('nrf_orders');
+        $this->db->from('nrf_orders as o');
+		$this->db->join('nrf_customers c', 'c.cust_id = o.order_customer', 'left');
+		$this->db->join('nrf_users u', 'u.user_id = o.order_csr', 'left');
+		if(isset($condition['searchField']) && isset($condition['searchWord'])){
+			if($condition['searchField']=='cust'){			
+				$this->db->like('c.cust_name', $condition['searchWord']);
+			}
+			if($condition['searchField']=='comp'){			
+				$this->db->like('c.cust_comp', $condition['searchWord']);
+			}
+			if($condition['searchField']=='csr'){
+								
+				$this->db->like('u.user_fname', $condition['searchWord']);
+			}
+			
+           
+        }
         if($current_user['group_id'] == 3){
            $this->db->where('order_csr', $current_user['user_id']);            
             $this->db->where('status >', 1);
         }
 		
-		if($condition == 'active'){
+		if($condition['type'] == 'active'){
            $this->db->where('status <>', 6);
             
         }
@@ -516,6 +545,282 @@ class Orders_model extends CI_Model {
           return false;
     }
 	
+	
+		/**
+     * @developer       :   Dinesh
+     * @created date    :   22-08-2018 (dd-mm-yyyy)
+     * @purpose         :   get all voice talents
+     * @params          :   get all csr
+     * @return          :   []
+     */
+    public function getAllCsr(){ 
+        $sql  = "SELECT CSR.*,USR.*
+                FROM 
+                    nrf_csrm  AS CSR
+                INNER JOIN
+                    nrf_users AS USR
+                ON
+                    (USR.user_id = CSR.user_id AND USR.group_id=3)
+				WHERE USR.is_active = 'Y' 	
+				ORDER BY USR.user_fname ASC , USR.user_lname ASC";
+        $query = $this->db->query($sql);
+        $allCsr = $query->result_array(); 
+		 // echo $this->db->last_query();
+        if(!empty($allCsr)){
+            return $allCsr;
+        }else{
+        return array();
+        }
+    }
+	
+	
+			/**
+     * @developer       :   Dinesh
+     * @created date    :   22-08-2018 (dd-mm-yyyy)
+     * @purpose         :   get all voice talents
+     * @params          :   get singale csr
+     * @return          :   []
+     */
+    public function getSingleRepresentative($csrm_id){ 
+         $sql = "SELECT 
+                    CSR.*,
+                    CNTRY.printable_name AS country,
+                    USR.*
+                FROM
+                    nrf_csrm AS CSR
+                INNER JOIN
+                    nrf_users AS USR
+                ON
+                    (USR.user_id = CSR.user_id AND USR.group_id=3)
+                LEFT JOIN
+                    nrf_country AS CNTRY
+                ON
+                    (CSR.csrm_country = CNTRY.iso)
+                WHERE  
+                    CSR.user_id=$csrm_id";
+        $query = $this->db->query($sql);
+        $csrData = $query->result_array(); 
+		 // echo $this->db->last_query();
+        if(!empty($csrData)){
+            return $csrData;
+        }else{
+        return array();
+        }
+    }
+	
+		     /**
+     * @developer       :   Dinesh
+     * @created date    :   18-08-2018 (dd-mm-yyyy)
+     * @purpose         :   change orders CSR
+     * @params          :   
+     * @return          :   data as []
+     */
+    public function changeCsr($csr,$orderId){	
+          $discountData=array(
+                  'order_csr'=>$csr
+                );
+          $this->db->where('order_id',$orderId);
+          if($this->db->update('nrf_orders',$discountData)){
+             return true;
+          }
+          return false;
+    }
+	
+		/**
+     * @developer       :   Dinesh
+     * @created date    :   18-08-2018 (dd-mm-yyyy)
+     * @purpose         :   change orders status
+     * @params          :   
+     * @return          :   data as []
+     */
+    public function changeStatus($ostId,$orderId){	
+          $statusData=array(
+                  'status'=>$ostId
+                );
+          $this->db->where('order_id',$orderId);
+          if($this->db->update('nrf_orders',$statusData)){
+             return true;
+          }
+          return false;
+    }
+	
+	
+	
+			     /**
+     * @developer       :   Dinesh
+     * @created date    :   18-08-2018 (dd-mm-yyyy)
+     * @purpose         :   record order history
+     * @params          :   
+     * @return          :   data as []
+     */
+    public function recordHistory($orderId,$msg){
+		 $data['order_id']=$orderId;	
+		$data['hist_date']=strtotime(date('Y-m-d H:i:s'));
+
+		$data['hist_text']=$msg;		
+         if($this->db->insert('nrf_order_history', $data)){
+
+           return true;
+
+        }else{
+
+           return false;
+
+        }
+    }
+	
+	    /**
+     * @developer       :   Dinesh
+     * @created date    :   26-08-2018 (dd-mm-yyyy)
+     * @purpose         :   get all customers
+     * @params          :   
+     * @return          :   []
+     */
+    public function getAllStatus(){ 
+        $this-> db ->select('ost.*');
+        $this-> db -> from('nrf_order_status_text AS ost');
+        
+        $this-> db ->order_by("ost.ostat_id", "ASC"); 
+        $allStatus = $this->db->get()->result_array(); 
+        if(!empty($allStatus)){
+            return $allStatus;
+        }else{
+        return array();
+        }
+    
+	}
+	
+		/**
+     * @developer       :   Dinesh
+     * @created date    :   09-08-2018 (dd-mm-yyyy)
+     * @purpose         :   get status detail by id
+     * @params          :	id
+     * @return          :   
+     */
+
+     public function getStatusDetailbyId($id){  
+
+           $this->db->select('*');
+
+           $this->db->from('nrf_order_status_text');
+
+           $this->db->where('ostat_id',$id);
+
+           $query = $this->db->get();
+           
+           if($query->num_rows() == 1)
+           {
+
+               return $query->result_array();
+
+           }
+           else
+           {
+
+             return 0;
+
+          }
+
+     }
+	 
+	 		/**
+     * @developer       :   Dinesh
+     * @created date    :   09-08-2018 (dd-mm-yyyy)
+     * @purpose         :   delete orders by id
+     * @params          :	id
+     * @return          :   
+     */
+
+     public function deleteOrder($oredrId){  
+	 
+        $sql = "SELECT
+
+                    OTR.otr_id, 
+
+                    TLNT.*
+
+                FROM
+
+                    nrf_order_talent_rel AS OTR
+
+                LEFT JOIN
+
+                    nrf_talent AS TLNT 
+
+                ON
+
+                    (OTR.tlnt_id = TLNT.tlnt_id)
+
+                WHERE
+
+                    OTR.order_id='$oredrId'" ; 
+
+         $query = $this->db->query($sql);
+		 $orderTalent= $query->result_array();
+        foreach($orderTalent as $eachOT)
+        {
+            $orderTalentScript = $this->getScripts($eachOT['otr_id']); 
+			//echo"<pre>";print_r($orderTalentScript);die;
+            foreach($orderTalentScript as $eachScript)
+            {
+
+                
+				//unlink("../../assets/scripts-upload/".$eachScript['script_name']);
+            }
+
+            $sql = "DELETE FROM nrf_scripts WHERE otr_id ='".$eachOT['otr_id']."'"; 
+
+			$this->db->query($sql);
+
+        }
+	
+	  
+		$this->db->where('order_id', $oredrId);
+		$this->db->delete('nrf_order_talent_rel');
+		
+		$this->db->where('order_id', $oredrId);
+		$this->db->delete('nrf_order_history');
+		
+		$this->db->where('order_id', $oredrId);
+		$this->db->delete('nrf_orders');
+		
+		$this->db->where('order_id', $oredrId);
+		$this->db->delete('nrf_csr_pay');	
+
+
+     }
+	 
+	 	 		/**
+     * @developer       :   Dinesh
+     * @created date    :   09-08-2018 (dd-mm-yyyy)
+     * @purpose         :   get Scripts by otr id
+     * @params          :	id
+     * @return          :   
+     */
+	 function getScripts($otr_id)
+
+    {
+
+        $allRow = array();
+
+        $sql = "SELECT
+
+                    *
+
+                FROM
+
+                    nrf_scripts
+
+                WHERE otr_id = '$otr_id'" ;         
+
+        
+		$query = $this->db->query($sql);
+        $allRow=$query->result_array();
+
+        return $allRow;     
+
+    }
+
 }
 
 ?>

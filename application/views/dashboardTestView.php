@@ -8,6 +8,100 @@ function local_time($GMTtime, $localTZoffSet=false)
     return $GMTtime+$localTZoffSet;
 }
 	?>
+	<?php
+$nowTime  =  local_time(time());
+//$nowTime  =  getNowGmtTime();
+$c_day = (integer)date('j',$nowTime);
+$c_week = (integer)date('j',$nowTime);
+$c_month = (integer)date('n',$nowTime);
+$c_year = (integer)date('Y',$nowTime);
+$OneDay = 1*24*3600; //sec ----
+function localToGMT($localTime, $localTZoffSet=false)
+{
+    if(!$localTZoffSet)
+    {
+        $localTZoffSet = LOCAL_TIME_OFFSET; 
+    }
+    return $localTime-$localTZoffSet;
+}
+function getNowGmtTime($nowTime = false)
+{
+    if(!$nowTime)
+    {
+        $nowTime = time();
+    }
+    $serverTZoffSet = date("Z");
+    $GMTtime =  $nowTime-$serverTZoffSet;
+    return $GMTtime;
+}
+function calPrevMonth($MnYr=array())
+{
+    $pMonthNum = $MnYr[0]-1;
+    $pMonthYr = $MnYr[1];
+    if($pMonthNum == 0 )
+    {
+        $pMonthNum = 12 ;
+        $pMonthYr--;
+    }
+    return array($pMonthNum,$pMonthYr);
+}
+function calPrevDay($dMnYr=array())
+{
+    $pDayNum = $dMnYr[0] -1;
+    $pDayMn = $dMnYr[1];
+    $pDayYr = $dMnYr[2];
+    if($pDayNum == 0 )
+    {
+        list($pDayMn,$pDayYr) = calPrevMonth( array($pDayMn,$pDayYr) );
+        $pDayNum = (integer)date('t', mktime(0,0,0,$pDayMn,1,$pDayYr) );
+    }
+    return array($pDayNum,$pDayMn,$pDayYr);
+}
+function percent($prev,$nxt,$isUsd=false)
+{
+	$percent = (float)($nxt - $prev);
+	$percentText = $percent; //( $isUsd? number_format($percent,2) : $percent);
+	if($percent<0)
+	{
+		$prefix = '-';
+		$percentText = '<span>'.$prefix.($isUsd? ' $':' ').($percentText*-1)."</span>";
+	}
+	elseif($percent>=0)
+	{
+		$prefix = '+';
+		$percentText = '<span>'.$prefix.($isUsd? ' $':' ').$percentText."</span>";
+	}
+	return $percentText;
+}
+list($pDayNum,$pDayMn,$pDayYr) = calPrevDay( array($c_day,$c_month,$c_year) );
+$cDayEnd = localToGMT($nowTime);
+$cDayStart = localToGMT(strtotime('00:00:00') );
+$pDayEnd = localToGMT($cDayStart-1 );
+$pDayStart = localToGMT( $cDayStart-$OneDay);
+$tdSt = strtotime('00:00:00');
+$ysSt = strtotime('-1 day',$tdSt);
+$nowLocalStart = strtotime(date("l",local_time(getNowGmtTime()) ));
+$nowLocalEnd = $nowLocalStart+$OneDay-1;
+$gmtStart = localToGMT($nowLocalStart);
+$gmtEnd = localToGMT($nowLocalEnd);
+$startDay = 'Monday';
+$cWeekEnd = $nowTime;
+$weekTime = (date("l",$cWeekEnd) == $startDay) ? ($cWeekEnd+$OneDay) : $cWeekEnd ;
+$cWeekStart = strtotime("last $startDay",$weekTime);
+$pWeekEnd = $cWeekStart-1;
+$pWeekStart = strtotime("last $startDay",$pWeekEnd);
+list($pMonthNum,$pMonthYr) = calPrevMonth(array($c_month,$c_year));
+$cMonthEnd = $nowTime;
+$cMonthStart = mktime(0,0,0,$c_month,1,$c_year);
+$pMonthEnd = $cMonthStart-1;
+$pMonthStart = mktime(0,0,0,$pMonthNum,1,$pMonthYr);
+$pYrYr = $c_year-1;
+$cYrEnd = $nowTime;
+$cYrStart = mktime(0,0,0,1,1,$c_year);
+$pYrEnd = $cYrStart-1;
+$pYrStart = mktime(0,0,0,1,1,$pYrYr);
+
+?>
 	<section class="col-sm-12">
 		<div class="row">
 			<div class="col-sm-12 mb-2 mt-3"><h4>Administrative Dashboard</h4></div>
@@ -23,8 +117,9 @@ function local_time($GMTtime, $localTZoffSet=false)
 							<div class="left-box-1">
 								<a href="<?php echo base_url();?>orders/10/1?type=all" class="btn btn-info"> 
 								<i class="fas fa-edit"></i> Manage Orders</a>	
-								<a href="<?php echo base_url();?>orders/create_order" class="btn btn-info">
-								<i class="fas fa-plus-circle"></i> Add an Order</a>							
+								<a href="#" class="btn btn-info">
+								<i class="fas fa-plus-circle"></i> Add an Order</a>	
+							
 							</div>
 							<div class="left-box-1">
 								<h6 class="what-next">Your Store at a Glance....</h6>
@@ -68,54 +163,39 @@ function local_time($GMTtime, $localTZoffSet=false)
 						<div class="col-sm-3 mt-3">
 							<div class="btn-group-vertical">		
 								<a href="<?php echo base_url();?>customers" class="btn btn-outline-info">Customers</a>			
-								<a href="<?php echo base_url();?>talents" class="btn btn-outline-info">Talent	</a>		
-								<a href="<?php echo base_url();?>representative" class="btn btn-outline-info">Personnel	</a>	
+								<a href="#" class="btn btn-outline-info">Talent	</a>		
+								<a href="#" class="btn btn-outline-info">Personnel	</a>	
 								<a href="#" class="btn btn-outline-info">Invoicing	</a>	
-								<a href="<?php echo base_url();?>payments" class="btn btn-outline-info">Payments	</a>	
+								<a href="#" class="btn btn-outline-info">Payments	</a>	
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 			<div class="col-sm-6">
-			<div class="col-sm-12 box2">			
+			<div class="col-sm-12 box2">
+			
 				<div class="row">
 					<div class="col-sm-4">
 						<h6 class="what-next">Sales Snapshot	</h6>
 					</div>
 					<div class="col-sm-8 mt-2">
-						<div class="btn-group nav nav-tabs">
+						<div class="btn-group">
 						  <a href="#" class="btn btn-outline-info btn-sm">View:</a>
-						  <a data-toggle="tab" href="#day" class="btn btn-outline-info btn-sm active">Day</a>
-						  <a data-toggle="tab" href="#week"class="btn btn-outline-info btn-sm">Week</a>
-						  <a data-toggle="tab" href="#month"class="btn btn-outline-info btn-sm">Month</a>
-						  <a data-toggle="tab" href="#year" class="btn btn-outline-info btn-sm">Year</a>
+						  <a href="#" class="btn btn-outline-info btn-sm">Day</a>
+						  <a href="#" class="btn btn-outline-info btn-sm">Week</a>
+						  <a href="#" class="btn btn-outline-info btn-sm">Month</a>
+						  <a href="#" class="btn btn-outline-info btn-sm">Year</a>
 						</div>
 					</div>
 				</div>
-				<div class="row tab-content">
-						<table id="day" class="table tab-pane active">
-							<tr><td class="text-right"><a href="#" class="btn btn-outline-info btn-sm">Reports <i class="fas fa-arrow-right"></i></a>	</td><td>Last Day</td><td>	This Day</td><td>	Change</td></tr>
-							<tr><td class="text-right">Net Revenue:</td><td>$<?php  echo $sales_snapshot['pDayOdrVal']; ?>	</td><td>$<?php echo $sales_snapshot['cDayOdrVal']; ?></td><td>	$<?php echo $sales_snapshot['dlDayVal']; ?></td></tr>
-							<tr><td class="text-right">Orders:</td><td><?php echo $sales_snapshot['pDayOdrTotal']; ?>	</td><td><?php echo $sales_snapshot['cDayOdrTotal']; ?></td><td><?php echo $sales_snapshot['dlDayTotal']; ?></td></tr>
-						</table>
-						<table id="week" class="table tab-pane">
+				<div class="row">
+						<table class="table">
 							<tr><td class="text-right"><a href="#" class="btn btn-outline-info btn-sm">Reports <i class="fas fa-arrow-right"></i></a>	</td><td>Last Week</td><td>	This Week</td><td>	Change</td></tr>
-							<tr><td class="text-right">Net Revenue:</td><td>$<?php echo $sales_snapshot['pWeekOdrVal']; ?>	</td><td>$<?php echo $sales_snapshot['cWeekOdrVal']; ?></td><td>	$<?php echo $sales_snapshot['dlWeekVal']; ?></td></tr>
-							<tr><td class="text-right">Orders:</td><td><?php echo $sales_snapshot['pWeekOdrTotal']; ?></td><td><?php echo $sales_snapshot['cWeekOdrTotal']; ?> </td><td><?php echo $sales_snapshot['dlWeekTotal']; ?></td></tr>
-						</table>
-						<table id="month" class="table tab-pane">
-							<tr><td class="text-right"><a href="#" class="btn btn-outline-info btn-sm">Reports <i class="fas fa-arrow-right"></i></a>	</td><td>Last Month</td><td>	This Month</td><td>	Change</td></tr>
-							<tr><td class="text-right">Net Revenue:</td><td>$<?php echo $sales_snapshot['pMonthOdrVal']; ?>	</td><td>$<?php echo $sales_snapshot['cMonthOdrVal']; ?></td><td>	$<?php echo $sales_snapshot['dlMonthVal']; ?></td></tr>
-							<tr><td class="text-right">Orders:</td><td><?php echo  $sales_snapshot['pMonthOdrTotal']; ?></td><td><?php echo $sales_snapshot['cMonthOdrTotal']; ?> </td><td><?php  echo $sales_snapshot['dlMonthTotal']; ?></td></tr>
-						</table>
-						<table id="year" class="table tab-pane">
-							<tr><td class="text-right"><a href="#" class="btn btn-outline-info btn-sm">Reports <i class="fas fa-arrow-right"></i></a>	</td><td>Last Year</td><td>	This Year</td><td>	Change</td></tr>
-							<tr><td class="text-right">Net Revenue:</td><td>$<?php echo $sales_snapshot['pYrOdrVal']; ?></td><td>$<?php echo $sales_snapshot['cYrOdrVal']; ?></td><td>	$<?php echo $sales_snapshot['dlYrVal']; ?></td></tr>
-							<tr><td class="text-right">Orders:</td><td><?php echo $sales_snapshot['pYrOdrTotal']; ?></td><td><?php echo $sales_snapshot['cYrOdrTotal']; ?> </td><td><?php echo $sales_snapshot['dlYrTotal']; ?></td></tr>
+							<tr><td class="text-right">Net Revenue:</td><td>$1902	</td><td>$1380</td><td>	- $522</td></tr>
+							<tr><td class="text-right">Orders:</td><td>19	</td><td>22	+ </td><td>3</td></tr>
 						</table>
 				</div>
-				
 			</div>
 			</div>
 		</div>
@@ -182,7 +262,7 @@ function local_time($GMTtime, $localTZoffSet=false)
 
 							</td>
 							<td>
-								<select name="ostat_1" id="ostat_1"  class="statusList form-control form-control-sm">
+								<select name="ostat_1" id="ostat_1" onchange="checkSatus(1,9709)" class=" form-control form-control-sm">
 								<?php
 									$selected = $order["status"];
 								    foreach($oStatus as $ostatrow)
@@ -207,7 +287,6 @@ function local_time($GMTtime, $localTZoffSet=false)
 								    }
 								?>    
 								</select>
-								<img style="display:none;" class="saveStatus"   data-orderid="<?php echo  $order['order_id'] ;  ?>" src="<?php echo base_url();?>/assets/images/save_but1.gif"  name="save" alt="Save">
 							</td>
 							<td><a href="#" class="btn btn-info btn-sm"> View <i class="fas fa-eye"></i></a></td>
 						</tr>
@@ -221,96 +300,4 @@ function local_time($GMTtime, $localTZoffSet=false)
 			</div>
 		</div>
 	</section>
-	<script>
-	$(document).ready(function() {
-		$('.statusList').on('change', function() {
-			var orderId=$(this).next().attr('data-orderid');
-			var ostId=$(this).val();		
-			if($(this).val()==5){
-				swal({
-				  title: "Enter here the script file name only.",
-				  text: "N.B. file name only, not full path.",
-				  type: "input",
-				  showCancelButton: true,
-				  confirmButtonClass: "btn-danger",
-				  confirmButtonText: "Submit",
-				  cancelButtonText: "Cancel",
-				  closeOnConfirm: false
-				},
-				function(inputValue){
-					if(inputValue){						
-						var resource_path=inputValue;
-						var dataArr = { 'order_id' : orderId, 'ostId' : ostId,'resource_path':resource_path}
-						$.ajax({
-							type: "POST",
-							data: dataArr,
-							url: "<?php echo base_url();?>orders/saveStatus", 
-							success: function(result){
-								
-								swal("Saved!", "Status changed successfully.", "success");
-							}
-						});
-					}else{
-						swal.close();
-						return false;
-					}
-				});
-			}else if($(this).val()==4){
-							swal({
-				  title: "Please enter your pickups below:",
-				  text: "<textarea  style='width: 100%;height:100px;' id='text'></textarea>",
-				  html: true,
-				  showCancelButton: true,
-				  confirmButtonClass: "btn-danger",
-				  confirmButtonText: "Ok",
-				  cancelButtonText: "Cancel",
-				  closeOnConfirm: false
-				},
-				function(input){
-					if(input){
-						var  resource_path=$("#text").val();
-						
-						var dataArr = { 'order_id' : orderId, 'ostId' : ostId,'resource_path':resource_path}
-						$.ajax({
-							type: "POST",
-							data: dataArr,				  
-							url: "<?php echo base_url();?>orders/saveStatus",  
-							success: function(result){						
-								swal("Saved!", "Status changed successfully.", "success");
-							}
-						});
-					}else{
-						swal.close();
-						return false;
-					}
-				});
-			}else{
-				$(this).next().show();
-				
-			}
-		});
 		
-		$('.saveStatus').on('click', function() {
-		var ostId=$(this).prev().val();
-		var orderId=$(this).attr('data-orderid');
-		
-		var obj=$(this);
-		var data = { 'order_id' : orderId, 'ostId' : ostId}		  
-			$.ajax({
-			  type: 'POST',
-			  url: "<?php echo base_url();?>orders/saveStatus",
-			  data: data,
-			  dataType: "text",
-			  success: function(resultData) {
-				  
-				  $('#statusChange_success_msg').css('display','block');
-				  obj.hide();
-                setTimeout(function(){ 
-                    $('#statusChange_success_msg').css('display','none');
-                 }, 2000);
-			  }
-			});
-		
-		});
-	});
-	</script>

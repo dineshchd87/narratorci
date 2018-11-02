@@ -97,6 +97,9 @@ tr.shown td.details-control {
     color: #000;
 
 }
+.saveCSR{
+	cursor:pointer;
+}
 
 .logo a img{
    margin-top: -2px;
@@ -112,4 +115,21 @@ input:-webkit-autofill {
 
 .created-new-row{
     background: #b8e6a6 !important;
+}
+
+.alert-danger {
+    color: #721c24!important;
+    background-color: #f8d7da!important;
+    border-color: #f5c6cb!important;
+}
+
+.pagination{
+	float: right;
+}
+
+.hide{
+	display:none;
+}
+.saveStatus{
+	cursor:pointer!important;
 }

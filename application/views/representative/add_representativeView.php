@@ -1,7 +1,7 @@
 <section id="content" class="col-sm-12">
 				<div class="editAccount">
 					
-					<form autocomplete="off" action="<?php echo base_url();?>customers/add" method="post" class="add_customer_form">
+					<form autocomplete="off" action="<?php echo base_url();?>representative/add" method="post" class="add_customer_form">
 						<div class="form-group">
 							<div class="col-sm-10 offset-sm-2">
 								<h3>Add CS Representative</h3>
@@ -27,7 +27,10 @@
 									User name : <span class="text-danger">*</span>
 								</div>
 								<div class="col-sm-4">
-									<input type="text" value="<?php echo set_value('cust_title') ?>" name="cust_title"  class="form-control" />
+									<input type="text" value="<?php echo set_value('user_name') ?>" name="user_name"  class="form-control" />
+								</div>
+								<div class="col-sm-12 offset-sm-3">
+								<?php echo form_error('user_name', '<span class="text-danger">', '</span>'); ?>
 								</div>
 							</div>
 						
@@ -36,10 +39,10 @@
 								First name : <span class="text-danger">*</span>
 							</div>
 							<div class="col-sm-4">
-								<input type="text"  value="<?php  echo set_value('cust_name'); ?>" name="cust_name" class="form-control" />
+								<input type="text"  value="<?php  echo set_value('user_fname'); ?>" name="user_fname" class="form-control" />
 							</div>
 							<div class="col-sm-12 offset-sm-3">
-								<?php echo form_error('cust_name', '<span class="text-danger">', '</span>'); ?>
+								<?php echo form_error('user_fname', '<span class="text-danger">', '</span>'); ?>
 								</div>
 						</div>
 						<div class="row form-group">
@@ -47,10 +50,10 @@
 								Last name : <span class="text-danger">*</span>
 							</div>
 							<div class="col-sm-4">
-								<input type="text" name="cust_comp" value="<?php echo set_value('cust_comp'); ?>" class="form-control"/>
+								<input type="text" name="user_lname" value="<?php echo set_value('user_lname'); ?>" class="form-control"/>
 							</div>
 							<div class="col-sm-12 offset-sm-3">
-								<?php echo form_error('cust_comp', '<span class="text-danger">', '</span>'); ?>
+								<?php echo form_error('user_lname', '<span class="text-danger">', '</span>'); ?>
 								</div>
 						</div>
 						<div class="row form-group">
@@ -58,10 +61,10 @@
 								Email address : <span class="text-danger">*</span>
 							</div>
 							<div class="col-sm-4">
-								<input id="cust_email" type="text" name="cust_email" value="<?php echo set_value('cust_email'); ?>" class="form-control" />
+								<input id="user_email" type="text" name="user_email" value="<?php echo set_value('user_email'); ?>" class="form-control" />
 							</div>
 							<div class="col-sm-12 offset-sm-3">
-								<?php echo form_error('cust_email', '<span class="text-danger">', '</span>'); ?>
+								<?php echo form_error('user_email', '<span class="text-danger">', '</span>'); ?>
 							</div>
 						</div>
 						<div class="row form-group">
@@ -69,7 +72,21 @@
 								Rate per page : <span class="text-danger">*</span>
 							</div>
 							<div class="col-sm-4">
-								<input id="cust_bill_to" type="text" name="cust_bill_to" value="<?php echo set_value('cust_bill_to'); ?>" class="form-control" />
+								<input id="csrm_rate" type="text" name="csrm_rate" value="<?php echo set_value('csrm_rate'); ?>" class="form-control" />
+							</div>
+							<div class="col-sm-12 offset-sm-3">
+								<?php echo form_error('csrm_rate', '<span class="text-danger">', '</span>'); ?>
+							</div>
+						</div>
+						<div class="row form-group">
+							<div class="col-sm-3 text-right">
+								Phone number: <span class="text-danger">*</span>
+							</div>
+							<div class="col-sm-4">
+								<input id="user_phone" type="text" name="user_phone" value="<?php echo set_value('user_phone'); ?>" class="form-control" />
+							</div>
+							<div class="col-sm-12 offset-sm-3">
+								<?php echo form_error('user_phone', '<span class="text-danger">', '</span>'); ?>
 							</div>
 						</div>
 						<div class="row form-group">
@@ -77,7 +94,7 @@
 								Address line 1:
 							</div>
 							<div class="col-sm-4">
-								<input type="text" name="cust_address1"  value="<?php echo set_value('cust_address1'); ?>" class="form-control" />
+								<input type="text" name="csrm_address1"  value="<?php echo set_value('csrm_address1'); ?>" class="form-control" />
 							</div>
 						</div>
 						<div class="row form-group">
@@ -85,7 +102,7 @@
 									Address line 2:
 							</div>
 							<div class="col-sm-4">
-								<input type="text" name="cust_address2" value="<?php echo set_value('cust_address2'); ?>" class="form-control" />
+								<input type="text" name="csrm_address2" value="<?php echo set_value('csrm_address2'); ?>" class="form-control" />
 							</div>
 						</div>
 						<div class="row form-group">
@@ -93,7 +110,7 @@
 									City:
 							</div>
 							<div class="col-sm-4">
-								<input type="text" name="cust_city" value="<?php echo set_value('cust_city'); ?>" class="form-control" />
+								<input type="text" name="csrm_city" value="<?php echo set_value('csrm_city'); ?>" class="form-control" />
 							</div>
 						</div>
 						<div class="row form-group">
@@ -101,7 +118,7 @@
 								State:
 							</div>
 							<div class="col-sm-4">
-								<input type="text" name="cust_state" value="<?php echo set_value('cust_state'); ?>" class="form-control" />
+								<input type="text" name="csrm_state" value="<?php echo set_value('csrm_state'); ?>" class="form-control" />
 							</div>
 						</div>
 						<div class="row form-group">
@@ -109,10 +126,10 @@
 								ZIP/PIN:
 							</div>
 							<div class="col-sm-4">
-								<input type="text" name="cust_zip" value="<?php echo set_value('cust_zip'); ?>" class="form-control" />
+								<input type="text" name="csrm_zip" value="<?php echo set_value('csrm_zip'); ?>" class="form-control" />
 							</div>
 							<div class="col-sm-12 offset-sm-3">
-								<?php echo form_error('cust_zip', '<span class="text-danger">', '</span>'); ?>
+								<?php echo form_error('csrm_zip', '<span class="text-danger">', '</span>'); ?>
 								</div>
 						</div>
 						
@@ -121,31 +138,23 @@
 								Country: <span class="text-danger">*</span>
 							</div>
 							<div class="col-sm-4">
-								<select name="cust_country"  id="country" class="form-control">
+								<select name="csrm_country"  id="country" class="form-control">
 									<option value="" selected>Select country</option>
 									<?php foreach ($countries as $opt) { ?>
-									<option value="<?php echo $opt['iso'] ; ?>" <?php echo set_select('cust_country', $opt['iso'], False); ?> ><?php echo $opt['printable_name'] ; ?> </option> 
+									<option value="<?php echo $opt['iso'] ; ?>" <?php echo set_select('csrm_country', $opt['iso'], False); ?> ><?php echo $opt['printable_name'] ; ?> </option> 
 									<?php } ?>
 								</select>
 							</div>
 							<div class="col-sm-12 offset-sm-3">
-								<?php echo form_error('cust_country', '<span class="text-danger">', '</span>'); ?>
+								<?php echo form_error('csrm_country', '<span class="text-danger">', '</span>'); ?>
 								</div>
 						</div>
 						<div class="row form-group">
 							<div class="col-sm-9 offset-sm-2">
 								<button type="submit" class="btn btn-info" value="Save" ><i class="fas fa-save"></i> Save</button>
-								<a href="<?php echo base_url();?>customers" class="btn btn-outline-info"><i class="fas fa-arrow-left"></i> Back</a>
+								<a href="<?php echo base_url();?>representative" class="btn btn-outline-info"><i class="fas fa-arrow-left"></i> Back</a>
 							</div>
 						</div>
 					</form>
 				</div>
 		</section>
-
-		<script type="text/javascript">
-			$(document).ready(function(){
-				$('#addredd_link').click(function(){
-					$('#cust_bill_to').val($('#cust_email').val());
-				});
-			});
-		</script>

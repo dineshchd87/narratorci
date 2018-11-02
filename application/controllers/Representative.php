@@ -26,6 +26,7 @@ class Representative extends CI_Controller {
 		$this->load->helper('captcha');
 		$this->load->helper('global');
 		$this->load->helper('security');
+		$this->load->library('email');
 	}
 
 	/**
@@ -58,38 +59,52 @@ class Representative extends CI_Controller {
 		if($this->session->userdata('user_name')){
 			$data['userData'] = $this->session->userdata();
 			if($this->input->post()){
-				$this->form_validation->set_rules('cust_name', 'name', 'trim|required',
+				
+
+/*$this->email->from('liveopensource88@gmail.com', 'Rajesh Thakur');
+$this->email->to('rajesh32426@gmail.com');
+$this->email->cc('yitu7890@gmail.com');
+$this->email->subject('Email Test');
+$this->email->message('Hello Yittu kya hal chal hai.');
+
+$this->email->send();
+die('send');*/
+				$this->form_validation->set_rules('user_name', 'user name', 'trim|required',
 						array('required' => 'Please enter %s.')
 				);
-                $this->form_validation->set_rules('cust_comp', 'company name', 'trim|required',
+                $this->form_validation->set_rules('user_fname', 'first name', 'trim|required',
+                        array('required' => 'Please enter %s.')
+				);
+				$this->form_validation->set_rules('user_lname', 'last name', 'trim|required',
                         array('required' => 'Please enter %s.')
 				);
 				
-				$this->form_validation->set_rules('cust_email', 'email address', 'trim|required|valid_email|is_unique[nrf_customers.cust_email]',
+				$this->form_validation->set_rules('user_email', 'email address', 'trim|required|valid_email|is_unique[nrf_users.user_email]',
 						array(
 							'required' => 'Please enter %s.',
 							'valid_email' => 'Please enter valid email address.',
 							'is_unique' => 'The %s is already taken',
 						)
 				);
-				$this->form_validation->set_rules('cust_zip', ' ZIP', 'numeric[12]',
+				$this->form_validation->set_rules('csrm_rate', ' rate per page', 'trim|required|numeric[12]',
+						array('required' => 'Please enter %s.','numeric' => 'The %s should be number.')
+				);
+				$this->form_validation->set_rules('csrm_zip', 'ZIP/PIN', 'numeric[12]',
 						array('required' => 'Please enter %s.','numeric' => 'The ZIP/PIN should be number.')
 				);
-				$this->form_validation->set_rules('cust_phone', ' phone number', 'max_length[12]',
+				$this->form_validation->set_rules('user_phone', ' phone number', 'trim|required|max_length[12]',
 						array('required' => 'Please enter %s.','max_length' => 'The lenght of phone number should be less then or equal to 12.')
 				);
-				$this->form_validation->set_rules('cust_country', 'country', 'trim|required',
+				$this->form_validation->set_rules('csrm_country', 'country', 'trim|required',
 						 array('required' => 'Please select %s.')
 				);
 
-				$this->form_validation->set_rules('current_password', 'current password', 'trim|required|callback_pword_check[' . $this->input->post('current_password') . ']',
-						array('required' => 'Please enter %s for validation.')
-				);
-
                 if ($this->form_validation->run() == TRUE) {
-                	$this->representative_model->addCustomer($this->input->post());
+					//echo "<pre>"; print_r($this->input->post());
+				//die('here');
+                	//$this->representative_model->addCustomer($this->input->post());
                 	$this->session->set_flashdata('successMsg', ' Customer added successfully.');
-                			redirect('customers/add');
+                			redirect('representative/add');
                 } 
 			}
 			$data['countries'] = $this->common_model->getCountries();
@@ -108,22 +123,17 @@ class Representative extends CI_Controller {
      * @params          :   email
      * @return          :   
      */
-	function check_customer_email($customerId ,$currentEmailInfo) {  
-		$customerInfo = explode('||', $currentEmailInfo);  
-	    if( empty($customerInfo) || $customerId == ""){
+	function check_user_email($email) {      
+		$current_email = $this->session->userdata('user_email') ; 
+	    if( $email == "" || $email == $current_email){
 	    	return TRUE;
 	    }else{
-			$customer = $this->representative_model->getCustomerById($customerInfo[1]);
-			if(!empty($customer) && $customer[0]['cust_email'] == $customerInfo[0] ){
-				return  TRUE;
+			$userCount = $this->users_model->check_unique_user_email($email);
+			if($userCount > 0){
+				$this->form_validation->set_message('check_user_email', 'The email address is already taken.');
+				return  FALSE;
 			}else{
-				$customerCount = $this->representative_model->check_unique_customer_email($customerInfo[1],$customerInfo[0]); 
-				if($customerCount > 0){
-					$this->form_validation->set_message('check_customer_email', 'The email address is already taken.');
-					return FALSE;
-				}else{
-					return TRUE;
-				}
+				return TRUE;
 			}
 	    }
 	}
@@ -154,7 +164,7 @@ class Representative extends CI_Controller {
 							'valid_email' => 'Please enter valid email address.'
 						)
 				);
-				$this->form_validation->set_rules('cust_email', 'email address', 'callback_check_customer_email['.$this->input->post('cust_email').'|| '.$this->input->post('customer_id').']');
+				$this->form_validation->set_rules('cust_email', 'email address', 'callback_check_user_email['.$this->input->post('cust_email').'|| '.$this->input->post('customer_id').']');
 
 				$this->form_validation->set_rules('cust_zip', ' ZIP', 'numeric[12]',
 						array('required' => 'Please enter %s.','numeric' => 'The ZIP/PIN should be number.')
@@ -166,9 +176,6 @@ class Representative extends CI_Controller {
 						 array('required' => 'Please select %s.')
 				);
 
-				$this->form_validation->set_rules('current_password', 'current password', 'trim|required|callback_pword_check[' . $this->input->post('current_password') . ']',
-						array('required' => 'Please enter %s for validation.')
-				);
 
                 if ($this->form_validation->run() == TRUE) {
                 	$this->representative_model->updateCustomerData($customerId,$this->input->post());
