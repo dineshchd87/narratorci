@@ -10,8 +10,10 @@ function local_time($GMTtime, $localTZoffSet=false)
 	?>
 	<section class="col-sm-12">
 		<div class="row">
+		
 			<div class="col-sm-12 mb-2 mt-3"><h4>Administrative Dashboard</h4></div>
 		</div>
+		<?php  if($userData['group_id']==ADMIN_GR || $userData['group_id']==CSM_GR ){ ?>
 		<div class="row">
 			<div class="col-sm-6">
 				<div class="col-sm-12 box1">
@@ -70,7 +72,7 @@ function local_time($GMTtime, $localTZoffSet=false)
 								<a href="<?php echo base_url();?>customers" class="btn btn-outline-info">Customers</a>			
 								<a href="<?php echo base_url();?>talents" class="btn btn-outline-info">Talent	</a>		
 								<a href="<?php echo base_url();?>representative" class="btn btn-outline-info">Personnel	</a>	
-								<a href="#" class="btn btn-outline-info">Invoicing	</a>	
+								<a href="<?php echo base_url();?>invoices/10/1?type=active" class="btn btn-outline-info">Invoicing	</a>	
 								<a href="<?php echo base_url();?>payments" class="btn btn-outline-info">Payments	</a>	
 							</div>
 						</div>
@@ -86,20 +88,20 @@ function local_time($GMTtime, $localTZoffSet=false)
 					<div class="col-sm-8 mt-2">
 						<div class="btn-group nav nav-tabs">
 						  <a href="#" class="btn btn-outline-info btn-sm">View:</a>
-						  <a data-toggle="tab" href="#day" class="btn btn-outline-info btn-sm active">Day</a>
-						  <a data-toggle="tab" href="#week"class="btn btn-outline-info btn-sm">Week</a>
+						  <a data-toggle="tab" href="#day" class="btn btn-outline-info btn-sm">Day</a>
+						  <a data-toggle="tab" href="#week"class="btn btn-outline-info btn-sm active">Week</a>
 						  <a data-toggle="tab" href="#month"class="btn btn-outline-info btn-sm">Month</a>
 						  <a data-toggle="tab" href="#year" class="btn btn-outline-info btn-sm">Year</a>
 						</div>
 					</div>
 				</div>
 				<div class="row tab-content">
-						<table id="day" class="table tab-pane active">
+						<table id="day" class="table tab-pane">
 							<tr><td class="text-right"><a href="#" class="btn btn-outline-info btn-sm">Reports <i class="fas fa-arrow-right"></i></a>	</td><td>Last Day</td><td>	This Day</td><td>	Change</td></tr>
 							<tr><td class="text-right">Net Revenue:</td><td>$<?php  echo $sales_snapshot['pDayOdrVal']; ?>	</td><td>$<?php echo $sales_snapshot['cDayOdrVal']; ?></td><td>	$<?php echo $sales_snapshot['dlDayVal']; ?></td></tr>
 							<tr><td class="text-right">Orders:</td><td><?php echo $sales_snapshot['pDayOdrTotal']; ?>	</td><td><?php echo $sales_snapshot['cDayOdrTotal']; ?></td><td><?php echo $sales_snapshot['dlDayTotal']; ?></td></tr>
 						</table>
-						<table id="week" class="table tab-pane">
+						<table id="week" class="table tab-pane active">
 							<tr><td class="text-right"><a href="#" class="btn btn-outline-info btn-sm">Reports <i class="fas fa-arrow-right"></i></a>	</td><td>Last Week</td><td>	This Week</td><td>	Change</td></tr>
 							<tr><td class="text-right">Net Revenue:</td><td>$<?php echo $sales_snapshot['pWeekOdrVal']; ?>	</td><td>$<?php echo $sales_snapshot['cWeekOdrVal']; ?></td><td>	$<?php echo $sales_snapshot['dlWeekVal']; ?></td></tr>
 							<tr><td class="text-right">Orders:</td><td><?php echo $sales_snapshot['pWeekOdrTotal']; ?></td><td><?php echo $sales_snapshot['cWeekOdrTotal']; ?> </td><td><?php echo $sales_snapshot['dlWeekTotal']; ?></td></tr>
@@ -119,7 +121,7 @@ function local_time($GMTtime, $localTZoffSet=false)
 			</div>
 			</div>
 		</div>
-	
+		<?php } ?>
 		<div class="row mt-4">
 			<div class="col-sm-12 mb-3">
 				<h5>Recent Orders On The Narrator Files	
@@ -209,7 +211,7 @@ function local_time($GMTtime, $localTZoffSet=false)
 								</select>
 								<img style="display:none;" class="saveStatus"   data-orderid="<?php echo  $order['order_id'] ;  ?>" src="<?php echo base_url();?>/assets/images/save_but1.gif"  name="save" alt="Save">
 							</td>
-							<td><a href="#" class="btn btn-info btn-sm"> View <i class="fas fa-eye"></i></a></td>
+							<td><a href="<?php echo base_url();?>orders?type=all&searchField=order_id&searchWord=<?php echo $order['order_id'] ; ?>" class="btn btn-info btn-sm"> View <i class="fas fa-eye"></i></a></td>
 						</tr>
 						<?php 
 							}

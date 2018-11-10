@@ -1,0 +1,246 @@
+Array
+(
+    [time] => Thu, 31 May 2018 19:47:22 +0000
+    [addr] => ******.28.71.dynamic.ip.windstream.net
+    [agent] => Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.139 Safari/537.36
+    [post] => Array
+        (
+            [Filename] => IM8_Andrew4.pdf
+            [Upload] => Submit Query
+        )
+
+    [files] => Array
+        (
+            [Filedata] => Array
+                (
+                    [name] => IM8_Andrew4.pdf
+                    [type] => application/octet-stream
+                    [tmp_name] => /tmp/phpfsFYeN
+                    [error] => 0
+                    [size] => 91267
+                )
+
+        )
+
+)
+
+---
+Array
+(
+    [Filedata] => Array
+        (
+            [name] => IM8_Andrew4.pdf
+            [type] => application/octet-stream
+            [tmp_name] => /tmp/phpfsFYeN
+            [error] => 0
+            [size] => 91267
+        )
+
+)
+
+ 1 ---
+Array
+(
+    [time] => Fri, 01 Jun 2018 17:12:18 +0000
+    [addr] => ******.131.174.dynamic.ip.windstream.net
+    [agent] => Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.139 Safari/537.36
+    [post] => Array
+        (
+            [Filename] => CommercialCardProductOverview_Rachael14r.pdf
+            [Upload] => Submit Query
+        )
+
+    [files] => Array
+        (
+            [Filedata] => Array
+                (
+                    [name] => CommercialCardProductOverview_Rachael14r.pdf
+                    [type] => application/octet-stream
+                    [tmp_name] => /tmp/phpgBPfNT
+                    [error] => 0
+                    [size] => 55551
+                )
+
+        )
+
+)
+
+---
+Array
+(
+    [Filedata] => Array
+        (
+            [name] => CommercialCardProductOverview_Rachael14r.pdf
+            [type] => application/octet-stream
+            [tmp_name] => /tmp/phpgBPfNT
+            [error] => 0
+            [size] => 55551
+        )
+
+)
+
+ 1 ---
+Array
+(
+    [time] => Fri, 01 Jun 2018 17:14:40 +0000
+    [addr] => ******.131.174.dynamic.ip.windstream.net
+    [agent] => Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.139 Safari/537.36
+    [post] => Array
+        (
+            [Filename] => SPSWV_Update_Rachael3.pdf
+            [Upload] => Submit Query
+        )
+
+    [files] => Array
+        (
+            [Filedata] => Array
+                (
+                    [name] => SPSWV_Update_Rachael3.pdf
+                    [type] => application/octet-stream
+                    [tmp_name] => /tmp/phpHNPzdb
+                    [error] => 0
+                    [size] => 45526
+                )
+
+        )
+
+)
+
+---
+Array
+(
+    [Filedata] => Array
+        (
+            [name] => SPSWV_Update_Rachael3.pdf
+            [type] => application/octet-stream
+            [tmp_name] => /tmp/phpHNPzdb
+            [error] => 0
+            [size] => 45526
+        )
+
+)
+
+ 1 ---
+Array
+(
+    [time] => Fri, 01 Jun 2018 17:16:45 +0000
+    [addr] => ******.131.174.dynamic.ip.windstream.net
+    [agent] => Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.139 Safari/537.36
+    [post] => Array
+        (
+            [Filename] => IM6_Jessica3.pdf
+            [Upload] => Submit Query
+        )
+
+    [files] => Array
+        (
+            [Filedata] => Array
+                (
+                    [name] => IM6_Jessica3.pdf
+                    [type] => application/octet-stream
+                    [tmp_name] => /tmp/phpURDJxC
+                    [error] => 0
+                    [size] => 48439
+                )
+
+        )
+
+)
+
+---
+Array
+(
+    [Filedata] => Array
+        (
+            [name] => IM6_Jessica3.pdf
+            [type] => application/octet-stream
+            [tmp_name] => /tmp/phpURDJxC
+            [error] => 0
+            [size] => 48439
+        )
+
+)
+
+ 1 ---
+Array
+(
+    [time] => Fri, 01 Jun 2018 17:20:51 +0000
+    [addr] => ******.131.174.dynamic.ip.windstream.net
+    [agent] => Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.139 Safari/537.36
+    [post] => Array
+        (
+            [Filename] => Branching_Male_Julian1.pdf
+            [Upload] => Submit Query
+        )
+
+    [files] => Array
+        (
+            [Filedata] => Array
+                (
+                    [name] => Branching_Male_Julian1.pdf
+                    [type] => application/octet-stream
+                    [tmp_name] => /tmp/phpuytw3s
+                    [error] => 0
+                    [size] => 40783
+                )
+
+        )
+
+)
+
+---
+Array
+(
+    [Filedata] => Array
+        (
+            [name] => Branching_Male_Julian1.pdf
+            [type] => application/octet-stream
+            [tmp_name] => /tmp/phpuytw3s
+            [error] => 0
+            [size] => 40783
+        )
+
+)
+
+ 1 ---
+Array
+(
+    [time] => Fri, 01 Jun 2018 17:21:01 +0000
+    [addr] => ******.131.174.dynamic.ip.windstream.net
+    [agent] => Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.139 Safari/537.36
+    [post] => Array
+        (
+            [Filename] => Branching_Female_Karin2.pdf
+            [Upload] => Submit Query
+        )
+
+    [files] => Array
+        (
+            [Filedata] => Array
+                (
+                    [name] => Branching_Female_Karin2.pdf
+                    [type] => application/octet-stream
+                    [tmp_name] => /tmp/phpkGZhhM
+                    [error] => 0
+                    [size] => 45037
+                )
+
+        )
+
+)
+
+---
+Array
+(
+    [Filedata] => Array
+        (
+            [name] => Branching_Female_Karin2.pdf
+            [type] => application/octet-stream
+            [tmp_name] => /tmp/phpkGZhhM
+            [error] => 0
+            [size] => 45037
+        )
+
+)
+
+ 1 ---

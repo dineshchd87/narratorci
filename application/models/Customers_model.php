@@ -90,12 +90,13 @@ class Customers_model extends CI_Model {
      * @return          :   []
      */
     public function getCustomerById($custmerId){ 
+	
         $this-> db ->select('CSTMR.*,CNTRY.printable_name AS country');
         $this-> db -> from('nrf_customers AS CSTMR');
         $this-> db -> join('nrf_country CNTRY', 'CSTMR.cust_country = CNTRY.iso', 'left');
         $this-> db ->order_by("CSTMR.cust_name", "ASC"); 
         $this -> db -> where('CSTMR.cust_id', $custmerId);
-        $customer = $this->db->get()->result_array(); 
+        $customer = $this->db->get()->result_array(); 		
         if(!empty($customer)){
             return $customer;
         }else{
