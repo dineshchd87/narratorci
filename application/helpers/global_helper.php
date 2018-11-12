@@ -21,11 +21,12 @@ function send_email($to = '', $template = '', $data = []) {
     $config['validation'] = TRUE;
 
     $ci->email->initialize($config);	
-    $ci->email->to($to);
-    $ci->email->from('no-reply@contentlayers.com', 'Content Layers');
+    //$ci->email->to($to);
+     $ci->email->to('dineshchd87@gmail.com');
+    $ci->email->from('no-reply@narratorfiles.com', 'narratorfiles');
     $ci->email->subject($data['email_sub']);
     $ci->email->message($ci->load->view('email/' . $template, $data, TRUE));
-echo $ci->load->view('email/' . $template, $data, TRUE);
+
 	$ci->email->send();
     
 }
@@ -51,8 +52,9 @@ function send_email_attached($to = '', $template = '', $data = [],$attach = []) 
     $config['validation'] = TRUE;
 
     $ci->email->initialize($config);	
-    $ci->email->to($to);
-    $ci->email->from('no-reply@contentlayers.com', 'Content Layers');
+    //$ci->email->to($to);
+    $ci->email->to('dineshchd87@gmail.com');
+    $ci->email->from('no-reply@narratorfiles.com', 'narratorfiles');
     $ci->email->subject($data['email_sub']);
     $ci->email->message($ci->load->view('email/' . $template, $data, TRUE));
 	//echo $ci->load->view('email/' . $template, $data, TRUE);die;

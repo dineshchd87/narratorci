@@ -1,2 +1,8 @@
 [01-Dec-2016 19:08:52 UTC] PHP Warning:  chmod(): No such file or directory in /home/nfiles2014/public_html/orders/include/fancy-upload/server-2/script.php on line 63
 [30-Jan-2017 15:22:42 UTC] PHP Warning:  chmod(): No such file or directory in /home/nfiles2014/public_html/orders/include/fancy-upload/server-2/script.php on line 63
+[10-Nov-2018 08:28:08 UTC] PHP Warning:  move_uploaded_file(../../../scripts-upload/4ab0292cd0ba475e09df7478146ff539.jpg): failed to open stream: No such file or directory in /home/ypqormktw8v1/public_html/narratorci/assets/js/fancy-upload/server-2/script.php on line 62
+[10-Nov-2018 08:28:08 UTC] PHP Warning:  move_uploaded_file(): Unable to move '/tmp/phpWLYssL' to '../../../scripts-upload/4ab0292cd0ba475e09df7478146ff539.jpg' in /home/ypqormktw8v1/public_html/narratorci/assets/js/fancy-upload/server-2/script.php on line 62
+[10-Nov-2018 08:28:08 UTC] PHP Warning:  chmod(): No such file or directory in /home/ypqormktw8v1/public_html/narratorci/assets/js/fancy-upload/server-2/script.php on line 63
+[10-Nov-2018 08:28:19 UTC] PHP Warning:  move_uploaded_file(../../../scripts-upload/4f4eaff0bf882dd9167ffaf6f4f70db9.jpg): failed to open stream: No such file or directory in /home/ypqormktw8v1/public_html/narratorci/assets/js/fancy-upload/server-2/script.php on line 62
+[10-Nov-2018 08:28:19 UTC] PHP Warning:  move_uploaded_file(): Unable to move '/tmp/phpKPZ6kc' to '../../../scripts-upload/4f4eaff0bf882dd9167ffaf6f4f70db9.jpg' in /home/ypqormktw8v1/public_html/narratorci/assets/js/fancy-upload/server-2/script.php on line 62
+[10-Nov-2018 08:28:19 UTC] PHP Warning:  chmod(): No such file or directory in /home/ypqormktw8v1/public_html/narratorci/assets/js/fancy-upload/server-2/script.php on line 63
