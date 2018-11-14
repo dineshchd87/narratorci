@@ -4016,3 +4016,44 @@ Array
 )
 
  1 ---
+Array
+(
+    [time] => Wed, 14 Nov 2018 16:21:10 +0000
+    [addr] => ******RRANA2-LT.cloudsmartz.net
+    [agent] => Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.102 Safari/537.36
+    [post] => Array
+        (
+            [Filename] => 4ab0292cd0ba475e09df7478146ff539.jpg
+            [Upload] => Submit Query
+        )
+
+    [files] => Array
+        (
+            [Filedata] => Array
+                (
+                    [name] => 4ab0292cd0ba475e09df7478146ff539.jpg
+                    [type] => application/octet-stream
+                    [tmp_name] => C:\wamp64\tmp\php7BF2.tmp
+                    [error] => 0
+                    [size] => 86458
+                )
+
+        )
+
+)
+
+---
+Array
+(
+    [Filedata] => Array
+        (
+            [name] => 4ab0292cd0ba475e09df7478146ff539.jpg
+            [type] => application/octet-stream
+            [tmp_name] => C:\wamp64\tmp\php7BF2.tmp
+            [error] => 0
+            [size] => 86458
+        )
+
+)
+
+ 1 ---
