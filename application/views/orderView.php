@@ -131,8 +131,8 @@ function local_time($GMTtime, $localTZoffSet=false)
 								echo ' at '.date("g:i A " , local_time($order["order_date"]) ); 
 							} ?>
 				</td>
-                <td> <?php if($order["invoice_stat"]==3){ ?><img src="<?php echo base_url();?>/assets/images/paid.gif" width="30" height="31" onclick="openPaidwin(9709);" style="cursor:pointer;"><?php }elseif($order["invoice_stat"]==2 && $order["isAutoInvoice"]=='Y'){?><a href=""><img src="<?php echo base_url();?>/assets/images/resend.png" width="28" height="22" style="cursor:pointer;"></a> <?php }else{ ?><?php } ?> <?php $totalPage=0; foreach($order["pages"] as $pages){  $totalPage=$totalPage+$pages['script_page']; } echo $totalPage; ?> Pages </td>
-                <td><?php echo $order['talents']; ?></td>
+                <td> <?php if($order["invoice_stat"]==3){ ?><img src="<?php echo base_url();?>/assets/images/paid.gif" width="30" height="31" onclick="openPaidwin(9709);" style="cursor:pointer;"><?php }elseif($order["invoice_stat"]==2 && $order["isAutoInvoice"]=='Y'){?><a href=""><img src="<?php echo base_url();?>/assets/images/resend.png" width="28" height="22" style="cursor:pointer;"></a> <?php }else{ ?><?php } ?> <?php $totalPage=0; if(isset($order["pages"])){ foreach($order["pages"] as $pages){  $totalPage=$totalPage+$pages['script_page']; } } echo $totalPage; ?> Pages </td>
+                <td><?php  if(isset($order["talents"])){ echo $order['talents']; } ?></td>
                 <td> 
 				<?php  if(3 != $this->session->userdata('group_id')){ ?>
 					<select  name='csrep_1'  class='form-control form-control-sm selectCsr'>
@@ -197,34 +197,40 @@ function local_time($GMTtime, $localTZoffSet=false)
 				  </div>
 				</div>
 			  </div>
-			  <div class="col-sm-4">
+			  <div class="col-sm-5">
 				<div class="card">
 				 <div class="card-header">Order Details</div>
 				  <div class="card-body">
 					<div class="form-group form-inline">
-					  <label for="discount" class="col-lg-6" >Project Name:</label>
+					  <label class="col-lg-6 projectName" >Project Name:</label>
 					  <div class="col-lg-6">
 						<label ><?php echo $order["order_name"]; ?></label>
 					  </div>					  
 					</div>
-					<?php foreach( $order["pages"] as $details) ?>
-					<div class="form-group form-inline">
-					<a class="col-lg-6"> <?php echo $details['talent'][0]->tlnt_fname; ?>:</a>
-					 
-					  <div class="col-lg-6">
-						<label > <?php echo $details["script_page"]; ?>- Pages-<?php echo $details["script_name"]; ?></label>
-					  </div>					  
-					</div>
+					<ul class="list-group">
+					<?php if(count($order["pages"])>0){ foreach( $order["pages"] as $details){ ?>
+					<li style="height: 60px;" class="list-group-item">
+					 <strong><?php echo $details['talent'][0]->tlnt_fname; ?>:</strong>				 
+						 -<?php echo $details["script_page"]; ?>- Pages-<?php echo $details["script_name"]; ?>
+					</li>
+					<?php  } } ?>
+					
+					</ul>
 				  </div>
 				</div>
 			  </div>
-			  <div class="col-sm-4">
+			  <div class="col-sm-3">
 				<div class="card">
 				 <div class="card-header">Order History</div>
 				  <div class="card-body">
-					<?php foreach($order["history"] as $history){ ?>
-					<p class="card-text"><?php echo date("m/d/Y", local_time($history['hist_date']) ) .'--'.$history['hist_text'] ?></p>
+				   <ul class="list-group list-group-flush">
+					<?php if(count($order["history"])){ foreach($order["history"] as $history){ ?>
+					<li class="list-group-item"><p class="card-text"><?php echo date("m/d/Y", local_time($history['hist_date']) ) .'--'.$history['hist_text'] ?></p></li>
+					
+					<?php }}else{ ?>
+					<p class="card-text">No Activity Yet</p>
 					<?php } ?>
+					</ul>
 				  </div>
 				</div>
 			  </div>
@@ -237,51 +243,15 @@ function local_time($GMTtime, $localTZoffSet=false)
 			<?php } ?>
 			</tbody>
 			</table>
-			<?php if(isset($orders)){?> <div class="col-sm-12 col-md-7"><?php echo $links; ?></div> <?php } ?>
-		</div>	
-				
-				
-					<div class="row-details rd_1" style="display:none;">
-							<div class="cl-d1">
-								<div class="width40">
-									<label>Customer Details:</label>
-									<textarea name="textarea" class="text" id="comment_1"></textarea>
-									<label>Order Discount</label>
-									<div class="width100">
-									$0.00/page
-									<img src="images/page_white_edit.png" id="discedit_1" class="editimg"></div>
-								</div>
-								<div class="width60">
-								Dominique Valdez<br>
-								Director of Operations - eSystem Training Solutions<br><br>
-
-								<img src="images/flags/US.gif" class="countryFlagImg">United States<br><br>
-								dv@esystemtraining.com<br>
-								832-632-2805<br>
-								</div>
-							</div>
-							<div class="cl-d2">
-								
-<label>Order Details</label>
-Project Name: Intermediate Rigging	<br>
-<a href="mailto:rachael@rachaelwesttalent.com" title="rachael@rachaelwesttalent.com">Rachael West</a><br>
- 	- 43 pages - <a href="#">1271829884-T_6-Intermediate Rigging Script.pdf</a><br>
- 
-							</div>
-							<div class="cl-d3">
-								
-<label>Order History</label>
-04/21/2010    --   Received<br>
-04/20/2010    --   Out to Talent<br>
-04/20/2010    --   Invoiced<br>
-04/21/2010    --   Paid<br>
-04/22/2010    --   Audio Received<br>
-04/23/2010    --   Sent to Client<br>
-04/23/2010    --   Completed<br>
+			<div class="row">
+						<div class="col-sm-12 col-md-5">
+							<div class="dataTables_info" id="customerTable_info" role="status" aria-live="polite">
+								<?php   $start=1+$this->uri->segment(3)*$this->uri->segment(2)-$this->uri->segment(2); ?>Showing  <?php echo $start;?> to <?php echo $this->uri->segment(3)*$this->uri->segment(2);?> of <?php echo $totalOrder; ?> entries
 							</div>
 						</div>
-					
-					
+						<?php if(isset($orders)){?> <div class="col-sm-12 col-md-7"><?php echo $links; ?></div> <?php } ?>
+			</div>
+		</div>	
 					
 <script>
 

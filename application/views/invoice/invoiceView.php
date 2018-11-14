@@ -19,7 +19,7 @@ function local_time($GMTtime, $localTZoffSet=false)
 						<option id="invoiced"  value="<?php echo base_url();?>invoices/10/1?type=invoiced" <?php if($_GET['type']=='invoiced') echo "selected"; ?>>Invoiced Orders</option>
 						<option id="paid" value="<?php echo base_url();?>invoices/10/1?type=paid" <?php if($_GET['type']=='paid') echo "selected"; ?>>Paid Orders</option>
 					</select>
-					<?php echo $totalRecored; ?>
+					<strong style="margin-left: 5px;">Total <?php echo $totalRecored; ?>  </strong>
 				</div>
 				
 			</div>
@@ -128,18 +128,27 @@ function local_time($GMTtime, $localTZoffSet=false)
 				<label style="font-weight: bold;">Invoice Details:</label>
 			  </div>
 			  <div class="col-sm-5">
+			  <ul class="list-group list-group-flush">
+				 
 				<?php foreach($order['pages'] as $script){
-					echo $script['script_name']."</br>";
+				
+					echo '<li style="height: 60px;" class="list-group-item">'. $script['script_name'].'</li>';
 				}  ?>
+				</ul>
 			  </div>
 			  <div class="col-sm-2">
+			  <ul class="list-group list-group-flush">
 				<?php foreach($order['pages'] as $script){
-					echo $script['talent'][0]->tlnt_fname."</br>";
+					echo '<li style="height: 60px;" class="list-group-item">'. $script['talent'][0]->tlnt_fname.'</li>';
 				}  ?>
+				</ul>
 			  </div>
-			  <div class="col-sm-1"><?php foreach($order['pages'] as $script){
-					echo $script['script_page']."Pages</br>";
+			  <div class="col-sm-1">
+			  <ul class="list-group list-group-flush">
+			  <?php foreach($order['pages'] as $script){
+					echo '<li style="height: 60px;" class="list-group-item">'.$script['script_page'].'Page</li>';
 				}  ?>
+				</ul>
 			  </div>
 			  <div class="col-sm-1">
 			  <?php 
@@ -159,7 +168,14 @@ function local_time($GMTtime, $localTZoffSet=false)
 			<?php } ?>
 			</tbody>
 			</table>
+			<div class="row">
+						<div class="col-sm-12 col-md-5">
+							<div class="dataTables_info" id="customerTable_info" role="status" aria-live="polite">
+								<?php   $start=1+$this->uri->segment(3)*$this->uri->segment(2)-$this->uri->segment(2); ?>Showing  <?php echo $start;?> to <?php echo $this->uri->segment(3)*$this->uri->segment(2);?> of <?php echo $totalOrder; ?> entries
+							</div>
+						</div>
 			<?php if(isset($invoiceList)){?> <div class="col-sm-12 col-md-7"><?php echo $links; ?></div> <?php } ?>
+			</div>
 		</div>	
 				
 									

@@ -84,5 +84,5 @@ $messageBody='<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "ht
 </table>
 </body>
 </html>';
-//echo $messageBody;
+echo $messageBody;
 ?>

@@ -221,7 +221,7 @@ class Users extends CI_Controller {
 			$data['userData'] = $this->session->userdata();	
 			$data['oStatus'] = $this->common_model->getAllOrdersStatus();
 			$data['sales_snapshot'] = $this->common_model->getsnepShot();
-//echo"<pre>";print_r($data['userData']);die;			
+//echo"<pre>";print_r($data);die;			
 			$data['cOrderCount'] = $this->orders_model->getAllCustomersOrdresCount($data['userData']);
 			$data['totallOrdersCount'] = $this->orders_model->getAllOrdresCount($data['userData']);
 			$data['voiceCount'] = count($this->orders_model->getVoiceTalent());
@@ -305,8 +305,7 @@ class Users extends CI_Controller {
 				'img_height' => 60,
 				'expiration' => 7200
 				);
-			$cap = create_captcha($vals);  
-			
+			$cap = create_captcha($vals);  			
 			$this->load->view('forgotView',$cap);
 		}
 	}
