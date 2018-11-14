@@ -38,10 +38,10 @@
 							</div>
 							<div class="col-sm-2">
 								<input   id="year" onkeyup="removeNonDigit(this.id);  dateMod('<?php echo date('m',$nowTime)?>-<?php echo date('d',$nowTime)?>-<?php echo date('Y',$nowTime)?>');" type="text" value="<?php echo date('Y',$nowTime)?>" name="year"  class="form-control" />
-								<span id="date_mod_display"></span>
+								
 							</div>
-							
-							<div class="col-sm-3 text-right">
+							<div class="col-sm-1 text-left"><span id="date_mod_display"></span></div>
+							<div class="col-sm-2 text-right">
 								Total Page Count:
 							</div>
 							<div class="col-sm-2">
@@ -416,7 +416,7 @@ FancyUpload3.Attach.File = new Class({
 
 		
 
-		var progress = new Element('img', {'class': 'file-progress', src: '<?php echo base_url();?>assets/js/progress-bar/bar.gif'}).inject(this.ui.size, 'after');
+		var progress = new Element('img', {'class': 'file-progress', src: '<?php echo base_url();?>assets/js/fancy-upload/progress-bar/bar.gif'}).inject(this.ui.size, 'after');
 
 		this.ui.progress = new Fx.ProgressBar(progress, {
 
