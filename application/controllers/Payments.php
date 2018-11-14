@@ -99,7 +99,7 @@ class Payments extends CI_Controller {
 			}*/
 			
 			if($this->input->get('page')){
-				echo $start = ($this->input->get('page')) - 1;
+				$start = ($this->input->get('page')) - 1;
 				$data['page'] = $start + 1;
 				$data["per_page"] = $start + $config["per_page"];
 				if($data["per_page"] > $config["total_rows"]){

@@ -154,7 +154,7 @@ class Common_model extends CI_Model {
 
 
 		list($pWeekOdrVal,$pWeekOdrPage,$pWeekOdrCsrVal,$discount,$rush_charge) = $this->getOrderValueFast($pWeekStart,$pWeekEnd);
-
+		
 		$grsRevTotal = $pWeekOdrPage*20 + $rush_charge- $discount;
 		//*******************************************************************************************
 		// Net Revenue = Total pages * 20 - ((Total pages * Talent rate) + (Total pages * CSR rate))
@@ -324,6 +324,7 @@ class Common_model extends CI_Model {
 
 		$query = $this->db->query($sql);
         $orderdata = $query->result_array();
+		
 		if($orderdata)
         {
            foreach($orderdata as $record)

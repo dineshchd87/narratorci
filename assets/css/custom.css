@@ -133,3 +133,15 @@ input:-webkit-autofill {
 .saveStatus{
 	cursor:pointer!important;
 }
+.order-details
+{
+    text-align: center;
+    word-wrap: break-word;
+    width: 100%;
+}
+.talent-bold{
+	font-weight:bold;
+}
+.projectName{
+	font-weight:bold;
+}

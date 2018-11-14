@@ -83,7 +83,7 @@ class Orders extends CI_Controller {
         $limit_per_page = ($this->uri->segment(2)) ? $this->uri->segment(2) : 10;
         $start_index = ($this->uri->segment(3)) ? ($this->uri->segment(3)- 1) : 0;
         $total_records = $this->orders_model->getAllOrdresCountOrderPage($data['userData'],$condition)[0]['order_count'];
-		
+		$data["totalOrder"]=$total_records;
 		$data['allCsr'] =$this->orders_model->getAllCsr();
 		$data['allstatus'] =$this->orders_model->getAllStatus();
 		if ($total_records > 0) 
@@ -95,46 +95,36 @@ class Orders extends CI_Controller {
 			
 			if (count($_GET) > 0){$config['first_url'] = base_url() . 'orders/'. $limit_per_page.'/1?'.http_build_query($_GET);}
             $config['total_rows'] = $total_records;
-            $config['per_page'] = $limit_per_page;
+            $config['page'] = $limit_per_page;			
             $config["uri_segment"] = 3;			
 			// custom paging configuration
             $config['num_links'] = 2;
             $config['use_page_numbers'] = TRUE;
             $config['reuse_query_string'] = TRUE;
-			$config['attributes']=array('class' => 'page-link');
-             
+			$config['attributes']=array('class' => 'page-link');             
             $config['full_tag_open'] = '<ul class="pagination">';
-            $config['full_tag_close'] = '</ul>';
-             
+            $config['full_tag_close'] = '</ul>';             
             $config['first_link'] = 'First Page';
             $config['first_tag_open'] = '<li class="page-item">';
-            $config['first_tag_close'] = '</li">';
-             
+            $config['first_tag_close'] = '</li">';             
             $config['last_link'] = 'Last Page';
             $config['last_tag_open'] = '<li class="page-item">';
             $config['last_tag_close'] =  '</li">';
-             
             $config['next_link'] = 'Next Page';
             $config['next_tag_open'] = '<li class="page-item">';
             $config['next_tag_close'] = '</li">';
- 
             $config['prev_link'] = 'Prev Page';
             $config['prev_tag_open'] = '<li class="page-item">';
             $config['prev_tag_close'] = '</li">';
- 
             $config['cur_tag_open'] = '<li class="page-item active"><a class="page-link" href="#">';
             $config['cur_tag_close'] = '</a></li">';
- 
             $config['num_tag_open'] = '<li class="page-item">';
-            $config['num_tag_close'] = '</li">';
-             
-             
+            $config['num_tag_close'] = '</li">';            
             $this->pagination->initialize($config);
-             
             // build paging links
             $data["links"] = $this->pagination->create_links();
         }
-		//echo"<pre>";print_r($data);die;
+		//echo"<pre>";print_r($data["links"]);die;
 		$this->load->view('common/header.php',$data);
 		$this->load->view('orderView.php',$data);
 		$this->load->view('common/footer.php',$data);

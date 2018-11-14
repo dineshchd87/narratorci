@@ -177,7 +177,8 @@
 					<div class="row">
 						<div class="col-sm-12 col-md-5">
 							<div class="dataTables_info" id="customerTable_info" role="status" aria-live="polite">
-								Showing <?php echo $page;?> to <?php echo $per_page;?> of <?php echo $total_rows;?> entries
+							Showing <?php  if(isset($_GET['page'])){ $page_num=$_GET['page'];}else{$page_num=1;} $start= 1+PER_PAGE_NUMBER*$page_num-PER_PAGE_NUMBER; echo  $start?> to <?php echo PER_PAGE_NUMBER*$page_num; ?> of <?php echo $total_rows;?> entries
+								
 							</div>
 						</div>
 						<div class="col-sm-12 col-md-7">

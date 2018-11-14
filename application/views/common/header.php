@@ -62,7 +62,7 @@
 				</div>
 			</div>
 			<div class="col-sm-12 bottom-header text-right">
-				<span>CS Manager</span>
+				<span><?php echo $this->session->userdata('group_name'); ?></span>
 			</div>
 		</header>
 		<div id="content" class="row">

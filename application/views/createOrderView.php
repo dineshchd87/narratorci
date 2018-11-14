@@ -131,7 +131,7 @@
 							</div>
 							
 						</div>
-						<div id='talentDv'>
+						<div id='talentDv' >
 							<div class="row form-group talentcount">
 								<div class="col-sm-3 text-right">
 									Talent #1: <span class="text-danger">*</span>
@@ -145,15 +145,20 @@
 								
 							</div>
 							<div class="row">
-								<div class="col-sm-6 text-center">
-									<label class="upload">Upload Scripts</label>
-									<a href="#" id="demo-attach">Attach a file</a> 
-									<ul id="demo-list"></ul> 
-									<a href="#" id="demo-attach-2" style="display: none;">Attach another file</a>
-									
+								<div class="col-sm-8 text-center ">
+									<div class="row">
+										<label class="upload">Upload Scripts</label>
+										<label class="scriptCount">Script Page Count</label>
+									</div>
+									<div class="row">
+										<a  class="upload" href="#" id="demo-attach">Attach a file</a>
+									</div>																			
+									<ul class="demo-list" id="demo-list"></ul>
+									<div class="row">									
+									<a class="upload" href="#" id="demo-attach-2" style="display: none;">Attach another file</a>
+									</div>	
 								</div>
-								<div class="col-sm-2 text-left">
-									Script Page Count : 
+								<div class="col-sm-4 text-left">									 
 									<input type="hidden" name="script_count_1" id="script_count_1" />
 									<input type="hidden" id="sumcount_1" name="sumcount_1" value="0" />									
 								</div>
@@ -373,7 +378,7 @@ FancyUpload3.Attach.File = new Class({
 
 		this.ui.element = new Element('li', {'class': 'file', id: 'file-' + genId, 'style' : 'line-height: 16px; padding: 4px 10px 4px 0px;', 'onmouseover':'backgroundHover(this)', 'onmouseout': 'backgroundOutWhite(this)'});
 
-		this.ui.title = new Element('div', {'class': 'file-title', text: this.name+' -- '+Swiff.Uploader.formatUnit(this.size, 'b'),  id: 'file-title_' + genId, 'style':'width:315px; height:16px; float: left;'});
+		this.ui.title = new Element('div', {'class': 'file-title', text: this.name+' -- '+Swiff.Uploader.formatUnit(this.size, 'b'),  id: 'file-title_' + genId, 'style':'width:355px; height:16px; float: left;'});
 
 		this.ui.size = new Element('span', {'class': 'file-size', text: '' , 'style':'float:left'});
 
@@ -411,7 +416,7 @@ FancyUpload3.Attach.File = new Class({
 
 		
 
-		var progress = new Element('img', {'class': 'file-progress', src: '../include/fancy-upload/assets/progress-bar/bar.gif'}).inject(this.ui.size, 'after');
+		var progress = new Element('img', {'class': 'file-progress', src: '<?php echo base_url();?>assets/js/progress-bar/bar.gif'}).inject(this.ui.size, 'after');
 
 		this.ui.progress = new Fx.ProgressBar(progress, {
 
@@ -533,7 +538,7 @@ function backgroundOutWhite(ele){
 					if(parseInt(document.getElementById('total_talent').value)>0 && !checkScript()) return false;
 					var id=jQuery('.talentcount').length+1;
 					var talentoption ='<?php echo $alltlnt; ?>';
-					var html = '<div class="row form-group talentcount">'+
+					var html = '<div style="padding-top: 10px;" class="row form-group talentcount border-top">'+
 									'<div class="col-sm-3 text-right">Talent #'+id+':'+
 									'</div>'+
 								'<div class="col-sm-4">'+
@@ -541,11 +546,12 @@ function backgroundOutWhite(ele){
 									'<option value="" selected>Select talent</option>'+
 									talentoption +	
 								'</select></div></div>'+
-								'<div  class="row"><div class="col-sm-6 text-center">'+
-								'<a href="#" id="demo-attach_'+id+'">Attach a file</a>'+ 
-									'<ul id="demo-list_'+id+'"></ul>'+ 
-									'<a href="#" id="demo-attach'+id+'-2" style="display: none;">Attach another file</a>'+
-								'</div><div class="col-sm-2 text-left">Script Page Count :'+									 
+								'<div  class="row"><div class="col-sm-8 text-center">'+
+								'<div class="row"><label class="upload">Upload Scripts</label><label class="scriptCount">Script Page Count :</label></div>'+
+								'<div class="row"><a href="#" class="upload" id="demo-attach_'+id+'">Attach a file</a></div>'+ 
+									'<ul class="demo-list" id="demo-list_'+id+'"></ul>'+ 
+									'<div class="row"><a href="#" class="upload" id="demo-attach'+id+'-2" style="display: none;">Attach another file</a></div>'+
+								'</div><div class="col-sm-4 text-left">'+									 
 									'<input type="hidden" name="script_count_'+id+'" id="script_count_'+id+'" />'+	
 									'<input type="hidden" id="sumcount_'+id+'" name="sumcount_'+id+'" value="0" />'+								
 								'</div>'+
@@ -1010,17 +1016,14 @@ a.hover {s
 
  
 
+
 .demo-list {
-
 	padding: 0;
-
 	list-style: none;
-
 	margin: 0;
+	margin-left: 200px;
 
 }
-
- 
 
 .demo-list .file-invalid {
 
@@ -1110,7 +1113,12 @@ a.hover {s
 
 }
 .upload{
-	width:100%
+	width:70%;
+}
+.scriptCount{
+	width:30%;
+	text-align: right;
+	text-decoration: underline;
 }
 
 </style>

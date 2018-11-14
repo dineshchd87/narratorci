@@ -46,6 +46,7 @@ class Invoices extends CI_Controller {
 					$condition['type']= $_GET['type'];				
 			}
 			$total_records = $this->invoice_model->getAllinvoiceCount($condition)[0]['order_count'];
+			$data["totalOrder"]=$total_records;
 		if ($total_records > 0) 
         {
 				$data['userData'] = $this->session->userdata();	
@@ -55,7 +56,7 @@ class Invoices extends CI_Controller {
 			
 			if (count($_GET) > 0){$config['first_url'] = base_url() . 'invoices/'. $limit_per_page.'/1?'.http_build_query($_GET);}	
 			$config['total_rows'] = $total_records;
-            $config['per_page'] = $limit_per_page;
+            $config['page'] = $limit_per_page;
             $config["uri_segment"] = 3;	
  			
 			// custom paging configuration
