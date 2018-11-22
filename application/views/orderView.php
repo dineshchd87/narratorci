@@ -81,6 +81,16 @@ function local_time($GMTtime, $localTZoffSet=false)
                           </button>    <strong>Success!</strong> Status changed successfully.
                 </div>
             </div>
+			
+			<?php if($this->session->flashdata('success')){ ?>
+								<div class="col-sm-12 mt-4" style="text-align: center;">
+									<div class="alert alert-success fade in alert-dismissible show">
+											<button style="margin-top: -5px;" type="button" class="close" data-dismiss="alert" aria-label="Close">
+											<!--<span aria-hidden="true" style="font-size:20px">×</span>-->
+											</button><strong>Success!</strong> Order created successfully.
+									</div>
+								</div>
+								<?php } ?>
 			<div class="col-sm-12 mt-4">
 			<div class="dataTables_length" id="example_length">
 			<label> 

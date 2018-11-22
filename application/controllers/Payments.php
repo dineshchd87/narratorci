@@ -47,10 +47,20 @@ class Payments extends CI_Controller {
 	
 	public function view(){
 		if($this->session->userdata('user_name')){
-			$data['userData'] = $this->session->userdata();	
+			$data['userData'] = $this->session->userdata();
+			$condition=array();			
+			$condition['for']=$this->input->get('for');		
+			$condition['filter_tlnt_pay']=$this->input->get('filter_tlnt_pay');			
 			$config = array();
+			
 			$config["base_url"] = base_url() . "payments/view";
-			$config["total_rows"] = $this->payment_model->getPaymentCount();
+			if($this->input->get('for')=='TLNT'){
+				$config["total_rows"] = $this->payment_model->getPaymentCount($condition);
+			}
+			if($this->input->get('for')=='CSR'){
+				$config["total_rows"] = $this->payment_model->getPaymentCountcsr($condition);
+			}
+			
 			$config["per_page"] = PER_PAGE_NUMBER;
 			$config['num_links'] = 4;
 			$config['uri_segment'] = 3;
@@ -115,11 +125,24 @@ class Payments extends CI_Controller {
 			
 			//echo $config["per_page"].'===='. $start;
 			
-			$data["results"] = $this->payment_model->getPaymentList($config["per_page"], $start);
+			
+			if($this->input->get('for')=='TLNT'){
+				$data["results"] = $this->payment_model->getPaymentList($config["per_page"], $start,$condition);
+			}
+			if($this->input->get('for')=='CSR'){
+				$data["results"] = $this->payment_model->getPaymentListcsr($config["per_page"], $start,$condition);
+			}
 			$data["links"] = $this->pagination->create_links();
-			//echo "<pre>"; print_r($data); die('here');
+			//echo "<pre>"; print_r($data["results"]); die('here');
 			$this->load->view('common/header.php',$data);
-			$this->load->view('payments/paymentView.php',$data);
+			if($this->input->get('for')=='TLNT'){
+				$this->load->view('payments/paymentView.php',$data);
+			}
+			if($this->input->get('for')=='CSR'){
+				$this->load->view('payments/paymentCsrView.php',$data);
+			}
+			
+			
 			$this->load->view('common/footer.php',$data);
 		}else{
 			redirect('/');

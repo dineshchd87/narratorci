@@ -13,6 +13,11 @@ class Representative extends CI_Controller {
 	
 	public function __construct() {
 	    parent::__construct();
+		if($this->session->userdata('group_id')!=ADMIN_GR){
+			$this->session->unset_userdata($this->userData);
+			$this->session->sess_destroy();
+			redirect('/', 'refresh');
+		}
 	    $this->load->helper('url');
 		$this->load->library('form_validation');
 		$this->load->model('common_model');
@@ -102,7 +107,7 @@ die('send');*/
                 if ($this->form_validation->run() == TRUE) {
 					//echo "<pre>"; print_r($this->input->post());
 				//die('here');
-                	//$this->representative_model->addCustomer($this->input->post());
+                	$this->representative_model->addCustomer($this->input->post());
                 	$this->session->set_flashdata('successMsg', ' Customer added successfully.');
                 			redirect('representative/add');
                 } 
@@ -213,6 +218,37 @@ die('send');*/
 				redirect('/');
 			}
 	}
+	
+		/**
+     * @developer       :   Dinesh
+     * @created date    :   04-09-2018 (dd-mm-yyyy)
+     * @purpose         :   change Password from users tables
+     * @params          :   user_id
+     * @return          :   
+     */
+	public function changePassword($userId = ''){
+		if($this->session->userdata('user_name')){
+				if($userId != ''){
+					if($this->representative_model->changePassword($userId)){
+						$csr=$this->users_model->getUserById($userId)[0];						
+						$templateData=$this->emails_model->getEmailbyId(13)[0];
+						$templateData['fname']=$csr['user_fname'];
+						$templateData['uname']=$csr['user_name'];
+						$templateData['pass']=$csr['user_pass'];
+						send_email($csr['user_email'],'enroll_csm_notify.php',$templateData);
+						send_email($templateData['email_id'],'enroll_csm_notify.php',$templateData);
+						echo "done";die;
+					}
+					
+				}else{
+					redirect('representative');
+				}
+				
+			}else{
+				redirect('/');
+			}
+	}
+	
 
 
 	/**

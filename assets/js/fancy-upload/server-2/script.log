@@ -1,11 +1,20 @@
 Array
 (
+<<<<<<< HEAD
     [time] => Wed, 14 Nov 2018 16:28:24 +0000
     [addr] => ******.164.210
     [agent] => Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.102 Safari/537.36
     [post] => Array
         (
             [Filename] => 4ab0292cd0ba475e09df7478146ff539.jpg
+=======
+    [time] => Thu, 22 Nov 2018 04:33:51 +0000
+    [addr] => ******RRANA2-LT.cloudsmartz.net
+    [agent] => Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.102 Safari/537.36
+    [post] => Array
+        (
+            [Filename] => chidia.jpg
+>>>>>>> b04976a1d34b7a4cf3b5e4abacb536cfb2dcc9bb
             [Upload] => Submit Query
         )
 
@@ -13,11 +22,19 @@ Array
         (
             [Filedata] => Array
                 (
+<<<<<<< HEAD
                     [name] => 4ab0292cd0ba475e09df7478146ff539.jpg
                     [type] => application/octet-stream
                     [tmp_name] => /tmp/phpksqOqd
                     [error] => 0
                     [size] => 86458
+=======
+                    [name] => chidia.jpg
+                    [type] => application/octet-stream
+                    [tmp_name] => C:\wamp64\tmp\php1B9A.tmp
+                    [error] => 0
+                    [size] => 2608
+>>>>>>> b04976a1d34b7a4cf3b5e4abacb536cfb2dcc9bb
                 )
 
         )
@@ -29,11 +46,19 @@ Array
 (
     [Filedata] => Array
         (
+<<<<<<< HEAD
             [name] => 4ab0292cd0ba475e09df7478146ff539.jpg
             [type] => application/octet-stream
             [tmp_name] => /tmp/phpksqOqd
             [error] => 0
             [size] => 86458
+=======
+            [name] => chidia.jpg
+            [type] => application/octet-stream
+            [tmp_name] => C:\wamp64\tmp\php1B9A.tmp
+            [error] => 0
+            [size] => 2608
+>>>>>>> b04976a1d34b7a4cf3b5e4abacb536cfb2dcc9bb
         )
 
 )
@@ -41,12 +66,21 @@ Array
  1 ---
 Array
 (
+<<<<<<< HEAD
     [time] => Wed, 14 Nov 2018 16:32:18 +0000
     [addr] => ******.164.210
     [agent] => Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.102 Safari/537.36
     [post] => Array
         (
             [Filename] => 4ab0292cd0ba475e09df7478146ff539.jpg
+=======
+    [time] => Thu, 22 Nov 2018 04:47:46 +0000
+    [addr] => ******RRANA2-LT.cloudsmartz.net
+    [agent] => Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.102 Safari/537.36
+    [post] => Array
+        (
+            [Filename] => chidia.jpg
+>>>>>>> b04976a1d34b7a4cf3b5e4abacb536cfb2dcc9bb
             [Upload] => Submit Query
         )
 
@@ -54,11 +88,19 @@ Array
         (
             [Filedata] => Array
                 (
+<<<<<<< HEAD
                     [name] => 4ab0292cd0ba475e09df7478146ff539.jpg
                     [type] => application/octet-stream
                     [tmp_name] => /tmp/phpWE60Fs
                     [error] => 0
                     [size] => 86458
+=======
+                    [name] => chidia.jpg
+                    [type] => application/octet-stream
+                    [tmp_name] => C:\wamp64\tmp\phpD8F5.tmp
+                    [error] => 0
+                    [size] => 2608
+>>>>>>> b04976a1d34b7a4cf3b5e4abacb536cfb2dcc9bb
                 )
 
         )
@@ -70,11 +112,19 @@ Array
 (
     [Filedata] => Array
         (
+<<<<<<< HEAD
             [name] => 4ab0292cd0ba475e09df7478146ff539.jpg
             [type] => application/octet-stream
             [tmp_name] => /tmp/phpWE60Fs
             [error] => 0
             [size] => 86458
+=======
+            [name] => chidia.jpg
+            [type] => application/octet-stream
+            [tmp_name] => C:\wamp64\tmp\phpD8F5.tmp
+            [error] => 0
+            [size] => 2608
+>>>>>>> b04976a1d34b7a4cf3b5e4abacb536cfb2dcc9bb
         )
 
 )
@@ -82,12 +132,21 @@ Array
  1 ---
 Array
 (
+<<<<<<< HEAD
     [time] => Wed, 14 Nov 2018 17:03:58 +0000
     [addr] => ******.164.210
     [agent] => Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.102 Safari/537.36
     [post] => Array
         (
             [Filename] => 08393644e6d6ccd23b1ca5d839db34ab.jpg
+=======
+    [time] => Thu, 22 Nov 2018 04:49:18 +0000
+    [addr] => ******RRANA2-LT.cloudsmartz.net
+    [agent] => Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.102 Safari/537.36
+    [post] => Array
+        (
+            [Filename] => chidia.jpg
+>>>>>>> b04976a1d34b7a4cf3b5e4abacb536cfb2dcc9bb
             [Upload] => Submit Query
         )
 
@@ -95,11 +154,19 @@ Array
         (
             [Filedata] => Array
                 (
+<<<<<<< HEAD
                     [name] => 08393644e6d6ccd23b1ca5d839db34ab.jpg
                     [type] => application/octet-stream
                     [tmp_name] => /tmp/phpi8F5Wa
                     [error] => 0
                     [size] => 22973
+=======
+                    [name] => chidia.jpg
+                    [type] => application/octet-stream
+                    [tmp_name] => C:\wamp64\tmp\php4066.tmp
+                    [error] => 0
+                    [size] => 2608
+>>>>>>> b04976a1d34b7a4cf3b5e4abacb536cfb2dcc9bb
                 )
 
         )
@@ -111,11 +178,19 @@ Array
 (
     [Filedata] => Array
         (
+<<<<<<< HEAD
             [name] => 08393644e6d6ccd23b1ca5d839db34ab.jpg
             [type] => application/octet-stream
             [tmp_name] => /tmp/phpi8F5Wa
             [error] => 0
             [size] => 22973
+=======
+            [name] => chidia.jpg
+            [type] => application/octet-stream
+            [tmp_name] => C:\wamp64\tmp\php4066.tmp
+            [error] => 0
+            [size] => 2608
+>>>>>>> b04976a1d34b7a4cf3b5e4abacb536cfb2dcc9bb
         )
 
 )

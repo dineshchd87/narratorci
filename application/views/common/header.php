@@ -57,7 +57,7 @@
 				</div>
 				<div class="bottom-right-header">
 					<label class="text-info">
-						<span class="label-text">Logged in as:</span> <span class="username-text"><?php if(isset($userData) && isset($userData['user_fname'])) { echo $userData['user_fname']; }else { echo ''; } ?> <?php if(isset($userData) && isset($userData['user_fname'])) { echo $userData['user_lname']; }else { echo ''; } ?></span>, <a href="<?php echo base_url();?>users/logout" class="logout">logout?</a>
+						<span class="label-text">Logged in as:</span> <span class="username-text"><?php if($this->session->userdata('user_name')) { echo $this->session->userdata('user_name'); }else { echo ''; } ?> <?php if($this->session->userdata('user_lname')) { echo $this->session->userdata('user_lname'); }else { echo ''; } ?></span>, <a href="<?php echo base_url();?>users/logout" class="logout">logout?</a>
 					</label>
 				</div>
 			</div>
