@@ -156,17 +156,10 @@ $(document).ready(function() {
             tr.removeClass('shown');
         }
         else {
-           // row.child( format(row.data()) ).show();
-             swal({
-                title: "Please wait!",
-                text: "Loading...",
-                type: "info",
-                showCancelButton: false,
-                showConfirmButton: false
-             });
+           // row.child( format(row.data()) ).show();            
              $.ajax({url: "<?php echo base_url();?>customers/get_revenue_details/"+customerId, 
                 success: function(result){
-                    swal.close();
+                  
                     if(result != ""){
                         var obj = jQuery.parseJSON(result);
                         var totalVal = parseInt(obj[0]['totalval']).toFixed(2);

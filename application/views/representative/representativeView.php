@@ -68,7 +68,7 @@
                             <option value="N" <?php if($csr['is_active'] == "N"){?> selected="selected" <?php } ?>>Inactive</option>
                             </select>
                          <td> 
-                          <a data-toggle="modal" data-target="<?php echo $csr['csrm_id'];?>" data="<?php echo $csr['user_id'];?>" href="javascript:void(0)" class="btn btn-dark btn-sm">
+                          <a data-toggle="modal" data-target="<?php echo $csr['csrm_id'];?>" data="<?php echo $csr['user_id'];?>" href="javascript:void(0)" class="btn btn-dark btn-sm change_pass">
                                <i class="fas fa-edit"></i> Change Password
                             </a>
                             <a data-toggle="modal" data-target="<?php echo $csr['csrm_id'];?>" data="<?php echo $csr['user_id'];?>" href="javascript:void(0)" class="btn btn-danger btn-sm delete_btn">
@@ -165,9 +165,9 @@ $(document).ready(function() {
 
      //===delete customer=======================
      $('body').on('click', '.delete_btn', function() {
-      return false;
+     
         var selectedUser = $(this).attr('data');
-        var selectedCsr = $(this).attr('data-target');
+        var selectedCsr = $(this).attr('data-target');		
         swal({
           title: "Are you sure?",
           text: "Really want to delete this record.",
@@ -189,6 +189,31 @@ $(document).ready(function() {
         });
      });
 
+	      //===delete customer=======================
+     $('body').on('click', '.change_pass', function() {
+     
+        var selectedUser = $(this).attr('data');
+        var selectedCsr = $(this).attr('data-target');
+			
+        swal({
+          title: "Are you sure?",
+          text: "Really want to change Password to this CSR.",
+          type: "warning",
+          showCancelButton: true,
+          confirmButtonClass: "btn-danger",
+          confirmButtonText: "Yes",
+          cancelButtonText: "No",
+          closeOnConfirm: false
+        },
+        function(){
+            $.ajax({url: "<?php echo base_url();?>representative/changePassword/"+selectedUser, 
+                success: function(result){
+                    
+                    swal("Success!", "New Password sent to CSR.", "success");
+                }
+            });
+        });
+     });
 
     $('body').on('change', '.change_status_btn', function() {
         var selectedUser = $(this).attr('data');

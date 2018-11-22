@@ -25,7 +25,7 @@ function local_time($GMTtime, $localTZoffSet=false)
 							<div class="left-box-1">
 								<a href="<?php echo base_url();?>orders/10/1?type=all" class="btn btn-info"> 
 								<i class="fas fa-edit"></i> Manage Orders</a>	
-								<a href="<?php echo base_url();?>orders/create_order" class="btn btn-info">
+								<a onclick ="add_order();" href="<?php echo base_url();?>orders/create_order" class="btn btn-info">
 								<i class="fas fa-plus-circle"></i> Add an Order</a>							
 							</div>
 							<div class="left-box-1">
@@ -73,7 +73,7 @@ function local_time($GMTtime, $localTZoffSet=false)
 								<a href="<?php echo base_url();?>talents" class="btn btn-outline-info">Talent	</a>		
 								<a href="<?php echo base_url();?>representative" class="btn btn-outline-info">Personnel	</a>	
 								<a href="<?php echo base_url();?>invoices/10/1?type=active" class="btn btn-outline-info">Invoicing	</a>	
-								<a href="<?php echo base_url();?>payments" class="btn btn-outline-info">Payments	</a>	
+								<a href="<?php echo base_url();?>payments/view?for=TLNT&filter_tlnt_pay=all" class="btn btn-outline-info">Payments	</a>	
 							</div>
 						</div>
 					</div>
@@ -224,6 +224,7 @@ function local_time($GMTtime, $localTZoffSet=false)
 		</div>
 	</section>
 	<script>
+
 	$(document).ready(function() {
 		$('.statusList').on('change', function() {
 			var orderId=$(this).next().attr('data-orderid');

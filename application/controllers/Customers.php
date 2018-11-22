@@ -114,7 +114,7 @@ class Customers extends CI_Controller {
 			}
 			$data['countries'] = $this->common_model->getCountries();
 			$this->load->view('common/header.php',$data);
-			$this->load->view('talents/add_talentView.php',$data);
+			$this->load->view('customers/add_customerView.php',$data);
 			$this->load->view('common/footer.php',$data);
 		}else{
 			redirect('/');

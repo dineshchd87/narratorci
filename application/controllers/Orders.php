@@ -480,7 +480,8 @@ class Orders extends CI_Controller {
 				$this->orders_model->saveInvoiceStatus($status_id_invoce,$order_ids);
 
 			}
-
+		$this->session->set_flashdata('success', '<div class="success">Order Created successfully.</div>');
+		redirect('orders/10/1?type=all');
 		}
 		$data['allCust']=$this->customers_model->getAllCustomers();
 		$data['allCSR']=$this->orders_model->getAllCsr();

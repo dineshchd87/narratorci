@@ -3,11 +3,11 @@
 	<div class="col-sm-6">
 		<div class="footer-nav">
 					<ul>
-						<li><a href="#">Home</a></li>  
-						<li><a href="#">Orders</a>  </li>
-						<li><a href="#">Customers</a></li>    
-						<li><a href="#">Talent</a> </li> 
-						<li><a href="#">Personnel</a>  </li>
+						<li><a href="<?php echo base_url();?>">Home</a></li>  
+						<li><a href="<?php echo base_url();?>orders/10/1?type=all">Orders</a>  </li>
+						<li><a href="<?php echo base_url();?>customers">Customers</a></li>    
+						<li><a href="<?php echo base_url();?>talents">Talent</a> </li> 
+						<li><a href="<?php echo base_url();?>representative">Personnel</a>  </li>
 					</ul>  
 				</div>
 			</div>
